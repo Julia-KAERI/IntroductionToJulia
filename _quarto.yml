@@ -10,39 +10,39 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
-    - part : src/part1/00_part1.qmd
+    - part : docs/part1/00_part1.qmd
       chapters :
-      - src/part1/index.qmd
-      - src/part1/01_julia_language.qmd 
-      - src/part1/02_variables_basic_types.qmd
-      - src/part1/03_functions_and_operators.qmd
-      - src/part1/04_containers.qmd
-      - src/part1/04I_splat_operator.qmd
-      - src/part1/05_control_flows.qmd
-      - src/part1/06_arrays.qmd
-      - src/part1/06I_function_composition_and_piping.qmd
-      - src/part1/07_module_package.qmd
-      - src/part1/07I_sort.qmd
-      - src/part1/08_type_hierarchy.qmd
-      - src/part1/08I_documentation.qmd
-      - src/part1/09_composite_types.qmd
-      - src/part1/09I_pretty_printing.qmd
-      - src/part1/10_metaprogramming_and_macro.qmd
-      - src/part1/10I_exception.qmd
-      - src/part1/11_interfaces.qmd
+      - docs/part1/index.qmd
+      - docs/part1/01_julia_language.qmd 
+      - docs/part1/02_variables_basic_types.qmd
+      - docs/part1/03_functions_and_operators.qmd
+      - docs/part1/04_containers.qmd
+      - docs/part1/04I_splat_operator.qmd
+      - docs/part1/05_control_flows.qmd
+      - docs/part1/06_arrays.qmd
+      - docs/part1/06I_function_composition_and_piping.qmd
+      - docs/part1/07_module_package.qmd
+      - docs/part1/07I_sort.qmd
+      - docs/part1/08_type_hierarchy.qmd
+      - docs/part1/08I_documentation.qmd
+      - docs/part1/09_composite_types.qmd
+      - docs/part1/09I_pretty_printing.qmd
+      - docs/part1/10_metaprogramming_and_macro.qmd
+      - docs/part1/10I_exception.qmd
+      - docs/part1/11_interfaces.qmd
         
 
-    - part: src/part2/00_part2.qmd
+    - part: docs/part2/00_part2.qmd
       chapters :
-      - src/part2/fileio.qmd
-      - src/part2/makie.qmd
-      - src/part2/random.qmd
-      - src/part2/leastsquarefit.qmd
-      - src/part2/multithreads.qmd
-      - src/part2/pkg_dev.qmd
-      - src/part2/dataframes.qmd
-      - src/part2/unittest.qmd
-      - src/part2/
+      - docs/part2/fileio.qmd
+      - docs/part2/makie.qmd
+      - docs/part2/random.qmd
+      - docs/part2/leastsquarefit.qmd
+      - docs/part2/multithreads.qmd
+      - docs/part2/pkg_dev.qmd
+      - docs/part2/dataframes.qmd
+      - docs/part2/unittest.qmd
+      - docs/part2/
     - summary.qmd
     - references.qmd
 
