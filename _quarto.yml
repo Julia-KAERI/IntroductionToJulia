@@ -2,12 +2,47 @@ project:
   type: book
 
 book:
-  title: "IntroductionToJulia"
-  author: "Norah Jones"
+  title: "Introduction To Julia"
+  author: "julia.kaeri@gmail.com"
   date: "9/24/2024"
+  page-navigation: true
+  
   chapters:
     - index.qmd
     - intro.qmd
+    - part : src/part1/00_part1.qmd
+      chapters :
+      - src/part1/index.qmd
+      - src/part1/01_julia_language.qmd 
+      - src/part1/02_variables_basic_types.qmd
+      - src/part1/03_functions_and_operators.qmd
+      - src/part1/04_containers.qmd
+      - src/part1/04I_splat_operator.qmd
+      - src/part1/05_control_flows.qmd
+      - src/part1/06_arrays.qmd
+      - src/part1/06I_function_composition_and_piping.qmd
+      - src/part1/07_module_package.qmd
+      - src/part1/07I_sort.qmd
+      - src/part1/08_type_hierarchy.qmd
+      - src/part1/08I_documentation.qmd
+      - src/part1/09_composite_types.qmd
+      - src/part1/09I_pretty_printing.qmd
+      - src/part1/10_metaprogramming_and_macro.qmd
+      - src/part1/10I_exception.qmd
+      - src/part1/11_interfaces.qmd
+        
+
+    - part: src/part2/00_part2.qmd
+      chapters :
+      - src/part2/fileio.qmd
+      - src/part2/makie.qmd
+      - src/part2/random.qmd
+      - src/part2/leastsquarefit.qmd
+      - src/part2/multithreads.qmd
+      - src/part2/pkg_dev.qmd
+      - src/part2/dataframes.qmd
+      - src/part2/unittest.qmd
+      - src/part2/
     - summary.qmd
     - references.qmd
 
@@ -15,9 +50,16 @@ bibliography: references.bib
 
 format:
   html:
+    title-block-banner: true
+    # include-in-header: 
+    #   - html-hacks/load-font-awesome.html
+    #   - html-hacks/load-xkcd-font.html
+    # resources: web-resources/**
+    # https://quarto.org/docs/output-formats/html-themes.html#overview
+    # theme: darkly
     theme: cosmo
-  pdf:
-    documentclass: scrreprt
-
-
-
+    fontsize: 0.9em
+    toc: true
+    collapse: true
+    # css: styles.css
+    number-sections: true
