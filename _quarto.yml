@@ -1,65 +1,95 @@
 project:
-  type: book
+  type: website
+  output-dir: _site
+  render: 
+    - "*.qmd"
+    # - "*.ipynb"
+    - "!aux/"
 
-book:
+website:
   title: "Introduction To Julia"
-  author: "julia.kaeri@gmail.com"
-  date: "9/24/2024"
+  site-url: "https://julia-kaeri.github.io/IntroductionToJulia/"
+  # author: "julia.kaeri@gmail.com"
+  site-path: "/"
   page-navigation: true
-  
-  chapters:
-    - index.qmd
-    - intro.qmd
-    - part : docs/part1/00_part1.qmd
-      chapters :
-      - docs/part1/index.qmd
-      - docs/part1/01_julia_language.qmd 
-      - docs/part1/02_variables_basic_types.qmd
-      - docs/part1/03_functions_and_operators.qmd
-      - docs/part1/04_containers.qmd
-      - docs/part1/04I_splat_operator.qmd
-      - docs/part1/05_control_flows.qmd
-      - docs/part1/06_arrays.qmd
-      - docs/part1/06I_function_composition_and_piping.qmd
-      - docs/part1/07_module_package.qmd
-      - docs/part1/07I_sort.qmd
-      - docs/part1/08_type_hierarchy.qmd
-      - docs/part1/08I_documentation.qmd
-      - docs/part1/09_composite_types.qmd
-      - docs/part1/09I_pretty_printing.qmd
-      - docs/part1/10_metaprogramming_and_macro.qmd
-      - docs/part1/10I_exception.qmd
-      - docs/part1/11_interfaces.qmd
-        
+  navbar:
+    background: primary
+    # collapse-below: lg
+    left:
+      - href: index.qmd
+        text: Home
+      - href : src/introduction_to_julia/00_part1.qmd
+        text : "Julia 언어의 기초"
+      - href : src/ecosystem_of_julia/00_part2.qmd
+        text : "Julia 언어 생태계"
+      - about.qmd
+    tools:
+      - icon: envelope
+        href: mailto:julia.kaeri@gmail.com
 
-    - part: docs/part2/00_part2.qmd
-      chapters :
-      - docs/part2/fileio.qmd
-      - docs/part2/makie.qmd
-      - docs/part2/random.qmd
-      - docs/part2/leastsquarefit.qmd
-      - docs/part2/multithreads.qmd
-      - docs/part2/pkg_dev.qmd
-      - docs/part2/dataframes.qmd
-      - docs/part2/unittest.qmd
-      - docs/part2/
-    - summary.qmd
-    - references.qmd
+
+  sidebar:
+    - id: introduction
+      title : "Julia 언어의 기초"
+      style : "docked"
+      type : "dark"
+      collapse-level : 2
+      contents :    
+        - href : src/introduction_to_julia/00_part1.qmd
+        - href : src/introduction_to_julia/01_julia_language.qmd 
+        - href : src/introduction_to_julia/02_variables_basic_types.qmd
+        - href : src/introduction_to_julia/03_functions_and_operators.qmd
+        - href : src/introduction_to_julia/04_containers.qmd
+        - href : src/introduction_to_julia/04I_splat_operator.qmd
+        - href : src/introduction_to_julia/05_control_flows.qmd
+        - href : src/introduction_to_julia/06_arrays.qmd
+        - href : src/introduction_to_julia/06I_function_composition_and_piping.qmd
+        - href : src/introduction_to_julia/07_module_package.qmd
+        - href : src/introduction_to_julia/07I_sort.qmd
+        - href : src/introduction_to_julia/08_type_hierarchy.qmd
+        - href : src/introduction_to_julia/08I_documentation.qmd
+        - href : src/introduction_to_julia/09_composite_types.qmd
+        - href : src/introduction_to_julia/09I_pretty_printing.qmd
+        - href : src/introduction_to_julia/10_metaprogramming_and_macro.qmd
+        - href : src/introduction_to_julia/10I_exception.qmd
+        - href : src/introduction_to_julia/11_interfaces.qmd
+
+    - title : "Julia 언어 생태계"
+      collapse-level: 2
+      contents :
+        - href : src/ecosystem_of_julia/00_part2.qmd
+        - href : src/ecosystem_of_julia/fileio.qmd
+        - href : src/ecosystem_of_julia/makie.qmd
+        - href : src/ecosystem_of_julia/random.qmd
+        - href : src/ecosystem_of_julia/leastsquarefit.qmd
+        - href : src/ecosystem_of_julia/multithreads.qmd
+        - href : src/ecosystem_of_julia/pkg_dev.qmd
+        - href : src/ecosystem_of_julia/dataframes.qmd
+        - href : src/ecosystem_of_julia/unittest.qmd
+        - href : src/applications
+
 
 bibliography: references.bib
 
 format:
   html:
-    title-block-banner: true
+    toc : true
+    theme:
+      light: [cosmo, theme.scss]
+    # title-block-banner: true
     # include-in-header: 
     #   - html-hacks/load-font-awesome.html
     #   - html-hacks/load-xkcd-font.html
     # resources: web-resources/**
     # https://quarto.org/docs/output-formats/html-themes.html#overview
     # theme: darkly
-    theme: cosmo
-    fontsize: 0.9em
-    toc: true
-    collapse: true
-    # css: styles.css
-    number-sections: true
+    fontsize: 0.80em
+    code-copy: true
+    code-block-bg: true
+    code-block-background: true
+    code-overflow: wrap
+    css: styles.css
+    grid:
+      sidebar-width: 250px
+      body-width: 900px
+      margin-width: 300px
