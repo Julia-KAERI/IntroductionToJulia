@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Introduction To Julia - 난수 발생</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../src/ecosystem_of_julia/leastsquarefit.html" rel="next">
+<link href="../../src/ecosystem_of_julia/makie.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Introduction To Julia</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="탐색 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../src/introduction_to_julia/00_part1.html"> 
+<span class="menu-text">Julia 언어의 기초</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../src/ecosystem_of_julia/00_part2.html" aria-current="page"> 
+<span class="menu-text">Julia 언어 생태계</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+    <a href="mailto:julia.kaeri@gmail.com" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-envelope"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../src/ecosystem_of_julia/random.html">난수 발생</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/ecosystem_of_julia/00_part2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">II. Application of Julia</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/ecosystem_of_julia/fileio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">파일시스템과 파일입출력</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/ecosystem_of_julia/makie.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Makie 로 Plotting</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/ecosystem_of_julia/random.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">난수 발생</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/ecosystem_of_julia/leastsquarefit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">비선형 최소제곱 피팅</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/ecosystem_of_julia/multithreads.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">다중스레딩</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/ecosystem_of_julia/pkg_dev.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">패키지 개발</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/ecosystem_of_julia/dataframes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DataFrames.jl</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/ecosystem_of_julia/unittest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">유닛테스트 : Test.jl</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#rand-함수" id="toc-rand-함수" class="nav-link active" data-scroll-target="#rand-함수"><span class="header-section-number">1</span> <code>rand</code> 함수</a>
+  <ul class="collapse">
+  <li><a href="#기본적인-사용" id="toc-기본적인-사용" class="nav-link" data-scroll-target="#기본적인-사용"><span class="header-section-number">1.1</span> 기본적인 사용</a></li>
+  <li><a href="#컬렉션을-이용한-난수-생성" id="toc-컬렉션을-이용한-난수-생성" class="nav-link" data-scroll-target="#컬렉션을-이용한-난수-생성"><span class="header-section-number">1.2</span> 컬렉션을 이용한 난수 생성</a></li>
+  <li><a href="#부동소수-복소수형-난수-발생" id="toc-부동소수-복소수형-난수-발생" class="nav-link" data-scroll-target="#부동소수-복소수형-난수-발생"><span class="header-section-number">1.3</span> 부동소수, 복소수형 난수 발생</a></li>
+  <li><a href="#정수형-난수-발생" id="toc-정수형-난수-발생" class="nav-link" data-scroll-target="#정수형-난수-발생"><span class="header-section-number">1.4</span> 정수형 난수 발생</a></li>
+  </ul></li>
+  <li><a href="#random-모듈" id="toc-random-모듈" class="nav-link" data-scroll-target="#random-모듈"><span class="header-section-number">2</span> <code>Random</code> 모듈</a>
+  <ul class="collapse">
+  <li><a href="#의사-난수-발생기pseudo-random-number-generator" id="toc-의사-난수-발생기pseudo-random-number-generator" class="nav-link" data-scroll-target="#의사-난수-발생기pseudo-random-number-generator"><span class="header-section-number">2.1</span> 의사 난수 발생기(Pseudo random number generator)</a></li>
+  <li><a href="#seed" id="toc-seed" class="nav-link" data-scroll-target="#seed"><span class="header-section-number">2.2</span> seed</a></li>
+  </ul></li>
+  <li><a href="#distributions.jl" id="toc-distributions.jl" class="nav-link" data-scroll-target="#distributions.jl"><span class="header-section-number">3</span> <code>Distributions.jl</code></a>
+  <ul class="collapse">
+  <li><a href="#정규-분포" id="toc-정규-분포" class="nav-link" data-scroll-target="#정규-분포"><span class="header-section-number">3.1</span> 정규 분포</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">난수 발생</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><br></p>
+<p><code>Random</code> 모듈에 대해서는 자세한 사항은 공식 매뉴얼 <a href="https://docs.julialang.org/en/v1/stdlib/Random/">Random Numbers</a> 를 참고하라.</p>
+<p><br></p>
+<section id="rand-함수" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="rand-함수"><span class="header-section-number">1</span> <code>rand</code> 함수</h2>
+<p><code>rand</code> 함수는 추가 모듈 호출 없이 사용 할 수 있으며 기본적인 난수 기능을 제공한다.</p>
+<section id="기본적인-사용" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="기본적인-사용"><span class="header-section-number">1.1</span> 기본적인 사용</h3>
+<p>기본적인 난수 발생 함수이다. <code>rand()</code> 는 <span class="math inline">\([0,\,1)\)</span> 범위, 즉 <span class="math inline">\(0\le x &lt; 1\)</span> 범위의 의 난수를 하나 발생시킨다. <code>rand(3,3)</code> 은 <span class="math inline">\([0,\,1)\)</span> 범위의 난수를 <span class="math inline">\(3\times 3\)</span> 배열꼴로 발생시킨다.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>In [1]: rand()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Out[1]: 0.8828172727992498</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>In [2]: rand(3,3)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Out[2]: 3×3 Matrix{Float64}:</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a> 0.184347   0.367585  0.487483</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a> 0.0646924  0.306758  0.0969628</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a> 0.395878   0.802534  0.682208</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><br></p>
+</section>
+<section id="컬렉션을-이용한-난수-생성" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="컬렉션을-이용한-난수-생성"><span class="header-section-number">1.2</span> 컬렉션을 이용한 난수 생성</h3>
+<p><code>rand()</code> 함수의 첫번째 인자로 컬렉션을 주고, 두번째 인자로 배열의 차원을 주면 컬렉션에서 배열의 차원에 맞게 임의로 뽑은 배열을 반환한다.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>In [4]: rand(1:10, (2, 2))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Out[4]: 2×2 Matrix{Int64}:</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a> 3  5</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a> 2  1</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>In [5]: rand("abcdefgh", (3, 1))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>Out[5]: 3×1 Matrix{Char}:</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a> 'f': ASCII/Unicode U+0066 (category Ll: Letter, lowercase)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a> 'd': ASCII/Unicode U+0064 (category Ll: Letter, lowercase)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a> 'f': ASCII/Unicode U+0066 (category Ll: Letter, lowercase)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><br></p>
+</section>
+<section id="부동소수-복소수형-난수-발생" class="level3" data-number="1.3">
+<h3 data-number="1.3" class="anchored" data-anchor-id="부동소수-복소수형-난수-발생"><span class="header-section-number">1.3</span> 부동소수, 복소수형 난수 발생</h3>
+<p><code>rand()</code> 함수의 첫번째 인자로 부동소수형 타입(<code>Float32</code>, <code>Float64</code> 등) 두번째 인자로 배열의 크기를 입력 하면 지정된 부동소수 타입에 맞도록 <span class="math inline">\([0,\,1)\)</span> 범위의 난수를 반환한다.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>In [7]: rand(Float32, (2, 3))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>Out[7]: 2×3 Matrix{Float32}:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a> 0.15381   0.329045  0.566583</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a> 0.543246  0.985837  0.49038</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>부동소수 타입 대신에 복소수 타입(<code>ComplexF32,</code>ComplexF64` 등) 을 입력하면 실수부와 허수부가 각각 <span class="math inline">\([0,\,1)\)</span> 범위인 난수 배열을 반환한다.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>In [11]: rand(ComplexF64, (3, 3))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Out[11]: 3×3 Matrix{ComplexF64}:</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a> 0.714389+0.362708im  0.181131+0.355622im  0.246163+0.414729im</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a> 0.970722+0.402822im   0.71223+0.460335im  0.833319+0.389379im</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a> 0.100495+0.14951im   0.333517+0.47611im   0.981335+0.175562im</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><br></p>
+</section>
+<section id="정수형-난수-발생" class="level3" data-number="1.4">
+<h3 data-number="1.4" class="anchored" data-anchor-id="정수형-난수-발생"><span class="header-section-number">1.4</span> 정수형 난수 발생</h3>
+<p>타입에 정수형 타입(<code>UInt64</code>, <code>Int32</code> 등) 을 입력하면 정수 범위 내에서의 주어진 배열 크기에 맞는 난수를 반환한다.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>In [12]: rand(Int32, (4, 4))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Out[12]: 4×4 Matrix{Int32}:</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a> 1196699858  -1854481187    772846765  -1708392714</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a> 1188189451   -465314003   -575000325   1969484502</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  754045126  -1342873240   -776187378  -2017122961</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a> -134558519    576240888  -1734804352   -613011413</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>어떤 범위에 대한 난수를 발생시키고 싶으면 컬렉션을 지정하면 된다. 예를 들어 -100 에서 100 사이의 난수를 발생시키고 싶다면 다음과 같이 하면 된다.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>In [16]: rand(-100:1:100, (3, 3))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>Out[16]: 3×3 Matrix{Int64}:</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  5  -88   28</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a> 52   28  -52</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a> 26  -68  -87</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><br></p>
+</section>
+</section>
+<section id="random-모듈" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="random-모듈"><span class="header-section-number">2</span> <code>Random</code> 모듈</h2>
+<p>다양한 난수 발생가와 난수 기능을 사용하기 위해서는 <code>Random</code> 모듈을 사용한다. Julia 기본 패키지이므로 추가로 설치할 필요 없이 <code>using Random</code> 과 같이 사용하면 된다.</p>
+<p><br></p>
+<section id="의사-난수-발생기pseudo-random-number-generator" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="의사-난수-발생기pseudo-random-number-generator"><span class="header-section-number">2.1</span> 의사 난수 발생기(Pseudo random number generator)</h3>
+<p>실제 자연 현상으로부터 난수를 발생시키는 난수 발생기(Hardware random number generator, HRNG) 와 달리 컴퓨터 알고리즘으로 난수를 발생시키는 것을 의사 난수 발생기(Pseudo random number generator, PRNG) 라고 하며, julia 언어는 기본값으로 <a href="https://prng.di.unimi.it/">Xoshiro256++</a> 난수 발생기를 사용한다. 둘을 핲텨 난수발생기(RNG) 라고 하며 앞에서의 난수발생은 바로 이 RNG 를 사용한 것이다. 참고로 Xoshiro 는 XOR, Shift, Rotation 에서 순서대로 두문자를 따온 것이라고 한다.</p>
+<p>Julia 언어의 <code>Random</code> 모듈은 4가지 의사난수발생기를 지원한다 : <code>TaskLocalRNG</code>, <code>Xoshiro</code>, <code>RandomDevice</code>, <code>MersenneTwister</code> 자세한 사항은 공식 매뉴얼을 참고하라.</p>
+<p><br></p>
+</section>
+<section id="seed" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="seed"><span class="header-section-number">2.2</span> seed</h3>
+<p>Seed 는 의사난수발생기를 초기화 하는데 사용되는 숫자이다. 모든 RNG 가 seed 를 필요로 하는 것은 아니다. 예를 들어 <code>RandomDevice</code> RNG 의 경우는 seed 를 필요로 하지 않는다. 서로 다른 시드로 생성된 RNG 는 다른 난수발생기로 간주된다. Seed 가 필요한 난수발생기에 Seed 가 주어지지 않았다면 내부적으로 생성된 seed 를 사용한다.</p>
+<p>Seed 를 사용하면 동일한 난수를 발생시킬 수 있다. 예를 들어 <code>Xoshiro</code> 난수발생기에 seed 를 <code>11</code> 로 입력하면</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>In [1]: using Random</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>In [2]: rand(Xoshiro(11), 2,2)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>Out[2]: 2×2 Matrix{Float64}:</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a> 0.58051   0.862848</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a> 0.714139  0.702579</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>In [3]: rand(Xoshiro(11), 2,2)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>Out[3]: 2×2 Matrix{Float64}:</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a> 0.58051   0.862848</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a> 0.714139  0.702579</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>이 된다. 그러나 일단 난수발생기를 생싱시키면 그 난수발생기는 지속적으로 다른 난수를 발생한다. 다음을 보라. <code>Out[4]</code> 와 <code>Out[5]</code> 는 다르다.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>In [3]: rng = Xoshiro(11)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>Out[3]: Xoshiro(0x0991231718e930cb, 0x28e1460087a5d0ff, 0x4d62c780da1946f0, 0x764f51fefd621192, 0x434e1895e0078176)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>In [4]: rand(rng, 2,2)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>Out[4]: 2×2 Matrix{Float64}:</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a> 0.58051   0.862848</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a> 0.714139  0.702579</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>In [5]: rand(rng, 2, 2)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>Out[5]: 2×2 Matrix{Float64}:</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a> 0.861659   0.919821</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a> 0.0130147  0.901326</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><br></p>
+<p>다른 julia 나 <code>Random</code> 버젼에서도 <code>rand(Xoshiro(11), 2,2)</code> 의 값이 유지되는 것을 기대하면 안된다. 즉 위에 나온 난수는 현재 저자가 사용하는 버젼에서의 랜덤값이며, 다른 버젼에서 작동한다면 그 버젼 내의 일관성은 유지되더라도 서로 다른 버젼간의 일관성을 보장할 수 없다. 즉 특정 난수 생성기와 seed 값에 의존하는 코드를 짜면 안된다.</p>
+<p><br></p>
+</section>
+</section>
+<section id="distributions.jl" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="distributions.jl"><span class="header-section-number">3</span> <code>Distributions.jl</code></h2>
+<p>지금까지의 난수는 모든 값에 대해 동일한 확률을 갖는 난수였다. 즉 <code>rand()</code> 함수로 발생되는 난수는 모든 <span class="math inline">\([0,\,1)\)</span> 범위내의 모든 작은 <span class="math inline">\(dx\)</span> 에 대해 <span class="math inline">\([a, a+dx)\)</span> 구간의 값이 나올 확률과 <span class="math inline">\([b, b+dx)\)</span> 구간의 값이 나올 확률이 동일하다. 특정 분포를 따르는 난수가 필요할 경우 대표적으로 <a href="https://juliastats.org/Distributions.jl/stable/">Distributions.jl</a> 패키지를 사용 할 수 있다. 이것은 기본 패키지가 아니므로 추가 설치가 필요하다. 설치는 <code>]add Distributions</code>.</p>
+<p><br></p>
+<section id="정규-분포" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="정규-분포"><span class="header-section-number">3.1</span> 정규 분포</h3>
+<p><code>Normal(μ, σ)</code> 은 평균 μ, 표준편차 σ 인 정규분포를 생성하며, <code>rand</code> 함수를 통해 난수를 생성한다.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CairoMakie</span>, <span class="bu">Random</span>, <span class="bu">Distributions</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>norm1 <span class="op">=</span> <span class="fu">Normal</span>(<span class="fl">3</span>, <span class="fl">5</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="fu">rand</span>(norm1, <span class="fl">1000000</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>x</code> 는 평균이 3, 표준편차가 5 인 정규분포를 따르는 난수 백만개를 가진 벡터이다. 난수에 대한 평균과 표준편차를 확인 할 수 있다.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"mean = </span><span class="sc">$</span>(<span class="fu">mean</span>(x))<span class="st">, std = </span><span class="sc">$</span>(<span class="fu">std</span>(x))<span class="st">"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>실제 분포를 보자.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(x, bins<span class="op">=</span><span class="fl">100</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="fig-norm_distribution" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-norm_distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="norm.png" class="img-fluid figure-img" width="400">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-norm_distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+그림&nbsp;1: 정규 분포
+</figcaption>
+</figure>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/julia-kaeri\.github\.io\/IntroductionToJulia\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../src/ecosystem_of_julia/makie.html" class="pagination-link" aria-label="Makie 로 Plotting">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Makie 로 Plotting</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../src/ecosystem_of_julia/leastsquarefit.html" class="pagination-link" aria-label="비선형 최소제곱 피팅">
+        <span class="nav-page-text">비선형 최소제곱 피팅</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
