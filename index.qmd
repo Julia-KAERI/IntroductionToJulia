@@ -1,5 +1,23 @@
-# Preface {.unnumbered}
+# 소개
 
-This is a Quarto book.
+## 목적
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+Julia 언어에 대해 공부하고 작업한것을 정리하기 위해 만들었습니다. 
+
+
+
+</br>
+
+## Julia 언어 {.unnumbered}
+
+Julia 언어에 대해서는 다음을 참고하세요.
+
+- [Julia 공식 문서 : https://docs.julialang.org/en/v1/](https://docs.julialang.org/en/v1/)
+
+- [Wikipedia,  Julia_(programming_language)](https://en.wikipedia.org/wiki/Julia_(programming_language))
+  
+- [Youtube, JuliaLanguage](https://www.youtube.com/user/JuliaLanguage)
+
+- [생새우초밥집](https://freshrimpsushi.github.io/ko/)
+
+Julia 언어 자체가 2012년 발표된 신생 언어이며, 미국에서 개발되었으므로 절대적으로 문서량이 파이썬과 같은 언어보다 부족하며, 한국어 문서는 더더욱 부족합니다. 
