@@ -61,7 +61,7 @@ website:
         - href : src/ecosystem_of_julia/fileio.qmd
         - href : src/ecosystem_of_julia/makie.qmd
         - href : src/ecosystem_of_julia/random.qmd
-        - href : src/ecosystem_of_julia/leastsquarefit.qmd
+        # - href : src/ecosystem_of_julia/leastsquarefit.qmd
         - href : src/ecosystem_of_julia/multithreads.qmd
         - href : src/ecosystem_of_julia/pkg_dev.qmd
         - href : src/ecosystem_of_julia/dataframes.qmd

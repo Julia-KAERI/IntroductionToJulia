@@ -410,7 +410,7 @@
     "href": "src/introduction_to_julia/00_part1.html",
     "title": "I. Introduction to Julia",
     "section": "",
-    "text": "I. Introduction to Julia",
+    "text": "I. Introduction to Julia\n여기서는 Julia 언어에 대해 소개합니다.",
     "crumbs": [
       "Julia 언어의 기초",
       "I. Introduction to Julia"
@@ -549,7 +549,7 @@
     "href": "index.html",
     "title": "소개",
     "section": "",
-    "text": "Julia 언어에 대해 공부하고 작업한것을 정리하기 위해 만들었습니다.\n\n\n\n\nJulia 언어에 대해서는 다음을 참고하세요.\n\nJulia 공식 문서 : https://docs.julialang.org/en/v1/\nWikipedia, Julia_(programming_language)\nYoutube, JuliaLanguage\n생새우초밥집\n\nJulia 언어 자체가 2012년 발표된 신생 언어이며, 미국에서 개발되었으므로 절대적으로 문서량이 파이썬과 같은 언어보다 부족하며, 한국어 문서는 더더욱 부족합니다."
+    "text": "Julia 언어에 대해 공부한 것들을 정리하기 위해 만들었습니다. Julia 언어 자체가 2012년 발표된 신생 언어이며, 미국에서 개발되었으므로 참고할 만한 자료가 부족하며, 한국어 문서는 더더욱 부족합니다. 여기서는 julia 언어의 기본적인 문법과 패키지에 대해 설명합니다.\n\n\n\n\n\n\n\nJulia 언어 공식 사이트 : 보통 여기터 시작합니다.\nJulia 공식 문서 : Julia 언어를 가장 정확하게 배울 수 있는 문서입니다.\nYoutube, JuliaLanguage : Julia 언어 개발팀의 공식 유튜브 사이트입니다.\n\nJulia 공식 문서에 대한 한국어 번역이 있지만 많은 부분의 번역이 아직 이루어 지지 않았고, 이전 버젼의 문서인 채로 남아있는 것도 상당수입니다.\n\n\n\n\n\nJulia Packages : Julia 패키지를 분야별로 찾아볼 수도 있고 검색할 수도 있습니다."
   },
   {
     "objectID": "about.html",
@@ -834,7 +834,7 @@
     "href": "src/introduction_to_julia/01_julia_language.html#완벽한-초보를-위한-설치-가이드",
     "title": "설치와 환경 구성",
     "section": "5 완벽한 초보를 위한 설치 가이드",
-    "text": "5 완벽한 초보를 위한 설치 가이드\n만약 당신이 완벽한 초보자라면 아래의 방법을 따라 해 보시기 바랍니다.\n\nJulia 설치\nJulia 다운로드 페이지 에서 다운로드 받고 설치합니다. 윂페이지를 아래로 내리다 보면 크게 Official Binaries for Manual Download 라고 써 있고 거기에 최신 버젼(Current stable release) 을 다운로드 받을 수 있도록 해 놨습니다. 윈도우즈 계열의 OS 라면 시작 버튼을 눌렀을 때 나오는 프로그램 목록에서 Julia 를 실행 시킬 수 있으며 이 때 Julia REPL 그림 1 과 같이 실행됩니다.\n\n\n\nVisual Studio Code 설치\nVisual Studio Code (이하 vscode) 는 현재 전 세계에서 가장 많이 사용하는 텍스트 편집기로 Microsoft 사에서 제작하여 무료로 배포합니다.\nVS code 홈페이지 로 가면 운영체제에 따른 다운로드 버튼이 있습니다. 다운로드 후 실행하면 VS 코드가 설치됩니다. 이후 vscode 를 실행시키면 다음과 같은 화면이 뜨게 됩니다.\n\n\n\n\n\n\n\n그림 2: VS code 처음 시작 화면\n\n\n\n\n\nVS code 한글 설정\n시작화면의 맨 오른쪽의 바로가기 아이콘들중에 윗부분은 아래와 같은 기능을 합니다.\n\n\n\n\n\n\n그림 3: VS code 바로가기\n\n\n\n여기서 확장은 vs code 위에서 vs code 의 기능을 추가해주는 작은 프로그램과 자료들이라고 보면 됩니다. 우선 vscode 의 메뉴와 명령을 한글화해주는 한글팩을 설치합시다. 영어가 익숙하거나 편한 분들은 그대로 사용해도 됩니다. 확장 아이콘을 누르면 많이 사용하는 확장 프로그램의 긴 목록 위에 텍스트를 입력 할 수 있는 칸이 나옵니다. 여기에 korea 혹은 한국 을 입력하면 지구본 모양의 아이콘과 함께 Korean Language pack 이 리스트의 맨 위로 올 것이고 그 옆에 파란 바탕의 하얀 글씨로 Install 이라고 보일 것입니다. 여기서 Install 버튼을 누르면 설치가 시작됩니다. 설치가 종료되면 vscode 오른쪽 아래에 Change Language and Restart 버튼이 보일 것입니다. 이것을 누르면 VS code 가 종료 후 다시 실행되면서 메뉴와 설명의 많은 부분이 한글로 바뀝니다.\n\n\n\nJulia 확장 설치\n한글 설정 때와 같이 vscode 바로가기 에서 확장 아이콘을 누르고 julia 를 검색합니다. 맨 위에 Julia 라는 이름과 로고를 가진 확장 프로그램이 보일 것입니다. 한글 팩을 설치했다면 Install 이 아닌 설치 버튼이 보일 것입니다. 이것을 설치해 줍니다. 이것을 설치하면 바로가기 아이콘에 Julia 아이콘이 추가됩니다.\n\n\n\n최초의 Julia 파일 작성\n바로가기의 탐색기 버튼을 누릅니다. 그러면 바로가개 버튼의 바로 오른쪽에 새로운 칸이 열리면서 폴더 열기 버튼이 보일 것입니다. 폴더 열기 버튼을 누르면 운영 체제에 따라 새로운 폴더를 만드는 창이 생깁니다. 여기에 코드를 작성할 폴더를 만들어 줍니다. 저의 경우는 홈 디렉토리 밑에 developement 폴더를 만들고 그 폴더 아래에 test001 폴더를 만들 것입니다. 이미 존재하는 폴더를 선택하면 그 폴더의 파일들이 보일 것입니다. 왠만하면 폴더와 파일 이름은 한글이나 다른 언어를 사용하지 않고 영어 알파벳, 숫자, _ 문자만 사용하시길 추천합니다.\n폴더를 선택하면 운영체제나 계정에 따라 이 폴더의 작성자를 신뢰하느냐는 메시지가 뜰 것입니다. 자신의 계정의 폴더라면 신뢰한다는 버튼을 누르십시요. 타인의 폴더라면 계정의 주인과 상의하시기 바랍니다.\n탐색기 창에 지정한 폴더의 이름과 이 폴더에 포함된 파일들의 이름이 보일 것입니다. 그리고 폴더 이름 옆에 네개의 아이콘이 보입니다. 각각의 아이콘 위에 커서를 가져다만 대고 누르지 않으면 새 파일…, 새 폴더…, 탐색기 새로고침, 탐색기에서 폴더 축소 라는 설명을 볼 수 있습니다. 설명대로 각각 새로운 파일을 만들거나, 지정한 폴더 아래에 새로운 폴더를 만들거나, 탐색기의 파일 목록을 다시 읽습니다. 탐색기에서 폴더 축소는 현재 폴더 아래에 파일과 폴더가 많은 경우 특히 하위폴더의 파일 이름이 보일 경우 이것을 접어서 더 간략하게 보도록 해 줍니다.\n이제 새 파일 버튼을 누르면 폴더창 아래에 입력칸이 생길 것입니다. 여기에 파일 이름을 입력합니다. 앞서 말했듯이 영어 알파벳과 숫자만을 사용하여 test01.jl 이라고 입력합니다.\n여기에 다음과 같이 입력합니다.\n2+3\n\nexp(1)\n\ncos(0)\n첫번째 줄의 2+3 줄에 커서를 옮기고 Control+Enter (혹은 Ctrl+Enter) 를 누릅니다. 그렇게 되면 커서가 위치한 줄, 혹은 블럭을 실행하여 그 결과를 julia REPL 로 출력합니다. 아마 vscode 의 하단에 터미널이 열리면서\nOut[1]: 5\n과 같이 보일 것입니다. vscode 는 자체에 터미널이 내장되어 있어 다른 터미널을 사용하지 않고 여기서 많은 일을 할 수 있습니다.\nWindows/Linux 에서 Alt+Enter, Mac 에서 Option+Enter 키를 누르면 파일의 코드 전체를 REPL 에서 실행합니다.\n\n\n\nNotebook\n같은 폴더에 test01.ipynb 라는 이름을 가진 파일을 새로 만들어 줍니다. 그렇다면 아래와 같은 모양이 될 것입니다.\n\n\n\n\n\n\n그림 4: vscode notebook 시작화면\n\n\n\n\n오른쪽 상단에 커널 선택이 아니라 Julia 1.10.3 과 같은 방금전 설치한 julia 버젼이 나타난다면 그냥 두고 아니라면 커널 선택을 눌러 선택해 줍니다. 그리고 1이라고 써 있는 칸(이것을 입력셀 이라고 합니다)의 오른쪽 하단이 보기처럼 Python 이나 julia 가 아닌 다른 것이라면 그 부분을 눌러 julia 를 선택해 줍니다. 아래와 같이 julia 버젼과 입력셀에 julia 가 보이면 성공입니다.\n\n\n\n\n\n\n그림 5: vscode notebook julia\n\n\n\n\n입력셀에 아래의 코드를 복사&붙여넣기를 해 봅니다.\ntsum = 0\nfor i in 1:10\n    tsum+=i\nend\nprintln(tsum)\n그리고 Shift+Enter 를 누릅니다. 다음과 같이 입력창 아래에 55 라는 결과가 나오면 성공입니다.\n\n\n\n\n\n\n그림 6: vscode notebook 입력창 실행\n\n\n\nShift+Enter 는 입력창을 실행시키고, 가장 마지막 명령어의 실행 결과를 출력하며, 다음 입력창으로 갑니다. 다음 입력창이 존재하지 않으면 새로운 입력창을 만듭니다.\n\nVisual Studio Code 의 노트북은 Jupyter notebook 혹은 그 개선 버젼인 Jupyter-lab 과 유사한 실행 환경입니다. 정확히는 이미 존재하던 jupyter",
+    "text": "5 완벽한 초보를 위한 설치 가이드\n만약 당신이 완벽한 초보자라면 아래의 방법을 따라 해 보시기 바랍니다.\n\nJulia 설치\nJulia 다운로드 페이지 에서 다운로드 받고 설치합니다. 윂페이지를 아래로 내리다 보면 크게 Official Binaries for Manual Download 라고 써 있고 거기에 최신 버젼(Current stable release) 을 다운로드 받을 수 있도록 해 놨습니다. 윈도우즈 계열의 OS 라면 시작 버튼을 눌렀을 때 나오는 프로그램 목록에서 Julia 를 실행 시킬 수 있으며 이 때 Julia REPL 그림 1 과 같이 실행됩니다.\n\n\n\nVisual Studio Code 설치\nVisual Studio Code (이하 vscode) 는 현재 전 세계에서 가장 많이 사용하는 텍스트 편집기로 Microsoft 사에서 제작하여 무료로 배포합니다.\nVS code 홈페이지 로 가면 운영체제에 따른 다운로드 버튼이 있습니다. 다운로드 후 실행하면 VS 코드가 설치됩니다. 이후 vscode 를 실행시키면 다음과 같은 화면이 뜨게 됩니다.\n\n\n\n\n\n\n\n그림 2: VS code 처음 시작 화면\n\n\n\n\n\nVS code 한글 설정\n시작화면의 맨 오른쪽의 바로가기 아이콘들중에 윗부분은 아래와 같은 기능을 합니다.\n\n\n\n\n\n\n그림 3: VS code 바로가기\n\n\n\n여기서 확장은 vs code 위에서 vs code 의 기능을 추가해주는 작은 프로그램과 자료들이라고 보면 됩니다. 우선 vscode 의 메뉴와 명령을 한글화해주는 한글팩을 설치합시다. 영어가 익숙하거나 편한 분들은 그대로 사용해도 됩니다. 확장 아이콘을 누르면 많이 사용하는 확장 프로그램의 긴 목록 위에 텍스트를 입력 할 수 있는 칸이 나옵니다. 여기에 korea 혹은 한국 을 입력하면 지구본 모양의 아이콘과 함께 Korean Language pack 이 리스트의 맨 위로 올 것이고 그 옆에 파란 바탕의 하얀 글씨로 Install 이라고 보일 것입니다. 여기서 Install 버튼을 누르면 설치가 시작됩니다. 설치가 종료되면 vscode 오른쪽 아래에 Change Language and Restart 버튼이 보일 것입니다. 이것을 누르면 VS code 가 종료 후 다시 실행되면서 메뉴와 설명의 많은 부분이 한글로 바뀝니다.\n\n\n\nJulia 확장 설치\n한글 설정 때와 같이 vscode 바로가기 에서 확장 아이콘을 누르고 julia 를 검색합니다. 맨 위에 Julia 라는 이름과 로고를 가진 확장 프로그램이 보일 것입니다. 한글 팩을 설치했다면 Install 이 아닌 설치 버튼이 보일 것입니다. 이것을 설치해 줍니다. 이것을 설치하면 바로가기 아이콘에 Julia 아이콘이 추가됩니다.\n\n\n\n\n최초의 Julia 파일 작성\n바로가기의 탐색기 버튼을 누릅니다. 그러면 바로가개 버튼의 바로 오른쪽에 새로운 칸이 열리면서 폴더 열기 버튼이 보일 것입니다. 폴더 열기 버튼을 누르면 운영 체제에 따라 새로운 폴더를 만드는 창이 생깁니다. 여기에 코드를 작성할 폴더를 만들어 줍니다. 저의 경우는 홈 디렉토리 밑에 developement 폴더를 만들고 그 폴더 아래에 test001 폴더를 만들 것입니다. 이미 존재하는 폴더를 선택하면 그 폴더의 파일들이 보일 것입니다. 왠만하면 폴더와 파일 이름은 한글이나 다른 언어를 사용하지 않고 영어 알파벳, 숫자, _ 문자만 사용하시길 추천합니다.\n폴더를 선택하면 운영체제나 계정에 따라 이 폴더의 작성자를 신뢰하느냐는 메시지가 뜰 것입니다. 자신의 계정의 폴더라면 신뢰한다는 버튼을 누르십시요. 타인의 폴더라면 계정의 주인과 상의하시기 바랍니다.\n탐색기 창에 지정한 폴더의 이름과 이 폴더에 포함된 파일들의 이름이 보일 것입니다. 그리고 폴더 이름 옆에 네개의 아이콘이 보입니다. 각각의 아이콘 위에 커서를 가져다만 대고 누르지 않으면 새 파일…, 새 폴더…, 탐색기 새로고침, 탐색기에서 폴더 축소 라는 설명을 볼 수 있습니다. 설명대로 각각 새로운 파일을 만들거나, 지정한 폴더 아래에 새로운 폴더를 만들거나, 탐색기의 파일 목록을 다시 읽습니다. 탐색기에서 폴더 축소는 현재 폴더 아래에 파일과 폴더가 많은 경우 특히 하위폴더의 파일 이름이 보일 경우 이것을 접어서 더 간략하게 보도록 해 줍니다.\n이제 새 파일 버튼을 누르면 폴더창 아래에 입력칸이 생길 것입니다. 여기에 파일 이름을 입력합니다. 앞서 말했듯이 영어 알파벳과 숫자만을 사용하여 test01.jl 이라고 입력합니다. jl 은 julia 파일에 대한 표준적인 확장자입니다.\n여기에 다음과 같이 입력합니다.\n2+3\n\nexp(1)\n\ncos(0)\n첫번째 줄의 2+3 줄에 커서를 옮기고 Control+Enter (혹은 Ctrl+Enter) 를 누릅니다. 그렇게 되면 커서가 위치한 줄, 혹은 블럭을 실행하여 그 결과를 julia REPL 로 출력합니다. 아마 vscode 의 하단에 터미널이 열리면서\nOut[1]: 5\n과 같이 보일 것입니다. vscode 는 자체에 터미널이 내장되어 있어 다른 터미널을 사용하지 않고 여기서 많은 일을 할 수 있습니다.\nWindows/Linux 에서 Alt+Enter, Mac 에서 Option+Enter 키를 누르면 파일의 코드 전체를 REPL 에서 실행합니다.\n\n\n\nNotebook\n같은 폴더에 test01.ipynb 라는 이름을 가진 파일을 새로 만들어 줍니다. 그렇다면 아래와 같은 모양이 될 것입니다. ipynb 는 Jupyter notebook 혹은 jupyter lab 에서 사용하는 노트북 파일의 기본 확장자입니다.\n\n\n\n\n\n\n그림 4: vscode notebook 시작화면\n\n\n\n\n오른쪽 상단에 커널 선택이 아니라 Julia 1.10.3 과 같은 방금전 설치한 julia 버젼이 나타난다면 그냥 두고 아니라면 커널 선택을 눌러 선택해 줍니다. 그리고 1이라고 써 있는 칸(이것을 입력셀 이라고 합니다)의 오른쪽 하단이 보기처럼 Python 이나 julia 가 아닌 다른 것이라면 그 부분을 눌러 julia 를 선택해 줍니다. 아래와 같이 julia 버젼과 입력셀에 julia 가 보이면 성공입니다.\n\n\n\n\n\n\n그림 5: vscode notebook julia\n\n\n\n\n입력셀에 아래의 코드를 복사&붙여넣기를 해 봅니다.\ntsum = 0\nfor i in 1:10\n    tsum+=i\nend\nprintln(tsum)\n그리고 Shift+Enter 를 누릅니다. 다음과 같이 입력창 아래에 55 라는 결과가 나오면 성공입니다.\n\n\n\n\n\n\n그림 6: vscode notebook 입력창 실행\n\n\n\nShift+Enter 는 입력창을 실행시키고, 가장 마지막 명령어의 실행 결과를 출력하며, 다음 입력창으로 갑니다. 다음 입력창이 존재하지 않으면 새로운 입력창을 만듭니다.\n\nVisual Studio Code 의 노트북은 Jupyter notebook 혹은 그 개선 버젼인 Jupyter-lab 과 유사한 실행 환경입니다. jupyter notebook 이나 lab 은 웹브라우저에서 실행되는데 이것을 vscode 에서 실행되도록 한 것입니다. 개인적으로는 jupyter notebook 보다 이쪽을 더 선호합니다.",
     "crumbs": [
       "Julia 언어의 기초",
       "설치와 환경 구성"
@@ -1083,13 +1083,20 @@
     "href": "index.html#julia-언어",
     "title": "소개",
     "section": "",
-    "text": "Julia 언어에 대해서는 다음을 참고하세요.\n\nJulia 공식 문서 : https://docs.julialang.org/en/v1/\nWikipedia, Julia_(programming_language)\nYoutube, JuliaLanguage\n생새우초밥집\n\nJulia 언어 자체가 2012년 발표된 신생 언어이며, 미국에서 개발되었으므로 절대적으로 문서량이 파이썬과 같은 언어보다 부족하며, 한국어 문서는 더더욱 부족합니다."
+    "text": "Julia 언어에 대해서는 다음을 참고하세요.\n\nJulia 공식 문서 : https://docs.julialang.org/en/v1/\nWikipedia, Julia_(programming_language)\nYoutube, JuliaLanguage\n생새우초밥집"
   },
   {
     "objectID": "index.html#목적",
     "href": "index.html#목적",
     "title": "소개",
     "section": "",
-    "text": "Julia 언어에 대해 공부하고 작업한것을 정리하기 위해 만들었습니다."
+    "text": "Julia 언어에 대해 공부한 것들을 정리하기 위해 만들었습니다. Julia 언어 자체가 2012년 발표된 신생 언어이며, 미국에서 개발되었으므로 참고할 만한 자료가 부족하며, 한국어 문서는 더더욱 부족합니다. 여기서는 julia 언어의 기본적인 문법과 패키지에 대해 설명합니다."
+  },
+  {
+    "objectID": "index.html#참고자료",
+    "href": "index.html#참고자료",
+    "title": "소개",
+    "section": "",
+    "text": "Julia 언어 공식 사이트 : 보통 여기터 시작합니다.\nJulia 공식 문서 : Julia 언어를 가장 정확하게 배울 수 있는 문서입니다.\nYoutube, JuliaLanguage : Julia 언어 개발팀의 공식 유튜브 사이트입니다.\n\nJulia 공식 문서에 대한 한국어 번역이 있지만 많은 부분의 번역이 아직 이루어 지지 않았고, 이전 버젼의 문서인 채로 남아있는 것도 상당수입니다.\n\n\n\n\n\nJulia Packages : Julia 패키지를 분야별로 찾아볼 수도 있고 검색할 수도 있습니다."
   }
 ]

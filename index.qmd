@@ -2,22 +2,30 @@
 
 ## 목적
 
-Julia 언어에 대해 공부하고 작업한것을 정리하기 위해 만들었습니다. 
+Julia 언어에 대해 공부한 것들을 정리하기 위해 만들었습니다. Julia 언어 자체가 2012년 발표된 신생 언어이며, 미국에서 개발되었으므로 참고할 만한 자료가 부족하며, 한국어 문서는 더더욱 부족합니다. 여기서는 julia 언어의 기본적인 문법과 패키지에 대해 설명합니다. 
 
 
 
 </br>
 
-## Julia 언어 {.unnumbered}
+## 참고자료 {.unnumbered}
 
-Julia 언어에 대해서는 다음을 참고하세요.
+### Julia 언어 일반 
 
-- [Julia 공식 문서 : https://docs.julialang.org/en/v1/](https://docs.julialang.org/en/v1/)
+- [Julia 언어 공식 사이트](https://julialang.org) : 보통 여기터 시작합니다.
 
-- [Wikipedia,  Julia_(programming_language)](https://en.wikipedia.org/wiki/Julia_(programming_language))
+- [Julia 공식 문서](https://docs.julialang.org/en/v1/) : Julia 언어를 가장 정확하게 배울 수 있는 문서입니다. 
   
-- [Youtube, JuliaLanguage](https://www.youtube.com/user/JuliaLanguage)
+- [Youtube, JuliaLanguage](https://www.youtube.com/user/JuliaLanguage) : Julia 언어 개발팀의 공식 유튜브 사이트입니다. 
 
-- [생새우초밥집](https://freshrimpsushi.github.io/ko/)
+Julia 공식 문서에 대한 한국어 번역이 있지만 많은 부분의 번역이 아직 이루어 지지 않았고, 이전 버젼의 문서인 채로 남아있는 것도 상당수입니다. 
 
-Julia 언어 자체가 2012년 발표된 신생 언어이며, 미국에서 개발되었으므로 절대적으로 문서량이 파이썬과 같은 언어보다 부족하며, 한국어 문서는 더더욱 부족합니다. 
+
+</br>
+
+### 패키지 검색
+
+- [Julia Packages](https://juliapackages.com/c/mathematics) : Julia 패키지를 분야별로 찾아볼 수도 있고 검색할 수도 있습니다.
+
+
+

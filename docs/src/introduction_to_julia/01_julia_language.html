@@ -323,6 +323,8 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#julia-설치-1" id="toc-julia-설치-1" class="nav-link" data-scroll-target="#julia-설치-1">Julia 설치</a></li>
   <li><a href="#visual-studio-code-설치" id="toc-visual-studio-code-설치" class="nav-link" data-scroll-target="#visual-studio-code-설치">Visual Studio Code 설치</a></li>
+  <li><a href="#최초의-julia-파일-작성" id="toc-최초의-julia-파일-작성" class="nav-link" data-scroll-target="#최초의-julia-파일-작성">최초의 Julia 파일 작성</a></li>
+  <li><a href="#notebook" id="toc-notebook" class="nav-link" data-scroll-target="#notebook">Notebook</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -366,16 +368,16 @@ window.Quarto = {
 <section id="julia-repl" class="level3">
 <h3 class="anchored" data-anchor-id="julia-repl">Julia REPL</h3>
 <p>위의 스크린샷과 같이 <code>julia&gt;</code> 옆에 무언가를 치면 그대로 입력됩니다. 예를 들어 3+3 을 계산하고 싶으면 <code>3+3</code> 을 치고 엔터키를 누르면 그 결과가 출력됩니다.</p>
-<pre class="none"><code>julia&gt; 3+3
-6</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>julia&gt; 3+3</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>6</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>이렇게 입력을 기다리다가 입력이 되면 읽어서(Read), 그 값을 평가하고(Evaluation), 그 결과를 출력하는(Printing) 것을 계속 반복하게(Loop) 하게 됩니다. 이것을 영어 단어의 첫글자만 따서 REPL 이라고 합니다. Julia 언어의 기본적인 상호작용은 터미널에서 REPL 을 수행하는 것입니다. 별도의 다른 프로그램이 필요하지 않고, 간단한 계산을 할 때 가장 빠르다는 장점이 있지만 긴 코드를 짤 때 불편하며, 그래프를 출력하는데 많은 제한이 있습니다. 그래서 보통은 다른 환경에서 julia 를 수행합니다. 대표적으로 <a href="https://jupyter.org">Jupyter notebook/lab</a>이나 <a href="https://code.visualstudio.com">Visual Studio Code</a> 가 있습니다.</p>
 <p><br></p>
 </section>
 <section id="julia-repl-프롬프트-변경" class="level3">
 <h3 class="anchored" data-anchor-id="julia-repl-프롬프트-변경">Julia REPL 프롬프트 변경</h3>
 <p>기본적으로 julia REPL 의 프롬프트는 <code>julia&gt;</code> 이지만 개인적으로</p>
-<pre class="none"><code>In [1]: 5 + 3
-Out[1]: 8</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>In [1]: 5 + 3</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Out[1]: 8</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>와 같은 방식을 선호하기 때문에 위와 같은 방식을 사용합니다. Julia 공식 메뉴얼의 <a href="https://docs.julialang.org/en/v1/stdlib/REPL/#Numbered-prompt">Numbered Prompt</a> 대로 고치면 이렇게 사용 할 수 있습니다.</p>
 <p><br></p>
 </section>
@@ -395,14 +397,14 @@ Out[1]: 8</code></pre>
 <section id="sec-unicode_support" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="sec-unicode_support"><span class="header-section-number">4</span> 유니코드 및 수학 기호 지원</h2>
 <p>Julia 에서는 REPL 에서도 수학 기호를 포함한 다양한 문자를 입력하고 사용 할 수 있습니다. <code>\</code> 로 시작되는 구문을 입력한 후에 공백 없이 탭 키를 누르면 자동적으로 기호로 변환된됩니다. 예를 들어 Julia REPL(Julia 에서 지원하는 interactive command line 환경), jupyter notebook, vscode 에서 <code>\alpha</code> 를 치고 곧바로 탭(tab) 키를 누르면 <code>α</code> 로 변환됩니다. 정확히 말하면 <code>\alp</code> 정도 까지만 입력한 후 탭키를 눌러도 자동완성 기능으로 인해 <code>\alpha</code> 가 다 입력된 후 <code>α</code> 로 변환된 것입니다. 이렇게 입력된 α 는 일반 알파벳과 같이 변수명으로도 사용 될 수 있습니다. 이 때 입력되는 구문은 LaTeX 와 같거나 유사한 경우가 많습니다. 주의할 것은 <code>π</code>(<code>\pi</code>+[tab]) 와 <code>ℯ</code>(<code>\euler</code> + [tab]) 는 특정 값이 지정되어 있는 대표적인 수학 기호입니다. <code>pi</code> 역시 원주율 입니다.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">julia</span><span class="op">&gt;</span> π</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">π</span> = 3.1415926535897...</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>julia&gt; π</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>π = 3.1415926535897...</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">julia</span><span class="op">&gt;</span> ℯ</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">ℯ</span> = 2.7182818284590...</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>julia&gt; ℯ</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>ℯ = 2.7182818284590...</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">julia</span><span class="op">&gt;</span> pi</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">π</span> = 3.1415926535897...</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>julia&gt; pi</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>π = 3.1415926535897...</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Julia 에서 사용할 수 있는 유니코드 기호와 <code>\</code>로 시작하여 탭 키를 눌러 완성되는 문자들은 julia 공식 문서의 <a href="https://docs.julialang.org/en/v1/manual/unicode-input/">Unicode Input</a> 을 참고하시기 바랍니다.</p>
 <p><br></p>
 </section>
@@ -451,12 +453,13 @@ Out[1]: 8</code></pre>
 <p>한글 설정 때와 같이 vscode 바로가기 에서 확장 아이콘을 누르고 julia 를 검색합니다. 맨 위에 <code>Julia</code> 라는 이름과 로고를 가진 확장 프로그램이 보일 것입니다. 한글 팩을 설치했다면 Install 이 아닌 설치 버튼이 보일 것입니다. 이것을 설치해 줍니다. 이것을 설치하면 바로가기 아이콘에 Julia 아이콘이 추가됩니다.</p>
 <p><br></p>
 </section>
-<section id="최초의-julia-파일-작성" class="level4">
-<h4 class="anchored" data-anchor-id="최초의-julia-파일-작성">최초의 Julia 파일 작성</h4>
+</section>
+<section id="최초의-julia-파일-작성" class="level3">
+<h3 class="anchored" data-anchor-id="최초의-julia-파일-작성">최초의 Julia 파일 작성</h3>
 <p>바로가기의 탐색기 버튼을 누릅니다. 그러면 바로가개 버튼의 바로 오른쪽에 새로운 칸이 열리면서 <strong>폴더 열기</strong> 버튼이 보일 것입니다. 폴더 열기 버튼을 누르면 운영 체제에 따라 새로운 폴더를 만드는 창이 생깁니다. 여기에 코드를 작성할 폴더를 만들어 줍니다. 저의 경우는 홈 디렉토리 밑에 <code>developement</code> 폴더를 만들고 그 폴더 아래에 <code>test001</code> 폴더를 만들 것입니다. 이미 존재하는 폴더를 선택하면 그 폴더의 파일들이 보일 것입니다. 왠만하면 폴더와 파일 이름은 한글이나 다른 언어를 사용하지 않고 영어 알파벳, 숫자, <code>_</code> 문자만 사용하시길 추천합니다.</p>
 <p>폴더를 선택하면 운영체제나 계정에 따라 이 폴더의 작성자를 신뢰하느냐는 메시지가 뜰 것입니다. 자신의 계정의 폴더라면 신뢰한다는 버튼을 누르십시요. 타인의 폴더라면 계정의 주인과 상의하시기 바랍니다.</p>
 <p>탐색기 창에 지정한 폴더의 이름과 이 폴더에 포함된 파일들의 이름이 보일 것입니다. 그리고 폴더 이름 옆에 네개의 아이콘이 보입니다. 각각의 아이콘 위에 커서를 가져다만 대고 누르지 않으면 <em>새 파일…</em>, <em>새 폴더…</em>, <em>탐색기 새로고침</em>, <em>탐색기에서 폴더 축소</em> 라는 설명을 볼 수 있습니다. 설명대로 각각 새로운 파일을 만들거나, 지정한 폴더 아래에 새로운 폴더를 만들거나, 탐색기의 파일 목록을 다시 읽습니다. <em>탐색기에서 폴더 축소는</em> 현재 폴더 아래에 파일과 폴더가 많은 경우 특히 하위폴더의 파일 이름이 보일 경우 이것을 접어서 더 간략하게 보도록 해 줍니다.</p>
-<p>이제 <em>새 파일</em> 버튼을 누르면 폴더창 아래에 입력칸이 생길 것입니다. 여기에 파일 이름을 입력합니다. 앞서 말했듯이 영어 알파벳과 숫자만을 사용하여 <code>test01.jl</code> 이라고 입력합니다.</p>
+<p>이제 <em>새 파일</em> 버튼을 누르면 폴더창 아래에 입력칸이 생길 것입니다. 여기에 파일 이름을 입력합니다. 앞서 말했듯이 영어 알파벳과 숫자만을 사용하여 <code>test01.jl</code> 이라고 입력합니다. <code>jl</code> 은 julia 파일에 대한 표준적인 확장자입니다.</p>
 <p>여기에 다음과 같이 입력합니다.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fl">2</span><span class="op">+</span><span class="fl">3</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -469,9 +472,9 @@ Out[1]: 8</code></pre>
 <p>Windows/Linux 에서 Alt+Enter, Mac 에서 Option+Enter 키를 누르면 파일의 코드 전체를 REPL 에서 실행합니다.</p>
 <p><br></p>
 </section>
-<section id="notebook" class="level4">
-<h4 class="anchored" data-anchor-id="notebook">Notebook</h4>
-<p>같은 폴더에 <code>test01.ipynb</code> 라는 이름을 가진 파일을 새로 만들어 줍니다. 그렇다면 아래와 같은 모양이 될 것입니다.</p>
+<section id="notebook" class="level3">
+<h3 class="anchored" data-anchor-id="notebook">Notebook</h3>
+<p>같은 폴더에 <code>test01.ipynb</code> 라는 이름을 가진 파일을 새로 만들어 줍니다. 그렇다면 아래와 같은 모양이 될 것입니다. <code>ipynb</code> 는 Jupyter notebook 혹은 jupyter lab 에서 사용하는 노트북 파일의 기본 확장자입니다.</p>
 <div id="fig-vscode_notebook" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vscode_notebook-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -514,10 +517,9 @@ Out[1]: 8</code></pre>
 </div>
 <p>Shift+Enter 는 입력창을 실행시키고, 가장 마지막 명령어의 실행 결과를 출력하며, 다음 입력창으로 갑니다. 다음 입력창이 존재하지 않으면 새로운 입력창을 만듭니다.</p>
 <p><br></p>
-<p>Visual Studio Code 의 노트북은 Jupyter notebook 혹은 그 개선 버젼인 Jupyter-lab 과 유사한 실행 환경입니다. 정확히는 이미 존재하던 jupyter</p>
+<p>Visual Studio Code 의 노트북은 Jupyter notebook 혹은 그 개선 버젼인 Jupyter-lab 과 유사한 실행 환경입니다. jupyter notebook 이나 lab 은 웹브라우저에서 실행되는데 이것을 vscode 에서 실행되도록 한 것입니다. 개인적으로는 jupyter notebook 보다 이쪽을 더 선호합니다.</p>
 
 
-</section>
 </section>
 </section>
 
