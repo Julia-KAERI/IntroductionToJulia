@@ -152,7 +152,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../src/ecosystem_of_julia/fileio.html">파일시스템과 파일입출력</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../src/ecosystem_of_julia/00_part2.html">II. Julia 언어 생태계</a></li><li class="breadcrumb-item"><a href="../../src/ecosystem_of_julia/fileio.html">파일시스템과 파일입출력</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -164,54 +164,59 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../src/ecosystem_of_julia/00_part2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">II. Application of Julia</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../src/ecosystem_of_julia/00_part2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">II. Julia 언어 생태계</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../src/ecosystem_of_julia/fileio.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">파일시스템과 파일입출력</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../src/ecosystem_of_julia/makie.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Makie 로 Plotting</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../src/ecosystem_of_julia/random.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">난수 발생</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../src/ecosystem_of_julia/multithreads.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">다중스레딩</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../src/ecosystem_of_julia/pkg_dev.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">패키지 개발</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../src/ecosystem_of_julia/dataframes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">DataFrames.jl</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../src/ecosystem_of_julia/unittest.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">유닛테스트 : Test.jl</span></a>
   </div>
 </li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -245,7 +250,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../src/ecosystem_of_julia/00_part2.html">II. Julia 언어 생태계</a></li><li class="breadcrumb-item"><a href="../../src/ecosystem_of_julia/fileio.html">파일시스템과 파일입출력</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">파일시스템과 파일입출력</h1>
 </div>
@@ -1089,8 +1094,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../src/ecosystem_of_julia/00_part2.html" class="pagination-link" aria-label="II. Application of Julia">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">II. Application of Julia</span>
+      <a href="../../src/ecosystem_of_julia/00_part2.html" class="pagination-link" aria-label="II. Julia 언어 생태계">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">II. Julia 언어 생태계</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

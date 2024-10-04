@@ -1,5 +1,5 @@
-# II. Application of Julia {.unnumbered}
+# II. Julia 언어 생태계 {.unnumbered}
 
-
+Julia 언어와 추가로 설치 할 수 있는 패키지들, 개발 환경들 등 julia 언어의 우산 아래 사용 하능한 것들을 생태계라고 표현합니다. 여기서는 Julia 기본 설치 이외의 것들을 소개하도록 합니다. 
 
 
