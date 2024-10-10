@@ -18,9 +18,11 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - href : src/introduction_to_julia/00_part1.qmd
+      - href : src/introduction_to_julia/01_julia_language.qmd 
         text : "Julia 언어의 기초"
-      - href : src/ecosystem_of_julia/00_part2.qmd
+      - href : src/application_of_julia/00_part2.qmd
+        text : "Julia 언어의 활용"
+      - href : src/ecosystem_of_julia/00_part3.qmd
         text : "Julia 언어 생태계"
       - about.qmd
     tools:
@@ -35,40 +37,50 @@ website:
       type : "dark"
       collapse-level : 2
       contents :    
-        - href : src/introduction_to_julia/00_part1.qmd
-          contents :
-          - href : src/introduction_to_julia/01_julia_language.qmd 
-          - href : src/introduction_to_julia/02_variables_basic_types.qmd
-          - href : src/introduction_to_julia/03_functions_and_operators.qmd
-          - href : src/introduction_to_julia/04_containers.qmd
-          - href : src/introduction_to_julia/04I_splat_operator.qmd
-          - href : src/introduction_to_julia/05_control_flows.qmd
-          - href : src/introduction_to_julia/06_arrays.qmd
-          - href : src/introduction_to_julia/06I_function_composition_and_piping.qmd
-          - href : src/introduction_to_julia/07_module_package.qmd
-          - href : src/introduction_to_julia/07I_sort.qmd
-          - href : src/introduction_to_julia/08_type_hierarchy.qmd
-          - href : src/introduction_to_julia/08I_documentation.qmd
-          - href : src/introduction_to_julia/09_composite_types.qmd
-          - href : src/introduction_to_julia/09I_pretty_printing.qmd
-          - href : src/introduction_to_julia/10_metaprogramming_and_macro.qmd
-          - href : src/introduction_to_julia/10I_exception.qmd
-          - href : src/introduction_to_julia/11_interfaces.qmd
+        # # - href : src/introduction_to_julia/00_part1.qmd
+        # - text : Julia 언어의 기초
+        #   contents :
+        # - href : src/introduction_to_julia/00_part1.qmd
+        - href : src/introduction_to_julia/01_julia_language.qmd 
+        - href : src/introduction_to_julia/02_variables_basic_types.qmd
+        - href : src/introduction_to_julia/03_functions_and_operators.qmd
+        - href : src/introduction_to_julia/04_containers.qmd
+        - href : src/introduction_to_julia/04I_splat_operator.qmd
+        - href : src/introduction_to_julia/05_control_flows.qmd
+        - href : src/introduction_to_julia/06_arrays.qmd
+        - href : src/introduction_to_julia/06I_function_composition_and_piping.qmd
+        - href : src/introduction_to_julia/07_module_package.qmd
+        - href : src/introduction_to_julia/07I_sort.qmd
+        - href : src/introduction_to_julia/08_type_hierarchy.qmd
+        - href : src/introduction_to_julia/08I_documentation.qmd
+        - href : src/introduction_to_julia/09_composite_types.qmd
+        - href : src/introduction_to_julia/09I_pretty_printing.qmd
+        - href : src/introduction_to_julia/10_metaprogramming_and_macro.qmd
+        - href : src/introduction_to_julia/10I_exception.qmd
+        - href : src/introduction_to_julia/11_interfaces.qmd
 
-    - title : "Julia 언어 생태계"
+    - id: application
+      title : "Julia 언어의 활용"
       collapse-level: 2
       contents :
-        - href : src/ecosystem_of_julia/00_part2.qmd
-          contents :
-          - href : src/ecosystem_of_julia/fileio.qmd
-          - href : src/ecosystem_of_julia/makie.qmd
-          - href : src/ecosystem_of_julia/random.qmd
-          # - href : src/ecosystem_of_julia/leastsquarefit.qmd
-          - href : src/ecosystem_of_julia/multithreads.qmd
-          - href : src/ecosystem_of_julia/pkg_dev.qmd
-          - href : src/ecosystem_of_julia/dataframes.qmd
-          - href : src/ecosystem_of_julia/unittest.qmd
-          - href : src/applications
+        - href : src/application_of_julia/00_part2.qmd
+        - href : src/application_of_julia/string_literal.qmd
+        - href : src/application_of_julia/multithreads.qmd
+         
+    - id: ecosystem
+      title : "Julia 언어 생태계"
+      collapse-level: 2
+      contents :
+        - href : src/ecosystem_of_julia/00_part3.qmd
+      #   contents :
+        - href : src/ecosystem_of_julia/fileio.qmd
+        - href : src/ecosystem_of_julia/makie.qmd
+        - href : src/ecosystem_of_julia/random.qmd
+        # - href : src/ecosystem_of_julia/leastsquarefit.qmd
+
+        - href : src/ecosystem_of_julia/pkg_dev.qmd
+        - href : src/ecosystem_of_julia/dataframes.qmd
+        - href : src/ecosystem_of_julia/unittest.qmd
 
 
 bibliography: references.bib

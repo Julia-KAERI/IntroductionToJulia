@@ -38,55 +38,59 @@
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/02_variables_basic_types.html</loc>
-    <lastmod>2024-09-27T01:40:37.323Z</lastmod>
+    <lastmod>2024-10-07T06:38:48.389Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/00_part1.html</loc>
-    <lastmod>2024-10-04T06:42:12.225Z</lastmod>
+    <lastmod>2024-10-07T05:45:46.443Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/random.html</loc>
     <lastmod>2024-09-27T01:40:37.322Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/multithreads.html</loc>
-    <lastmod>2024-09-27T01:40:37.321Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/leastsquarefit.html</loc>
-    <lastmod>2024-09-27T01:40:37.308Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/dataframes.html</loc>
-    <lastmod>2024-09-27T01:40:37.307Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/references.html</loc>
-    <lastmod>2024-09-27T01:40:37.304Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/index.html</loc>
-    <lastmod>2024-10-04T05:35:43.351Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/about.html</loc>
-    <lastmod>2024-09-27T01:40:37.261Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/intro.html</loc>
-    <lastmod>2024-09-27T01:40:37.304Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/00_part2.html</loc>
-    <lastmod>2024-10-04T06:43:38.804Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/makie.html</loc>
+    <lastmod>2024-09-27T01:40:37.320Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/fileio.html</loc>
     <lastmod>2024-09-27T01:40:37.307Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/makie.html</loc>
-    <lastmod>2024-09-27T01:40:37.320Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/00_part3.html</loc>
+    <lastmod>2024-10-07T05:45:19.979Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/00_part2.html</loc>
+    <lastmod>2024-10-07T05:55:00.060Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/intro.html</loc>
+    <lastmod>2024-09-27T01:40:37.304Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/about.html</loc>
+    <lastmod>2024-09-27T01:40:37.261Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/index.html</loc>
+    <lastmod>2024-10-04T05:35:43.351Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/references.html</loc>
+    <lastmod>2024-09-27T01:40:37.304Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/multithreads.html</loc>
+    <lastmod>2024-09-27T01:40:37.321Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/dataframes.html</loc>
+    <lastmod>2024-10-07T05:55:53.949Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/leastsquarefit.html</loc>
+    <lastmod>2024-09-27T01:40:37.308Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/pkg_dev.html</loc>
@@ -135,5 +139,9 @@
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/index.html</loc>
     <lastmod>2024-09-27T01:40:37.328Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/string_literal.html</loc>
+    <lastmod>2024-10-07T09:18:47.712Z</lastmod>
   </url>
 </urlset>

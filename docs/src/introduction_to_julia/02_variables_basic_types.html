@@ -158,11 +158,15 @@ window.Quarto = {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../../src/introduction_to_julia/00_part1.html" aria-current="page"> 
+    <a class="nav-link active" href="../../src/introduction_to_julia/01_julia_language.html" aria-current="page"> 
 <span class="menu-text">Julia 언어의 기초</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../src/ecosystem_of_julia/00_part2.html"> 
+    <a class="nav-link" href="../../src/application_of_julia/00_part2.html"> 
+<span class="menu-text">Julia 언어의 활용</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../src/ecosystem_of_julia/00_part3.html"> 
 <span class="menu-text">Julia 언어 생태계</span></a>
   </li>  
   <li class="nav-item">
@@ -193,12 +197,6 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../src/introduction_to_julia/00_part1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">I. Introduction to Julia</span></a>
-  </div>
-</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../src/introduction_to_julia/01_julia_language.html" class="sidebar-item-text sidebar-link">
@@ -330,8 +328,12 @@ window.Quarto = {
   <li><a href="#char-와-string-타입" id="toc-char-와-string-타입" class="nav-link" data-scroll-target="#char-와-string-타입">Char 와 String 타입</a></li>
   <li><a href="#유니코드unicode" id="toc-유니코드unicode" class="nav-link" data-scroll-target="#유니코드unicode">유니코드(Unicode)</a></li>
   <li><a href="#sec-operators_and_fuctions_for_strings" id="toc-sec-operators_and_fuctions_for_strings" class="nav-link" data-scroll-target="#sec-operators_and_fuctions_for_strings">문자열 연산과 함수</a></li>
-  <li><a href="#sec-symbol_types" id="toc-sec-symbol_types" class="nav-link" data-scroll-target="#sec-symbol_types">심볼 타입</a></li>
-  <li><a href="#sec-type_union" id="toc-sec-type_union" class="nav-link" data-scroll-target="#sec-type_union">변수의 타입 지정과 타입 유니온</a></li>
+  </ul></li>
+  <li><a href="#sec-symbol_types" id="toc-sec-symbol_types" class="nav-link" data-scroll-target="#sec-symbol_types"><span class="header-section-number">4</span> 심볼 타입</a></li>
+  <li><a href="#변수의-타입-지정과-타입-유니온" id="toc-변수의-타입-지정과-타입-유니온" class="nav-link" data-scroll-target="#변수의-타입-지정과-타입-유니온"><span class="header-section-number">5</span> 변수의 타입 지정과 타입 유니온</a>
+  <ul class="collapse">
+  <li><a href="#sec-type_assign" id="toc-sec-type_assign" class="nav-link" data-scroll-target="#sec-type_assign">변수의 타입 지정</a></li>
+  <li><a href="#sec-type_union" id="toc-sec-type_union" class="nav-link" data-scroll-target="#sec-type_union">타입 유니온</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -817,8 +819,9 @@ window.Quarto = {
 <p><br></p>
 </section>
 </section>
-<section id="sec-symbol_types" class="level3">
-<h3 class="anchored" data-anchor-id="sec-symbol_types">심볼 타입</h3>
+</section>
+<section id="sec-symbol_types" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="sec-symbol_types"><span class="header-section-number">4</span> 심볼 타입</h2>
 <p>심볼(Symbol) 타입은 문자열과 비슷하지만 다릅니다. 심볼(Symbol) 타입은 <code>:</code> 다음의 문자열, 혹은 <code>Symbol</code> 이라는 타입 이름을 함수로 사용하여 다음과 같이 선언할 수 있습니다.</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>In [21]: a=Symbol("bc") # `Symbol` 함수를 이용한 선언</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>Out[21]: :bc</span>
@@ -831,10 +834,10 @@ window.Quarto = {
 <p>심볼 타입은 Julia 에서 소위 <a href="https://docs.julialang.org/en/v1/manual/metaprogramming/">메타 프로그래밍</a> 개념의 핵심이지만 여기서는 자세히 다루지 않겠습니다. 심볼 타입이 많이 쓰이는 다른 경우는 함수에 인자로 전달할 때 입니다. 예를 들어 그래프를 빨간 색으로 그리고 싶을 때, 다른 언어라면 <code>"red"</code> 라는 문자열을 함수의 인자로 입력하는 경우가 많은데, Julia 에서는 이렇게 문자열을 쓸 수도 있지만 <code>:red</code> 라는 심볼 타입을 전달하는 경우가 많습니다. 이 경우 비교가 문자열보다 빠릅니다.</p>
 <p><br></p>
 </section>
-<section id="sec-type_union" class="level3">
-<h3 class="anchored" data-anchor-id="sec-type_union">변수의 타입 지정과 타입 유니온</h3>
-<section id="변수의-타입-지정" class="level4">
-<h4 class="anchored" data-anchor-id="변수의-타입-지정">변수의 타입 지정</h4>
+<section id="변수의-타입-지정과-타입-유니온" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="변수의-타입-지정과-타입-유니온"><span class="header-section-number">5</span> 변수의 타입 지정과 타입 유니온</h2>
+<section id="sec-type_assign" class="level3">
+<h3 class="anchored" data-anchor-id="sec-type_assign">변수의 타입 지정</h3>
 <p>예를 들어 변수 <code>a</code> 에 <code>UInt8</code> 타입의 <code>3</code> 을 할당한다고 해 봅시다. <code>a=UInt8(3)</code> 와 <code>a::UInt8=3</code> 과 같은 두가지 방법을 사용 할 수 있습니다. 그러나 두번째 경우에는 <code>a</code> 라는 변수가 <code>UInt8</code> 타입으로 지정되기 때문에 <code>UInt8</code> 타입 이외의 값으로 변경할 수 없습니다.</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>In [1]: a::UInt8=3</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>Out[1]: 3</span>
@@ -853,8 +856,8 @@ window.Quarto = {
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>Out[5]: -1</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><br></p>
 </section>
-<section id="타입-유니온" class="level4">
-<h4 class="anchored" data-anchor-id="타입-유니온">타입 유니온</h4>
+<section id="sec-type_union" class="level3">
+<h3 class="anchored" data-anchor-id="sec-type_union">타입 유니온</h3>
 <p>타입 유니온은 변수가 가질 수 있는 타입을 하나가 아닌 여러개중 하나로 할 때 사용되며 <code>Union{T1, T2}</code> 처럼 사용됩니다. <code>T1</code>, <code>T2</code> 는 변수가 가질 수 있는 타입이며 두개 이상일 경우에는 <code>,</code> 로 구분하여 나열합니다. 다음 보기를 봅시다.</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>In [1]: a::Union{Int, AbstractString}="a"</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>Out[1]: "a"</span>
@@ -870,7 +873,6 @@ window.Quarto = {
 <p><br></p>
 
 
-</section>
 </section>
 </section>
 
