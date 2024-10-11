@@ -1,5 +1,5 @@
 ---
-title: "인터페이스"
+title: "반복자 인터페이스"
 
 number-sections: true
 number-depth: 2

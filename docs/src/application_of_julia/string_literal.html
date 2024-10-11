@@ -208,7 +208,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#v-로-시작되는-비표준-문자열-리터럴-버젼-넘버" id="toc-v-로-시작되는-비표준-문자열-리터럴-버젼-넘버" class="nav-link" data-scroll-target="#v-로-시작되는-비표준-문자열-리터럴-버젼-넘버"><code>v</code> 로 시작되는 비표준 문자열 리터럴 : 버젼 넘버</a></li>
   <li><a href="#raw-로-시작되는-비표준-문자열-리터럴-raw-string" id="toc-raw-로-시작되는-비표준-문자열-리터럴-raw-string" class="nav-link" data-scroll-target="#raw-로-시작되는-비표준-문자열-리터럴-raw-string"><code>raw</code> 로 시작되는 비표준 문자열 리터럴 : Raw string</a></li>
   </ul></li>
-  <li><a href="#비표준-문자열의-작성" id="toc-비표준-문자열의-작성" class="nav-link" data-scroll-target="#비표준-문자열의-작성"><span class="header-section-number">3</span> 비표준 문자열의 작성</a></li>
+  <li><a href="#비표준-문자열-리터럴의-작성" id="toc-비표준-문자열-리터럴의-작성" class="nav-link" data-scroll-target="#비표준-문자열-리터럴의-작성"><span class="header-section-number">3</span> 비표준 문자열 리터럴의 작성</a></li>
   </ul>
 </nav>
     </div>
@@ -331,8 +331,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><br></p>
 </section>
 </section>
-<section id="비표준-문자열의-작성" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="비표준-문자열의-작성"><span class="header-section-number">3</span> 비표준 문자열의 작성</h2>
+<section id="비표준-문자열-리터럴의-작성" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="비표준-문자열-리터럴의-작성"><span class="header-section-number">3</span> 비표준 문자열 리터럴의 작성</h2>
+<p>위에서 보았듯이 비표준 문자열 리터럴은 특정한 객체를 생성하는 생성자로 사용됩니다. 이런 비표준 문자열 리터럴은 매크로를 이용하여 만들 수 있습니다. 예를 들어 어떤 문자열이 수와 문자가 공백으로 구분되어 있으며, 이중 정수형 만을 골라내어 배열로 만들고자 한다고 합시다. 즉 <code>"1 23 a 3.3 5"</code> 의 문자열에서 정수만을 뽑아내어 배열 <code>[1, 23, 5]</code> 를 생성하는 일을 비표준 문자열 리터럴로 해 봅시다.</p>
+<p>비표준 문자열 리터럴은 구분자 와 <code>_str</code> 을 합친 이름의 매크로를 작성하면 됩니다. 즉 앞의 문자열을 <code>A"1 23 a 3.3 5"</code> 로 사용하고자 한다면 <code>A_str</code> 라는 이름을 갖도록 매크로를 작성합니다. 버젼 넘버 리터럴은 <code>v_str</code> 매크로를 통해 구현었으며 Raw string 리터럴은 <code>raw_str</code> 매크로를 통해 구현되었습니다. 우리가 앞서 언급했던 것을 매크로로 구현해 봅시다.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">macro</span> <span class="fu">A_str</span>(s)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">split</span>(s)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter!</span>(!isnothing,[if <span class="fu">tryparse</span>(<span class="dt">Int64</span>, a) <span class="op">!=</span> <span class="cn">nothing</span> <span class="fu">parse</span>(<span class="dt">Int64</span>, a) else <span class="cn">nothing</span> <span class="kw">end</span> for a <span class="kw">in</span> <span class="fu">split</span>(s)])</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>여기에</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> A<span class="st">"1 23 a 3.3 5"</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>를 실행시키면 원하는 정수 배열을 얻을 수 있습니다. <code>isnothing</code>, <code>tryparse</code>, <code>parse</code> 함수는 직접 알아보기 바랍니다. 배열 생성에 array comprehension 과 내부의 <code>if ... else ... end</code> 구문을 사용하는 것은 <a href="../../src/introduction_to_julia/06_arrays.html#sec-array_comprehension">Array comprehension 을 이용한 배열의 생성</a> 를 참고하십시요.</p>
+<p>만약 “A 3 2 12” 와 같은 문자열이 주어졌다면 다음을 통해 <code>A"..."</code> 리터럴로 바꾸고, 자연스럽게 배열을 만들 수 있습니다.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="st">"A 3 2 12"</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">eval</span>(<span class="bu">Meta</span>.<span class="fu">parse</span>(<span class="st">"A</span><span class="sc">\"$</span>s<span class="sc">\"</span><span class="st">"</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>혹은</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>s2<span class="op">=</span><span class="st">"A</span><span class="sc">\"</span><span class="st">"</span> <span class="op">*</span> s <span class="op">*</span> <span class="st">"</span><span class="sc">\"</span><span class="st">"</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">eval</span>(<span class="bu">Meta</span>.<span class="fu">parse</span>(s2))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>와 같이 할 수 있습니다.</p>
 
 
 </section>

@@ -144,7 +144,45 @@ Out[3]: "123\$s"
 
 </br>
 
-## 비표준 문자열의 작성
+## 비표준 문자열 리터럴의 작성
+
+위에서 보았듯이 비표준 문자열 리터럴은 특정한 객체를 생성하는 생성자로 사용됩니다. 이런 비표준 문자열 리터럴은 매크로를 이용하여 만들 수 있습니다. 예를 들어 어떤 문자열이 수와 문자가 공백으로 구분되어 있으며, 이중 정수형 만을 골라내어 배열로 만들고자 한다고 합시다. 즉 `"1 23 a 3.3 5"` 의 문자열에서 정수만을 뽑아내어 배열 `[1, 23, 5]` 를 생성하는 일을 비표준 문자열 리터럴로 해 봅시다. 
+
+비표준 문자열 리터럴은 구분자 와 `_str` 을 합친 이름의 매크로를 작성하면 됩니다. 즉 앞의 문자열을 `A"1 23 a 3.3 5"` 로 사용하고자 한다면 `A_str` 라는 이름을 갖도록 매크로를 작성합니다. 버젼 넘버 리터럴은 `v_str` 매크로를 통해 구현었으며 Raw string 리터럴은 `raw_str` 매크로를 통해 구현되었습니다. 우리가 앞서 언급했던 것을 매크로로 구현해 봅시다.
+
+```julia
+macro A_str(s)
+    split(s)
+    filter!(!isnothing,[if tryparse(Int64, a) != nothing parse(Int64, a) else nothing end for a in split(s)])
+end
+```
+
+여기에
+
+```julia
+p = A"1 23 a 3.3 5"
+```
+
+를 실행시키면 원하는 정수 배열을 얻을 수 있습니다. `isnothing`, `tryparse`, `parse` 함수는 직접 알아보기 바랍니다. 배열 생성에 array comprehension 과 내부의 `if ... else ... end` 구문을 사용하는 것은 [Array comprehension 을 이용한 배열의 생성](../introduction_to_julia/06_arrays.qmd#sec-array_comprehension) 를 참고하십시요.
+
+
+만약 "A 3 2 12" 와 같은 문자열이 주어졌다면 다음을 통해 `A"..."` 리터럴로 바꾸고, 자연스럽게 배열을 만들 수 있습니다.
+
+```julia
+s = "A 3 2 12"
+eval(Meta.parse("A\"$s\""))
+```
+
+혹은
+
+```julia
+s2="A\"" * s * "\""
+eval(Meta.parse(s2))
+```
+
+와 같이 할 수 있습니다.
+
+
 
 
 

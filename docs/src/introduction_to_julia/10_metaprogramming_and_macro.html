@@ -133,6 +133,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Julia 언어의 기초</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../../src/application_of_julia/00_part2.html"> 
+<span class="menu-text">Julia 언어의 활용</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../../src/ecosystem_of_julia/00_part3.html"> 
 <span class="menu-text">Julia 언어 생태계</span></a>
   </li>  
@@ -642,7 +646,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="코드-생성" class="level3">
 <h3 class="anchored" data-anchor-id="코드-생성">코드 생성</h3>
-<p>예를 들어 당신이 <code>Float64</code> 형태의 값에 대한 특별한 타입을 필요로 한다고 하자. 이 값은 일반적인 실수에 대해 <code>sin</code> 과 <code>cos</code> 값이 바뀌고, 따라서 <code>tan</code> 와 <code>cot</code> 함수값이 바뀌어야 한다고 하자. 실제로 이런 타입이 필요한지는 모르겠지만 일단은 연습이다. 새로운 타입을 <code>XNum</code> 이라고 하자. 물론 <code>sin(v::XNum) = cos(v.val)</code> 과 같이 네 함수에 대해 정의 할 수 있지만 표현식을 이용하여 다음과 같이 일괄적으로 바꿔 줄 수 있다.</p>
+<p>예를 들어 당신이 <code>Float64</code> 형태의 값에 대한 특별한 타입을 필요로 한다고 합시다. 이 값은 일반적인 실수에 대해 <code>sin</code> 과 <code>cos</code> 값이 바뀌고, 따라서 <code>tan</code> 와 <code>cot</code> 함수값이 바뀌어야 한다고 합시다. 실제로 이런 타입이 필요한지는 모르겠지만 일단은 연습입니다. 새로운 타입을 <code>XNum</code> 이라고 합시다. 물론 <code>sin(v::XNum) = cos(v.val)</code> 과 같이 네 함수에 대해 정의 할 수 있지만 표현식을 이용하여 다음과 같이 일괄적으로 바꿔 줄 수 있습니다.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> XNum</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    val<span class="op">::</span><span class="dt">Real</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -656,7 +660,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">Base</span>.<span class="op">$</span><span class="fu">op1</span>(a<span class="op">::</span><span class="dt">XNum</span>) <span class="op">=</span> <span class="fu">XNum</span>(<span class="op">$</span><span class="fu">op2</span>(a.val))</span>
 <span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span>)</span>
 <span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>for ...</code> 문 안의 <code>eval(ex::Expr)</code> 함수는 표현식 <code>ex</code> 를 실행시키며 이것은 <code>@eval</code> 매크로를 사용하여 다음과 같이 쓸 수 있다.</p>
+<p><code>for ...</code> 문 안의 <code>eval(ex::Expr)</code> 함수는 표현식 <code>ex</code> 를 실행시키며 이것은 <code>@eval</code> 매크로를 사용하여 다음과 같이 쓸 수 있습니다.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (op1, op2) <span class="op">∈</span> <span class="fu">zip</span>((<span class="op">:</span>sin, <span class="op">:</span>cos, <span class="op">:</span>tan, <span class="op">:</span>cot), (<span class="op">:</span>cos, <span class="op">:</span>sin, <span class="op">:</span>cot, <span class="op">:</span>tan))</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@eval</span> <span class="bu">Base</span>.<span class="op">$</span><span class="fu">op1</span>(a<span class="op">::</span><span class="dt">XNum</span>) <span class="op">=</span> <span class="fu">XNum</span>(<span class="op">$</span><span class="fu">op2</span>(a.val))</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
