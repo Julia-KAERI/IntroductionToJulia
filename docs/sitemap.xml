@@ -10,7 +10,7 @@
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/10_metaprogramming_and_macro.html</loc>
-    <lastmod>2024-10-11T04:18:36.182Z</lastmod>
+    <lastmod>2024-10-14T23:44:37.551Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/09_composite_types.html</loc>
@@ -110,7 +110,7 @@
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/04_containers.html</loc>
-    <lastmod>2024-09-27T01:40:37.324Z</lastmod>
+    <lastmod>2024-10-11T05:37:43.037Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/06I_function_composition_and_piping.html</loc>
@@ -143,5 +143,9 @@
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/string_literal.html</loc>
     <lastmod>2024-10-11T05:25:57.908Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/asynchronous.html</loc>
+    <lastmod>2024-10-15T02:12:20.467Z</lastmod>
   </url>
 </urlset>

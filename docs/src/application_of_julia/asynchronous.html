@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction To Julia</title>
+<title>Introduction To Julia - 비동기 프로그래밍</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,7 +64,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../src/application_of_julia/string_literal.html" rel="next">
+<link href="../../src/application_of_julia/multithreads.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -121,7 +155,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../src/application_of_julia/00_part2.html">Julia 언어의 활용</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../src/application_of_julia/asynchronous.html">비동기 프로그래밍</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -135,7 +169,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../src/application_of_julia/00_part2.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../src/application_of_julia/00_part2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Julia 언어의 활용</span></a>
   </div>
 </li>
@@ -153,7 +187,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../src/application_of_julia/asynchronous.html" class="sidebar-item-text sidebar-link">
+  <a href="../../src/application_of_julia/asynchronous.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">비동기 프로그래밍</span></a>
   </div>
 </li>
@@ -167,19 +201,121 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">목차</h2>
    
   <ul>
-  <li><a href="#julia-언어의-활용" id="toc-julia-언어의-활용" class="nav-link active" data-scroll-target="#julia-언어의-활용">Julia 언어의 활용</a></li>
+  <li><a href="#task-의-기본-기능" id="toc-task-의-기본-기능" class="nav-link active" data-scroll-target="#task-의-기본-기능"><span class="header-section-number">1</span> <code>Task</code> 의 기본 기능</a></li>
+  <li><a href="#채널channel-과의-통신" id="toc-채널channel-과의-통신" class="nav-link" data-scroll-target="#채널channel-과의-통신"><span class="header-section-number">2</span> 채널(Channel) 과의 통신</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">비동기 프로그래밍</h1>
+</div>
 
 
 
-<section id="julia-언어의-활용" class="level1 unnumbered">
-<h1 class="unnumbered">Julia 언어의 활용</h1>
-<p>여기서는 Julia 언어의 활용에 대해 다룹니다. 대부분의 내용은 추가 설치 없는 기본 패키지에 대해 다루며, 필요할 경우 추가 패키지에 대해 소개할 수 있습니다. 물론 julia 언어의 기초를 알고 있다고 생각하고 내용을 전개해 나갑니다.</p>
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-simple callout-caution">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>프로그램이 수행하는 일로서의 작업과 비동기 프로그래밍의 개념으로서의 작업(Task) 를 구분하기 위해 후자를 항상 <code>Task</code> 로 표기하며 전자는 한글로 작업 이라고 표기합니다.</p>
+</div>
+</div>
+</div>
+<p>프로그램이 외부 세계와 상호 작용해야 할 때(예: 인터넷을 통해 다른 컴퓨터와 통신) 프로그램의 작업이 예측할 수 없는 순서로 진행되어야 할 수 있습니다. 프로그램에서 파일을 다운로드해야 한다고 가정해 보겠습니다. 다운로드 작업을 시작하고 완료될 때까지 다른 작업을 수행한 다음 다운로드된 파일이 필요한 코드를 사용할 수 있게 되면 다시 시작하고 싶습니다. 이런 종류의 시나리오는 비동기 프로그래밍의 영역에 속하며, 때로는 동시 프로그래밍이라고도 합니다(개념적으로 여러 가지가 동시에 발생하기 때문입니다).</p>
+<p>이러한 시나리오를 해결하기 위해 Julia는 <code>Task</code> 라는 기능을 제공합니다. 이 Task 는 대칭 코루틴(symmetric coroutines), 경량 스레드(lightweight threads), 협력적 멀티태스킹(cooperative multitasking) 또는 원샷 연속(one-shot continuations)과 같은 다른 여러 이름으로 불리기도 합니다. 어떤 실제의 컴퓨팅 작업(특정 함수 실행)이 <code>Task</code> 로 지정되면 다른 작업으로 전환하여 작업을 중단할 수 있습니다. 원래 작업은 나중에 다시 시작할 수 있으며, 이때 중단된 지점에서 바로 시작합니다. 처음에는 함수 호출과 유사해 보일 수 있습니다. 그러나 두 가지 주요 차이점이 있습니다.</p>
+<ol type="1">
+<li>작업 전환은 공간을 사용하지 않으므로 호출 스택을 소모하지 않고도 아무리 많은 작업 전환이 발생할 수 있습니다.</li>
+<li>호출된 함수가 제어권을 호출 함수로 반환하기 전에 실행을 완료해야 하는 함수 호출과 달리 작업 간 전환은 어떤 순서로든 발생할 수 있습니다.</li>
+</ol>
+<p><br></p>
+<section id="task-의-기본-기능" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="task-의-기본-기능"><span class="header-section-number">1</span> <code>Task</code> 의 기본 기능</h2>
+<p><code>Task</code> 는 인자가 없는 함수 <code>f</code> 에 대해 <code>Task(f)</code> 와 같이 호출하거나 앞에 <code>@task</code> 매크로를 사용하여 생성합니다. 수행하면 5초를 기다렸다가(<code>sleep(5)</code>) 이후 <code>done</code> 을 출력하는 작업을 <code>Task</code> 로 생성해 봅시다. 아래의 두 코드는 동일한 기능을 합니다.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>In [5]: t = @task begin; sleep(5); println("done"); end</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Out[5]: Task (runnable) @0x000000010e231120</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>In [6]: f() = begin sleep(5);println("done") end</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Out[6]: f (generic function with 1 method)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>In [7]: t = Task(f)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>Out[7]: Task (runnable) @0x000000010db386a0</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>여기까지는 준비가 되었을 뿐 실행을 시작하지 않은 상태이며. <code>schedule</code> 함수를 통해 실행 할 수 있습니다. Julia REPL 에서 다음과 같이 수행해 봅시다.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>In [10]: schedule(t)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>Out[10]: Task (runnable) @0x000000010db386a0</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>5초 후 REPL 에 아래와 같은 메시지가 찍힙니다.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>In [11]: done</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>In [11]:</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>Task</code> 인 <code>t</code> 에 대해 <code>wait(t)</code> 는 <code>t</code> 가 종료될 때까지 기다리게 합니다.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>In [15]: t = @task begin; sleep(5); println("done"); end</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Out[15]: Task (runnable) @0x000000010e231120</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>In [16]: schedule(t1);wait(t1)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>done1</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>단순히 <code>schedule(t)</code> 만 했을 때는 즉각 REPL 로 제어권이 넘어오지만, 즉 새로운 입력 프롬프트가 보이지만 <code>schedule(t);wait(t)</code> 했을 때는 <code>Task</code> <code>t</code> 가 끝난 후에야 REPL 의 새로운 입력 프롬프트가 보입니다.</p>
+<p>앞으로 많이 사용하게 될 <code>@asynk x</code> 매크로는 <code>schedule(@task x)</code> 와 같습니다.</p>
+<p><br></p>
+</section>
+<section id="채널channel-과의-통신" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="채널channel-과의-통신"><span class="header-section-number">2</span> 채널(Channel) 과의 통신</h2>
+<p>Julia 에서 <code>Channel</code> 은 여러 <code>Task</code> 가 읽고 쓸 수 있는 대기 가능한 선입 선출(first-in first-out) 큐(Que) 입니다. 큐는 컨테이너로 <code>put!</code> 함수를 통해 추가하고 <code>take!</code> 함수를 통해 컨테이너의 성분을 반환받으며 컨테이너에서 제거합니다. 먼저 <code>put!</code> 한 순서대로 <code>take!</code> 됩니다.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>In [1]: function producer(c::Channel)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                   put!(c, "start")</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                   for n=1:4</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                       put!(c, 2n)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                   end</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                   put!(c, "stop")</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>               end;</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>In [2]: chnl = Channel(producer);</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>In [3]: take!(chnl)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>Out[3]: "start"</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>In [4]: take!(chnl)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>Out[4]: 2</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>In [4]: take!(chnl)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>Out[4]: 4</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>In [4]: take!(chnl)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>Out[4]: 6</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>In [4]: take!(chnl)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>Out[4]: 8</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>In [4]: take!(chnl)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>Out[4]: "stop"</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>In [4]: take!(chnl)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>ERROR: InvalidStateException: Channel is closed.</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>In [1]</code> 에서 <code>Channel</code> 을 인자로 받는 함수 <code>procedure</code> 를 정의했습니다. <code>In [2]</code> 에서 <code>Channel</code> 객체를 <code>procedure</code> 함수를 통해 생성시켰습니다. <code>"start"</code>, <code>2</code>, <code>4</code>, <code>6</code>, <code>8</code> <code>"end"</code> 순서로 입력되었으므로 <code>take!(chnl)</code> 로 빼낼때 역시 같은 순서로 나옵니다. 그리고 마지막의 원소가 빠져 빈 큐가 된 상태에서 <code>take!</code> 를 수행하면 에러가 발생합니다.</p>
+<p><code>Channel</code> 은 반복자이므로 <code>for</code> 루프에 사용 할 수 있습니다.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>In [11]: chnl = Channel(producer);</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>In [12]: [x for x in chnl]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>Out[12]: 6-element Vector{Any}:</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  "start"</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a> 2</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a> 4</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a> 6</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a> 8</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  "stop"</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
@@ -596,11 +732,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../../src/application_of_julia/multithreads.html" class="pagination-link" aria-label="다중스레딩">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">다중스레딩</span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../src/application_of_julia/string_literal.html" class="pagination-link" aria-label="문자열 리터럴">
-        <span class="nav-page-text">문자열 리터럴</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
