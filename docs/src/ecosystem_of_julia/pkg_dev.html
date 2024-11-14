@@ -133,6 +133,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Julia 언어의 기초</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../../src/application_of_julia/00_part2.html"> 
+<span class="menu-text">Julia 언어의 활용</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link active" href="../../src/ecosystem_of_julia/00_part3.html" aria-current="page"> 
 <span class="menu-text">Julia 언어 생태계</span></a>
   </li>  
@@ -252,7 +256,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><br></p>
 <section id="시작하기" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="시작하기"><span class="header-section-number">1</span> 시작하기</h2>
-<p>이제 터미널에서 <code>NAJ.jl</code> 를 시작할 디렉토리에 들어갑니다. 예를 들어 <code>Users\myacc\Project</code> 디렉토리에 <code>NAJ.jl</code> 디렉토리를 만들고 이 디렉토리에서 패키지를 만들고 싶다면 <code>Users\myacc\Project</code> 로 이동합니다. 그리고 julia REPL 을 실행시키고 <code>]</code> 키를 통해 pkg 모드에 진입합니다.</p>
+<p>이제 터미널에서 <code>NAJ.jl</code> 를 시작할 디렉토리에 들어갑니다. 예를 들어 <code>/Users/myacc/Project</code> 디렉토리에 <code>NAJ.jl</code> 디렉토리를 만들고 이 디렉토리에서 패키지를 만들고 싶다면 <code>/Users/myacc/Project</code> 로 이동합니다. 그리고 julia REPL 을 실행시키고 <code>]</code> 키를 통해 pkg 모드에 진입합니다.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>(@v1.10) pkg&gt;</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>이제 패키지를 초기화 합니다.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(@v1.10) pkg&gt; generate NAJ.jl</span>
@@ -264,10 +268,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb3"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>In [1]: cd("NAJ.jl")</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>In [2]: pwd()</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>Out[2]: "/Users/jiyong/development/Projects/NAJ.jl"</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>이제 터미널로 나갑니다. 이제 <code>NAJ.jl</code> 디렉토리와 git 저장소를 동기화합니다.</p>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>Out[2]: "/Users/myacc/Project/NAJ.jl"</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>이제 터미널로 나갑니다. 이제 <code>NAJ.jl</code> 디렉토리와 git 저장소를 동기화합니다. 아래에서 <code>[git repository address]</code> 에는 실제 github 저장소 주소를 넣습니다. 예를 들면 <code>https://github.com/Julia-KAERI/NAJ.jl.git</code> 같은 것입니다.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add origin https://github.com/Julia-KAERI/NAJ.jl.git</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add origin [git repository address]</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>현재 저장소는 비어 있으므로 이미 존재하는 파일과 디렉토리를 업로드합니다. 브랜치 이름은 <code>main</code> 이나 <code>master</code> 일 것입니다. 터미널에서 <code>git status</code> 명령어로 확인합니다.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"first_upload"</span></span>

@@ -1,0 +1,34 @@
+---
+title: "StaticArrays.jl"
+
+number-sections: true
+number-depth: 2
+crossref:
+  chapters: false
+---
+
+`] add StaticArrays` 로 설치한다.
+
+</br>
+
+
+`StaticArray` 는 그 크기가 정해진 배열이다. [Julia 언어의 기초](../introduction_to_julia/00_part1.qmd)의 [배열](../introduction_to_julia/06_arrays.qmd) 에서 다뤘던, 우리가 일반적으로 사용하는 배열은 성분의 타입 `T` 와 차원 `N` 이 매개변수로 지정된 타입이다. 다음을 보라.
+
+```txt
+In [1]: typeof([1 2;3 4])
+Out[1]: Matrix{Int64} (alias for Array{Int64, 2})
+```
+
+그러나 `StaticArray` 는 그 크기가 타입 매개변수로 전달되는 `Array` 의 하위타입이다. 즉 `StaticArray{Size, T, N} <: AbstractArray{T, N}` 이다. 
+
+`StaticArray` 는 다음과 같이 선언한다.
+
+
+</br>
+
+
+
+추상적 타입인 `StaticArray` 의 구체적 타입은 `SArray` 이다. 또한 `Vector{T}`, `Matrix{T}` 가 각각 `Array{T, 1}`, `Array{T, 2}` 의 alias 인 것처럼 `SVector{T}`, `SMatrix{T}` 는 각각 `SArray{T, 1}`, `Sa
+
+
+

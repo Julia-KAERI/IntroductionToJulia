@@ -19,7 +19,7 @@ crossref:
 
 ## 시작하기 
 
-이제 터미널에서 `NAJ.jl` 를 시작할 디렉토리에 들어갑니다. 예를 들어 `Users\myacc\Project` 디렉토리에 `NAJ.jl` 디렉토리를 만들고 이 디렉토리에서 패키지를 만들고 싶다면 `Users\myacc\Project` 로 이동합니다. 그리고 julia REPL 을 실행시키고 `]` 키를 통해 pkg 모드에 진입합니다.
+이제 터미널에서 `NAJ.jl` 를 시작할 디렉토리에 들어갑니다. 예를 들어 `/Users/myacc/Project` 디렉토리에 `NAJ.jl` 디렉토리를 만들고 이 디렉토리에서 패키지를 만들고 싶다면 `/Users/myacc/Project` 로 이동합니다. 그리고 julia REPL 을 실행시키고 `]` 키를 통해 pkg 모드에 진입합니다.
 
 ```txt
 (@v1.10) pkg>
@@ -42,15 +42,17 @@ julia 에는 현재 작업 디렉토리라는 개념이 있습니다. julia 인�
 In [1]: cd("NAJ.jl")
 
 In [2]: pwd()
-Out[2]: "/Users/jiyong/development/Projects/NAJ.jl"
+Out[2]: "/Users/myacc/Project/NAJ.jl"
 ```
 
-이제 터미널로 나갑니다. 이제 `NAJ.jl` 디렉토리와 git 저장소를 동기화합니다.
+이제 터미널로 나갑니다. 이제 `NAJ.jl` 디렉토리와 git 저장소를 동기화합니다. 아래에서 `[git repository address]` 에는 실제 github 저장소 주소를 넣습니다. 예를 들면 `https://github.com/Julia-KAERI/NAJ.jl.git` 같은 것입니다.
 
 ```sh
 git init
-git remote add origin https://github.com/Julia-KAERI/NAJ.jl.git
+git remote add origin [git repository address]
 ```
+
+
 
 현재 저장소는 비어 있으므로 이미 존재하는 파일과 디렉토리를 업로드합니다. 브랜치 이름은 `main` 이나 `master` 일 것입니다. 터미널에서 `git status` 명령어로 확인합니다.
 
