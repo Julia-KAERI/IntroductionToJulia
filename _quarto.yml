@@ -65,7 +65,7 @@ website:
       contents :
         - href : src/application_of_julia/00_part2.qmd
         - href : src/application_of_julia/string_literal.qmd
-
+        - href : src/application_of_julia/performance_tips.qmd
         - href : src/application_of_julia/multithreads.qmd
         - href : src/application_of_julia/asynchronous.qmd
          
@@ -75,7 +75,7 @@ website:
       contents :
         - href : src/ecosystem_of_julia/00_part3.qmd
       #   contents :
-        - href : src/cosystem_of_julia/staticarray.qmd
+        - href : src/ecosystem_of_julia/staticarray.qmd
         - href : src/ecosystem_of_julia/fileio.qmd
         - href : src/ecosystem_of_julia/makie.qmd
         - href : src/ecosystem_of_julia/random.qmd

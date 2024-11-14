@@ -2,15 +2,23 @@
 title: "StaticArrays.jl"
 
 number-sections: true
-number-depth: 2
+number-depth: 3
 crossref:
   chapters: false
 ---
 
-`] add StaticArrays` 로 설치한다.
 
 </br>
 
+## 설치와 소개
+
+`] add StaticArrays` 로 설치한다. 사용하기 위해서는 아래와 같이 패키지를 사용할 것을 선언 할 수 있다.
+
+```julia
+using StaticArrays
+```
+
+</br>
 
 `StaticArray` 는 그 크기가 정해진 배열이다. [Julia 언어의 기초](../introduction_to_julia/00_part1.qmd)의 [배열](../introduction_to_julia/06_arrays.qmd) 에서 다뤘던, 우리가 일반적으로 사용하는 배열은 성분의 타입 `T` 와 차원 `N` 이 매개변수로 지정된 타입이다. 다음을 보라.
 
@@ -19,16 +27,154 @@ In [1]: typeof([1 2;3 4])
 Out[1]: Matrix{Int64} (alias for Array{Int64, 2})
 ```
 
-그러나 `StaticArray` 는 그 크기가 타입 매개변수로 전달되는 `Array` 의 하위타입이다. 즉 `StaticArray{Size, T, N} <: AbstractArray{T, N}` 이다. 
+그러나 `StaticArray` 는 그 크기가 타입 매개변수로 전달되는 `Array` 의 하위타입이다. 즉 `StaticArray{Size, T, N} <: AbstractArray{T, N}` 이다. 따라서 크기가 다른 StaticArray 는 다른 타입이다.
 
-`StaticArray` 는 다음과 같이 선언한다.
+</br>
+
+1차원 배열은 `Vector`, 2차원 배열이 `Matrix` 라는 별칭(alias) 을 갖고 있듯이 1차원 StaticArray 는 `SVector`, 2차원 StaticArray 는 `SMatrix` 라는 별칭을 가지고 있다. 기본적으로 `SArray`, `SVector`, `SMatrix` 는 immutable 이다. 즉 성분 원소를 변경시킬 수 없다. Mutable 한 StaticArray 는 `MArray` 이며 마찬가지로 `MVector`, `MMatrix` 라는 별칭을 가지고 있다.
+
+</br>
+
+그렇다면 StaticArrays 는 언제 사용할까? [Julia 성능 팁](https://docs.julialang.org/en/v1/manual/performance-tips/#Consider-StaticArrays.jl-for-small-fixed-size-vector/matrix-operations) 에 보면 크기가 100 보다 작은 배열에 StaticArrays 를 사용하면 성능이 대폭 향상되므로 이 경우에 사용을 추천한다. 즉 작은 배열에 대한 계산이 많을 때 StaticArrays 는 매우 유용하다.
+
+</br>
+
+## 사용법
+
+### 생성
+
+#### `SVector`
+
+`SVector([1,2,3])` 은 오류를 발생시키며 `SVector(1,2,3)` 과 같이 사용할 수 있지만 가장 간단한 방법은 배열 앞에 `@SVector` 매크로를 사용하는 것이다. 크기와 타입를 을 정하여 `SVector{3, UInt8}(1,2,3)` 과 같이 사용할 수도 있다.
+
+```txt
+In [1]: using StaticArrays
+
+In [2]: @SVector [1,3,2,5]
+Out[2]: 4-element SVector{4, Int64} with indices SOneTo(4):
+ 1
+ 3
+ 2
+ 5
+
+In [3]: @SVector [cos(t) for t in 0:0.01:π]
+Out[3]: 315-element SVector{315, Float64} with indices SOneTo(315):
+  1.0
+  0.9999500004166653
+  0.9998000066665778
+  0.9995500337489875
+...  
+
+In [4]: SVector{3,Int8}(1,2,3)
+Out[4]: 3-element SVector{3, Int8} with indices SOneTo(3):
+ 1
+ 2
+ 3
+```
+
+</br>
+
+그러나 `@SVector` 다음에 벡터가 아닌 벡터에 대한 변수가 온다면 에러를 일으킨다. 
+
+```txt
+In [28]: v1=[1,2,3]; v2=@SVector v1
+ERROR: LoadError: Bad input for @SVector
+Stacktrace:
+```
+
+이 경우 매크로를 사용하지 않고 벡터의 크기를 매개변수로 넣어 다음과 같이 한다.
+
+```txt
+In [30]: v1=[1,2,3]; v2=SVector{3}(v1)
+```
+
+</br>
+
+#### `SMatrix`
+
+기본적으로는 크기와 타입을 정하여 `SMatrix{2,2,Float32}(1,2,3,4)` 와 같이 생성할 수 있지만 일반적으로는 역시 `@SMatrix` 매크로를 사용한다.
+
+```txt
+In [4]: @SMatrix rand(3,4)
+Out[4]: 3×4 SMatrix{3, 4, Float64, 12} with indices SOneTo(3)×SOneTo(4):
+ 0.616709  0.433282  0.390636   0.0126605
+ 0.182085  0.906459  0.0758969  0.96827
+ 0.933711  0.909862  0.239658   0.42389
+ ```
+
+</br>
+
+`SVector` 와 마찬가지로 어떤 `Matrix` 가 `A` 라는 변수에 할당되었다면 다음과 같이 `SMatrix` 로 변경시킨다.
+
+```txt
+In [31]: A=[1 2;3 4]; B=SMatrix{2, 2}(A)
+Out[31]: 2×2 SMatrix{2, 2, Int64, 4} with indices SOneTo(2)×SOneTo(2):
+ 1  2
+ 3  4
+```
 
 
 </br>
 
+#### `SArray`
 
+배열의 크기를 `Tuple{2,3,4}` 나 `Tuple{3,5,2,4}` 와 같이 지정한다. 다음과 같이 쓸 수 있다.
 
-추상적 타입인 `StaticArray` 의 구체적 타입은 `SArray` 이다. 또한 `Vector{T}`, `Matrix{T}` 가 각각 `Array{T, 1}`, `Array{T, 2}` 의 alias 인 것처럼 `SVector{T}`, `SMatrix{T}` 는 각각 `SArray{T, 1}`, `Sa
+```txt
+In [22]: SArray{Tuple{2,3,4}, Int16}(collect(1:24))
+Out[22]: 2×3×4 SArray{Tuple{2, 3, 4}, Int16, 3, 24} with indices SOneTo(2)×SOneTo(3)×SOneTo(4):
+[:, :, 1] =
+ 1  3  5
+ 2  4  6
+```
 
+</br>
+
+## 지원
+
+일반적인 `Array` 와 같이 계산 할 수 있으며, `LinearAlgebtra.jl` 등의 많은 함수들이 `StaticArrays.jl` 를 지원한다.
+
+```txt
+In [46]: v2= @SVector [1,2,3]
+Out[46]: 3-element SVector{3, Int64} with indices SOneTo(3):
+ 1
+ 2
+ 3
+
+In [47]: v2 .+ 1
+Out[47]: 3-element SVector{3, Int64} with indices SOneTo(3):
+ 2
+ 3
+ 4
+
+In [48]: v1= @SVector [1,2,3]; v2=@SVector [-1, 0, 1];dot(v1, v2)
+Out[48]: 2
+
+In [49]: using LinearAlgebra
+
+In [50]: A = @SMatrix rand(3, 3); inv(A)
+Out[50]: 3×3 SMatrix{3, 3, Float64, 9} with indices SOneTo(3)×SOneTo(3):
+  7.03765   -6.72293  -0.990976
+ -7.80764   13.4257   -0.435663
+  5.59968  -11.3503    2.22444
+```
+
+</br>
+
+## 속도 향상
+
+앞서 언급했듯이 StaticArray 는 배열의 크기가 100 보다 작을 때 뚜렷하며, 어느 이상 크다면 오히려 일반 배열보다 속도가 느릴 수 있다. `BenchmarkTools.jl` 을 통해 확인해보라. 다음은 7 x 7 행렬의 역행렬을 구하는 것에 대해 그 속도를 구하는 것이다.
+
+```julia
+using BenchmarkTools, StaticArrays, LinearAlgebra
+
+A = rand(7, 7)
+B = SMatrix{7, 7}(A);
+
+@btime inv(A)
+@btime inv(B)
+```
+
+내 맥북프로에서의 결과로는 StaticArray 의 결과가 그렇지 않은 것보다 약 2.5 배 정도 빨랐다.
 
 
