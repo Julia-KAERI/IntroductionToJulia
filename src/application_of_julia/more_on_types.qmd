@@ -1,0 +1,208 @@
+---
+title: "타입에 대해 더 알아보기"
+
+number-sections: true
+number-depth: 2
+crossref:
+  chapters: false
+---
+
+우리는 [변수와 기본 타입](../introduction_to_julia/02_variables_basic_types.qmd), [타입의 계층구조와 메서드 디스패치](../introduction_to_julia/08_type_hierarchy.qmd), [복합 타입](../introduction_to_julia/09_composite_types.qmd) 에서 Julia 언어의 타입에 대해 알아보았다. 여기서는 앞서 다루지 않았던 것들에 대해 좀 더 알아보기로 하자.
+
+</br>
+
+## 타입에 대한 연산 {#sec-operations_on_types}
+
+`isa(a, t::Type)` 은 `a` 가 `t` 타입 혹은 `t` 의 하위타입의 인스턴스라면 `true`, 아니면 `false` 를 반환한다. 
+
+```txt
+In [9]: isa(1.0, AbstractFloat)
+Out[9]: true
+```
+
+</br>
+
+`typeof(a)` 함수는 `a` 의 타입을 반환한다.
+
+</br>
+
+## 선언된 타입(Declared Types) {#sec-declared_types}
+
+추상 타입, 원시 타입, 복합 타입 은 몇가지 공통점이 존재한다.
+
+ - 명시적으로 선언되었다.
+ - 이름이 있다.
+ - 명시적으로 선언된 상위타입이 있다.
+ - 타입 매개변수를 가질 수 있다.
+
+추상 타입, 원시 타입, 복합 타입은 내부적으로 `DataType` 이란 타입의 인스턴스이다. 즉 `DataType` 은 타입에 대한 타입이다. 
+
+```txt
+In [11]: typeof(Real)
+Out[11]: DataType
+
+In [13]: typeof(Array{Float32, 1})
+Out[13]: DataType
+```
+
+DataType 은 추상적 이거나 구체적일 수 있다. 구체적인 DataType 은 정해진 크기, 저장 레이아웃을 가지며, 선택적으로 필드 이름을 가진다. 즉 원시 타입은 크기가 0이 아닌 필드 이름이 없는 DataTyppe 이다. 복합 타입은 필드 이름을 가지거나 비어 있는(크기가 0인) DataType 이다.
+시스템의 모든 구체적인 값은 어떤 데이터 타입의 인스턴스입니다.
+
+</br>
+
+## UnionAll 타입 {#sec-unionall_type}
+
+</br>
+
+## 튜플 타입 {#sec-tuple_types}
+
+튜플은 함수의 자체를 제외한 인수들의 추상화이다. 예를 들어 `f(x, y) = x+y` 에서 인자로 전달되는 `x, y` 는 그 순서와 타입이 중요한데 이것을 추상화 한 것이 컨테이너인 튜플이다. 따라서 튜플 타입은 각 매개변수가 하나의 필드 타입인 매개변수화된 불변 타입과 유사하다. 튜플 `(x, y)` 는 다음과 같은 2개의 필드를 갖는 복합타입과 닮았다.
+
+```julia
+struct Tup2{A, B}
+    a::A
+    b::B
+end
+```
+
+그러나 세가지의 차이점이 있는데,
+
+- 튜플 타입은 몇개든 매개변수를 가질 수 있다.
+- 튜플 타입은 타입 매개변수에 대해 공변적(covariant) 하다. `Tuple{Int}` 는 `Tuple{Any}` 의 하위타입이며 따라서 `Tuple{Any}` 는 추상 타입으로 여겨질 수도 있다. 튜플 타입은 타입 매개변수가 구체적일 때만 구체적인 타입이다.
+- 튜플은 필드 이름이 존재하지 않으며 인덱스로만 접근 할 수 있다.
+
+우리가 알다시피 튜플은 괄호와 콤마로 `(1, "a", [1, 2])` 와 같이 선언된다. 이것의 타입은 `Tuple{Int64, String, Vector{Int64}}` 이다.
+
+</br>
+
+### Vararg Tuple Types {#sec-vararg_tuple_type}
+
+예를 들면
+
+```julia
+vartup = Tuple{AbstractString, Vararg{Int}}
+```
+
+에서 `vartup` 는 첫번째 성분은 `AbstractString` 타입(혹은 그 하위 타입) 이며 그 다음부터는 모두 정수이며 갯수는 제한되지 않은 타입을 의미한다.
+
+```txt
+In [8]: typeof(("a", 1,2,3)) <: vartup
+Out[8]: true
+
+In [9]: typeof(("a", 1,2,3.0)) <: vartup
+Out[9]: false
+
+In [10]: typeof(("a", 1,2,3,4,5)) <: vartup
+Out[10]: true
+```
+
+타입 `T` 와 정수 `N` 에 대해 `Vararg{T, N}` 는 변수의 개수가 제한된다. 아래의 `vartup2` 는 `AbstractString` 타입 혹은 그 하위타입, 이후에 정수 2개를 포함하는 튜플 타입을 의미한다.
+
+```txt
+In [11]: vartup2= Tuple{AbstractString, Vararg{Int, 2}}
+Out[11]: Tuple{AbstractString, Int64, Int64}
+
+In [12]: typeof(("a", 1,2,3)) <: vartup2
+Out[12]: false
+
+In [13]: typeof(("a", 1,2)) <: vartup2
+Out[13]: true
+
+In [15]: Tuple{AbstractString, Int, Int} <: vartup2
+Out[15]: true
+
+In [16]: Tuple{AbstractString, Int} <: vartup2
+Out[16]: false
+
+In [17]: Tuple{AbstractString, Int, Int, Int} <: vartup2
+Out[17]: false
+```
+
+
+</br>
+
+## `Type{T}` {#sec-type_selector}
+
+타입 `T` 에 대해 `Type{T}` 는 매개화된 추상타입으로 유일한 인스턴스는 `T` 이다. 즉 `Type{T}` 는 인스턴스가 `T` 인 싱글턴 타입이다.
+
+```txt
+In [1]: isa(Float32, Type{Float32})
+Out[1]: true
+
+In [2]: isa(Int32, Type{Real})
+Out[2]: false
+```
+
+매개변수 없는 `Type` 은 모든 타입을 그 인스턴스로 갖는 추상 타입이다. 
+
+```txt
+In [3]: isa(Int32, Type)
+Out[3]: true
+
+In [4]: isa(1, Type)
+Out[4]: false
+```
+
+
+</br>
+
+## Type Alias {#sec-type-alias}
+
+예를 들어 `Float32` 를 `F32` 로 사용하고 싶다면
+
+```julia
+F32 = Float32
+```
+
+라고 해주면 된다.
+
+```txt
+In [1]: F32=Float32
+Out[1]: Float32
+
+In [2]: F32(3)
+Out[2]: 3.0f0
+
+In [3]: A=Array{F32}([1,2,3])
+Out[3]: 3-element Vector{Float32}:
+ 1.0
+ 2.0
+ 3.0
+```
+
+</br>
+
+## Value Types {#sec-value_types}
+
+매개변수가 있는 타입에 대해 매개변수로 값을 가질 수 있다. 이경우 값은 "순수 비트" 값(타입, 심볼, 정수, 부동 소수, 튜플 등)을 타입 매개변수로 포함할 수 있다. 가장 흔한 예는 타입 `T` 의 성분을 갖는 `N` 차원 배열 `Array{T,N}` 이며, 이 경우 `N` 은 정수이다.
+
+자신만의 타입을 생성하여 값을 매개변수로 받고, 이를 사용해 커스텀 타입의 디스패치를 제어할 수 있다. 이 아이디어를 설명하기 위해, `Val{x}` 라는 매개변수화된 타입과 그 생성자 `Val(x) = Val{x}()` 를 알아보자. 이는 보다 복잡한 계층 구조가 필요 없는 경우 이 기법을 활용하는 일반적인 방법으로 사용된다. `Val` 은 다음과 같이 정의되었다.
+
+```julia
+struct Val{x}
+end
+
+Val(x) = Val{x}()
+```
+
+이것 이외에는 없다. Julia 의 일부 표준 라이브러리는 `Val` 인스턴스를 인자로 받으며 당신은 이것을 당신의 함수에 사용 할 수 있다. 예를 들면
+
+```txt
+In [1]: firstlast(::Val{true}) = "First"
+Out[1]: firstlast (generic function with 1 method)
+
+In [2]: firstlast(::Val{false}) = "Last"
+Out[2]: firstlast (generic function with 2 methods)
+
+In [3]: firstlast(Val(true))
+Out[3]: "First"
+
+In [4]: firstlast(Val(false))
+Out[4]: "Last"
+```
+
+이다.
+
+Julia 전반에 걸친 일관성을 유지하기 위해 호출 시에는 항상 타입을 사용하는 대신 `Val` 인스턴스를 전달해야 한다. 즉, `foo(Val{:bar})` 대신 `foo(Val(:bar))` 를 사용하는 것이 좋다.
+
+배개변수를 가진 Valyue type, 특히 `Val` 을 잘못 사용하기 쉬우며 경우에 따라 코드의 성능을 크게 저하시킬 수 있다. 특히, 앞서 예시의 방식대로 실제 코드를 작성하는 것은 피하는 것이 좋다. `Val`의 적절한 사용과 부적절한 사용에 대한 더 자세한 정보는 [Julia 성능 팁](performance_tips.qmd) 에서의 논의를 참고하라.

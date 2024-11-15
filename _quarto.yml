@@ -64,6 +64,7 @@ website:
       collapse-level: 2
       contents :
         - href : src/application_of_julia/00_part2.qmd
+        - href : src/application_of_julia/more_on_types.qmd
         - href : src/application_of_julia/string_literal.qmd
         - href : src/application_of_julia/performance_tips.qmd
         - href : src/application_of_julia/multithreads.qmd
@@ -100,7 +101,7 @@ format:
     # resources: web-resources/**
     # https://quarto.org/docs/output-formats/html-themes.html#overview
     # theme: darkly
-    fontsize: 0.80em
+    fontsize: 0.85em
     code-copy: true
     code-block-bg: true
     code-block-background: true
