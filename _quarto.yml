@@ -65,6 +65,7 @@ website:
       contents :
         - href : src/application_of_julia/00_part2.qmd
         - href : src/application_of_julia/more_on_types.qmd
+        - href : src/application_of_julia/pkg.qmd
         - href : src/application_of_julia/string_literal.qmd
         - href : src/application_of_julia/performance_tips.qmd
         - href : src/application_of_julia/multithreads.qmd

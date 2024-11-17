@@ -94,11 +94,11 @@
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/more_on_types.html</loc>
-    <lastmod>2024-11-15T01:45:09.713Z</lastmod>
+    <lastmod>2024-11-17T10:19:52.503Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/performance_tips.html</loc>
-    <lastmod>2024-11-15T10:18:01.368Z</lastmod>
+    <lastmod>2024-11-17T10:20:17.526Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/00_part3.html</loc>
@@ -159,5 +159,9 @@
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/index.html</loc>
     <lastmod>2024-09-27T01:40:37.328Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/pkg.html</loc>
+    <lastmod>2024-11-17T13:23:26.835Z</lastmod>
   </url>
 </urlset>
