@@ -1,0 +1,315 @@
+---
+title: "Julia 스타일 가이드"
+
+number-sections: true
+number-depth: 3
+crossref:
+  chapters: false
+---
+
+이 문서는 관례적인 julia 언어의 코딩 스타일의 몇가지 모습에 대해 다룹니다. 이 규칙들중에 어떤 것도 절대적이지 않으며 단지 당신이 언어에 친숙해지고 다른 여러가지중에 선택하도록 제안하는 것입니다.
+
+</br>
+
+## 들여쓰기 {#sec-indentation}
+
+각 들여쓰기 레벨마다 4개의 공백을 사용합니다.
+
+</br>
+
+## 단순한 스크립트가 아닌 함수를 사용한다 {#sec-write_functions}
+
+Writing code as a series of steps at the top level is a quick way to get started solving a problem, but you should try to divide a program into functions as soon as possible. Functions are more reusable and testable, and clarify what steps are being done and what their inputs and outputs are. Furthermore, code inside functions tends to run much faster than top level code, due to how Julia's compiler works.
+
+It is also worth emphasizing that functions should take arguments, instead of operating directly on global variables (aside from constants like pi).
+
+코드를 최상위 단계에서 일련의 단계로 작성하는 것은 문제를 해결하는 빠른 시작 방법이지만 가능한 한 빨리 프로그램을 함수로 나누는 것이 좋습니다. 함수는 재사용 가능하고 테스트하기 쉬우며, 수행 중인 단계와 입력 및 출력이 무엇인지 명확하게 해줍니다. 더욱이, Julia의 컴파일러 작동 방식 때문에 함수 내부의 코드는 최상위 레벨 코드보다 훨씬 더 빠르게 실행되는 경향이 있습니다.
+
+또한, 함수는 전역 변수를 직접 사용하는 대신(π와 같은 상수를 제외하고) 인자를 받아야 한다는 점을 강조할 가치가 있습니다.
+
+</br>
+
+## 과도하게 타입을 특정하는것을 피하세요 {#sec-avoid_writing_overly-specific_types}
+
+코드는 가능한 한 generic 해야 합니다. Generic 이란 코드 작성 시점이 아니라 코드 동작 시점에서 결정되는 것을 말합니다.
+
+```julia
+Complex{Float64}(x)
+```
+
+보다는 generic 함수를 사용하여 다음과 같이 쓰는 것이 좋습니다.
+
+```julia
+complex(float(x))
+```
+
+이 버젼은 `x` 를 항상 같은 타입이 아닌 적당한 타입으로 변경합니다.
+
+이 스타일 지침은 특히 함수의 인자와 관련이 있습니다. 예를 들어, 실제로 어떤 정수든 가능하다면 특정 인자를 반드시 `Int` 나 `Int32` 로 선언하지 말고 추상 타입인 `Integer` 를 사용하세요. 사실, 다른 메서드 정의와의 모호성을 해결할 필요가 없다면, 많은 경우 인수 타입을 생략할 수도 있습니다. 필요한 작업을 지원하지 않는 타입이 전달되면 어쨌든 `MethodError` 가 발생하기 때문입니다. (이를 [덕 타이핑](https://en.wikipedia.org/wiki/Duck_typing)이라고 합니다.)
+
+아래의 `addone` 함수의 정의를 예를 들어 봅시다. 이 함수는 인자에 `1` 을 더한 값을 반환합니다.
+
+```julia
+addone(x::Int) = x + 1                 # works only for Int
+addone(x::Integer) = x + oneunit(x)    # any integer type
+addone(x::Number) = x + oneunit(x)     # any numeric type
+addone(x) = x + oneunit(x)             # any type supporting + and oneunit
+```
+
+`addone` 의 마지막 정의는 `oneunit` 을 지원하는 모든 타입과 해당 타입에서 동작하는 `+` 연산을 처리할 수 있습니다. (`oneunit(x)` 는 `x` 와 동일한 타입에서 `1` 을 반환하며, 의도치 않은 타입 승격을 방지합니다.) 핵심은, `addone(x) = x + oneunit(x)` 와 같은 일반적인 정의만 작성해도 성능상의 손실이 전혀 없다는 점입니다. Julia는 필요에 따라 자동으로 특화된 버전을 컴파일하기 때문입니다.
+
+예를 들어, `addone(12)` 를 처음 호출하면, Julia는 `x::Int` 인수를 위한 특화된 `addone` 함수를 자동으로 컴파일하고, `oneunit` 호출을 인라인된 값 `1`로 대체합니다. 따라서 위에서 언급한 `addone` 함수의 처음 세 가지 정의는 네 번째 정의와 완전히 중복됩니다.
+
+</br>
+
+## 과도한 인자의 다양성을 호출할 때 처리세요 {#sec-handle_excess_argument_diversity_in_the_caller}
+
+```julia
+function foo(x, y)
+    x = Int(x); y = Int(y)
+    ...
+end
+foo(x, y)
+```
+
+를 쓰는 대신에 아래를 사용하세요.
+
+```julia
+function foo(x::Int, y::Int)
+    ...
+end
+foo(Int(x), Int(y))
+```
+
+`foo` 실제로는 모든 타입의 수를 받지는 않기 때문에 후자가 더 나은 스타일입니다. 단지 `Int` 들을 받을 뿐입니다.
+
+여기서 하나의 문제는 함수가 본질적으로 정수만을 필요로 한다면, 함수를 호출할 때 정수가 아닌 수에 대해  어떻게 변환할지(예: `floor` 나 `ceil`)를 명시적으로 결정하도록 강제하는 것이 더 나을 수 있다는 점입니다. 또 다른 문제는 더 구체적인 타입을 선언하면 향후 메서드 정의를 위한 더 많은 "여지"을 남길 수 있다는 점입니다. 즉, 특정 타입에 대해 메서드를 정의하면, 추후 다른 타입이나 추상 타입에 대해 별도의 메서드를 정의하기가 더 용이해질 수 있습니다.
+
+</br>
+
+## 인자를 변경하는 함수의 이름 끝에 `!` 를 붙이세요 {#sec-append_!_at_the_end_of_function_name}
+
+```julia
+function double(a::AbstractArray{<:Number})
+    for i in eachindex(a)
+        a[i] *= 2
+    end
+    return a
+end
+```
+
+대신에
+
+```julia
+function double!(a::AbstractArray{<:Number})
+    for i in eachindex(a)
+        a[i] *= 2
+    end
+    return a
+end
+```
+
+를 사용하세요.
+
+Julia Base는 이러한 관례를 전반적으로 사용하며, 복사 와 수정 형태를 모두 제공하는 함수(예: `sort`와 `sort!`)와 단순히 수정만 하는 함수(예: `push!`, `pop!`, `splice!`)의 예제를 포함하고 있습니다. 이러한 함수들은 편의를 위해 수정된 배열을 반환하는 것이 일반적입니다.
+
+입출력(IO) 또는 난수 생성기(RNG)를 사용하는 함수는 주목할 만한 예외입니다. 이 함수들은 거의 반드시 IO나 RNG를 변형해야 하므로, 함수 이름 끝에 !를 붙이는 것은 IO 변형이나 RNG 상태 진행 이외의 다른 변형이 있음을 나타냅니다. 예를 들어 `rand(x)`는 RNG를 변형하지만, `rand!(x)` 는 RNG와 x를 모두 변형합니다. 마찬가지로, `read(io)` 는 `io`를 변형하지만, `read!(io, x)`는 `io`와 `x` 를 모두 변형합니다.
+
+</br>
+
+## 이상한 타입 `Unions` 를 피하세요 {#sec-avoid_strange_type_unios}
+
+`Union{Function, AbstractString}` 과 같은 타입은 대개 설계가 더 분명해야 한다는 것을 의미합니다.
+
+</br>
+
+## 복잡한 컨테이너 타입을 피하세요 {#sec-avoid_elaborate_container_types}
+
+다음과 같은 배열을 만드는 것은 보통 도움이 안됩니다.
+
+```julia
+a = Vector{Union{Int,AbstractString,Tuple,Array}}(undef, n)
+```
+
+이경우 `Vector{Any}(undef, n)` 이 낫습니다. 하나의 타입에 많은 것들을 때려박는 것보다는 특정 사용에서 `a[i]::Int` 와 같이 컴파일러에게 알려주는 것이 더 도움이 됩니다.
+
+</br>
+
+## 직접적으로 필드에 접근하기보다는 export 된 메서드를 사용하세요 {#sec-prefer_exported_methods_over_direct_field_access}
+
+관례적인 Julia 코드는 일반적으로 모듈에서 export된 메서드를 해당 타입에 대한 인터페이스로 간주해야 합니다. 객체의 필드는 대개 구현의 세부사항으로 취급되며, API로 명시되지 않는 한 사용자 코드에서 직접 접근해서는 안 됩니다. 이는 다음과 같은 여러 이점을 제공합니다.
+
+1. 패키지 개발자는 구현을 변경해도 사용자 코드를 깨뜨리지 않을 수 있습니다.
+
+2. 메서드는 `map` 과 같은 고차 함수에 전달할 수 있습니다. 예를 들어, `map(imag, zs)`는 `[z.im for z in zs]` 보다 간결하고 추상적입니다.
+
+3. 메서드는 추상 타입에 정의될 수 있습니다. 
+
+4. 메서드는 서로 다른 타입 간에 공유될 수 있는 개념적 연산을 기술할 수 있습니다. 예를 들어, `real(z)` 는 복소수(Complex)와 사원수(Quaternion) 모두에서 동작합니다.
+
+Julia의 디스패치 시스템은 이러한 스타일을 권장합니다. 예를 들어, `play(x::MyType)` 는 특정 타입에 대해서만 `play` 메서드를 정의하며, 다른 타입은 각자의 구현을 가질 수 있습니다.
+
+마찬가지로, `export` 되지 않은 함수는 내부적으로 사용되며 변경될 가능성이 높습니다. 문서에서 명시하지 않는 한, 이러한 함수는 공개 API로 간주되지 않습니다.
+
+이 규칙에 대한 반례는 [`NamedTupe`](https://docs.julialang.org/en/v1/base/base/#Core.NamedTuple), [`RegexMatch`](https://docs.julialang.org/en/v1/base/strings/#Base.match), [`StatStruct`](https://docs.julialang.org/en/v1/base/file/#Base.stat) 가 있습니다.
+
+</br>
+
+## Julia `base/` 와 일치하도록 이름을 붙이세요 {#sec-using_naming_convections_with_julia_base}
+
+Julia 코드에서 이름 지정에 대한 스타일 가이드는 다음과 같습니다:
+
+- 모듈 및 타입 이름에는 대문자와 카멜 케이스(CamelCase)를 사용합니다. : `module SparseArrays`, `struct UnitRange`
+
+- 함수 이름에는 소문자를 사용합니다(`maximum`, `convert`). 읽기 괜찮다면 여러 단어를 붙여 씁니다(`isequal`, `haskey`). 필요할 때는 단어 구분자로 밑줄(`_`)을 사용합니다. 개념을 조합한 경우에도 혹은 수식어가 있을 때에도 밑줄을 사용합니다(`remotecall_fetch` 는 `fetch(remotecall(...))` 의 더 효율적인 구현을 의미합니다).
+.
+- 하나 이상의 인수를 수정하는 함수는 이름 끝에 `!` 를 붙입니다(`sort!`, `push!`).
+  
+- 간결함을 중시하되, 약어는 피합니다(`indxin` 보다는 `indexin`). 약어는 기억하기 어렵고, 특정 단어를 어떻게 축약했는지 혼동을 일으킬 수 있습니다.
+
+여러 단어가 필요한 함수 이름은 해당 함수가 하나 이상의 개념을 표현하는지 고려하십시오. 필요하다면 함수 이름을 더 작은 조각으로 나누는 것이 좋습니다.
+
+</br>
+
+## 함수 인자의 순서를 Julia Base 와 비슷하게 하세요 {#sec-write_functions_with_argument_ordering_simmilar_to_julia_base}
+
+Julia 의 Base 라이브러리는 함수 인수의 순서를 다음과 같은 일반 규칙에 따라 배치합니다. 이는 적용 가능한 경우에 해당하며, 일관된 사용자 경험을 제공합니다:
+
+1. **함수 인자**. 첫 번째 인수로 함수가 올 경우, `do` 블록을 사용해 다중 라인의 익명 함수를 전달할 수 있습니다.
+
+2. **I/O 스트림**. I/O 객체가 첫 번째로 오면 `sprint` 와 같은 함수에 전달하기 용이합니다/ 예: `sprint(show, x).`
+
+3. **수정되는 입력** 수정되는 입력은 먼저 나옵니다. 예를 들어 `fill!(x, v)` 에서 `x` 는 수정 대상이고, 값 `v` 는 뒤에 옵니다.
+
+4. **타입**. 보통 타입 인자가 있을 경우 함수의 출력이 이 타입을 갖도록 되는 경우가 많습니다.예를 들어 `parse(Int, "1")`.그러나 `read(io, String)` 의 경우, I/O 객체가 타입보다 앞에 오며, 일반 규칙에 맞는 예외입니다.
+
+5. **수정되지 않는 입력**. 수정되지 않는 입력은 수정되는 입력 뒤에 옵니다. 예를 들어 `fill!(x, v)` 에서 `v` 는 수정되지 않는 입력입니다.
+
+6. **키**. 연관 컬렉션에서는 키-값 쌍의 키를 나타냅니다. 인덱스 컬렉션에서는 인덱스를 나타냅니다.
+
+7. **값**. 연관 컬렉션에서는 키-값 쌍의 값입니다. `fill!(x, v)` 의 경유와 비슷합니다.
+   
+8. **기타 인자**. 위에 해당하지 않는 나머지 인수입니다.
+
+9. **가변 인수(Varargs)**. 함수 호출 시 끝에 무제한 나열 가능한 인수입니다. 예를 들어 `Matrix{T}(undef, dims)` 에서 차원(`dims`) 는 튜플로도(`Matrix{T}(undef, (1,2))`), 가변 인수(`Vararg`)로 도 (`Matrix{T}(undef, 1, 2)`) 전달 가능합니다. 
+
+10. **키워드 인수**. 키워드 인수는 항상 함수 정의의 마지막에 위치합니다. 
+
+
+대다수 함수는 위에 나열된 모든 종류의 인자를 받지 않습니다. 숫자는 단지 함수에 적용 가능한 인자들의 우선순위를 나타내기 위한 것입니다.
+
+물론 예외도 있습니다. `convert` 에서 첫번째 인자는 항상 타입입니다. `setindex!` 에서는 값이 인덱스보다 앞에 옵니다. 이는 인덱스를 가변 인자로 제공할 수 있게 하기 위함입니다.
+
+API를 설계할 때 이 순서를 최대한 준수하면 함수 사용자가 일관된 경험을 할 수 있습니다.
+
+</br>
+
+## `try-catch` 를 남용하지 마세요 {#sec-dont_overuse_try_catch}
+
+`try-catch` 로 에러를 탐지하는 것보다 피하는 것이 낫습니다.
+
+</br>
+
+## 조건문을 괄호로 싸지 마세요 {#sec-dont_parrenthesize_conditions}
+
+Julia 는 `if` 나 `while` 문에서 괄호를 요구하지 않습니다. `if (a == b)` 대신에 `if a == b` 를 사용하세요.
+
+</br>
+
+## `...` 를 남용하지 마세요 {#sec-don_overuse_splicing}
+
+함수 인자 에서 **스플라이싱(splicing)** 을 자주 사용하면 중독성이 있을 수 있습니다. 예를 들어, `[a..., b...]` 대신에 간단히 `[a; b]` 를 사용하세요. 또한, `collect(a)` 는 `[a...]` 보다 더 나은 방법입니다. 하지만 `a` 가 이미 이터러블(iterable) 한 객체라면, 굳이 배열로 변환하지 않고 그대로 두는 것이 더 효율적일 때가 많습니다. 
+
+</br>
+
+## 생성자가 바로 그 타입을 반환하는지 확인하세요 {#sec-ensure_constructors_return_type}
+
+타입 `T` 에 대한 `T(x)` 메서드를 호출할 때 보통 `T` 타입을 반환할것을 기대합니다. 예상하지 못한 타입을 반환하는 생성자(constructor) 는 혼란과 예측하지 못한 행동을 일으킬 수 있습니다.
+
+```julia
+julia> struct Foo{T}
+           x::T
+       end
+
+julia> Base.Float64(foo::Foo) = Foo(Float64(foo.x))  # Do not define methods like this
+
+julia> Float64(Foo(3))  # Should return `Float64`
+Foo{Float64}(3.0)
+
+julia> Foo{Int}(x) = Foo{Float64}(x)  # Do not define methods like this
+
+julia> Foo{Int}(3)  # Should return `Foo{Int}`
+Foo{Float64}(3.0)
+```
+
+코드의 명확성과 타입 일관성을 유지하기 위해 항상 생성자가 생성하는 타입을 반환하도록 설계하세요
+
+</br>
+
+## 불필요한 정적 매개변수를 사용하지 마세요 {#sec-dont_use_unnecessary_static_parameters}
+
+
+```julia
+foo(x::T) where {T<:Real} = ...
+```
+와 같은 함수 시그너쳐는 `T` 가 함수 내부에서 사용되지 않는다면 아래와 같이 변경되어야 합니다.
+
+```julia
+foo(x::Real) = ...
+```
+
+심지어 `T` 가 사용되더라도 `typeof(T)` 로 대체될 수 있습니다. 성능 차이는 없습니다. 이것은 일반적인 정적 매개변수 사용에 대한 주의(caution) 은 아니며 단지 필요하지 않을 경우에 대한 주의입니다.
+
+또한 컨테이너 타입은 함수 내부에 타입 매개변수가 필요할 수 있습니다. [추상 컨테이너를 필드로 갖는 것을 피하라](performance_tips.qmd#sec-avoid_field_with_abstract_container) 를 참고하시기 바랍니다.
+
+</br>
+
+## 인스턴스와 타입에 대한 혼동을 피하라 {#sec-avoid_confusion_whether_between_something_is_an_istance_or_type}
+
+다음과 같은 정의는 혼란스럽습니다.
+
+```julia
+foo(::Type{MyType}) = ...
+foo(::MyType) = foo(MyType)
+```
+
+해당 개념이 `MyType` 으로 작성될지 아니면 `MyType()` 으로 작성될지 결정하고, 그 결정을 일관되게 유지하는 것이 중요합니다.
+
+선호되는 스타일은 기본적으로 인스턴스를 사용하고 필요하다면 `Type{MyType}` 에 대한 메서드를 추가하는 것입니다.
+
+만약 타입이 사실상 열거형(enumeration)이라면, 이를 단일 타입(이상적으로는 immutable struct 혹은 원시 타입(primitive type))으로 정의하고, 열거형 값들을 그 타입의 인스턴스로 만드는 것이 좋습니다. 생성자와 변환 함수는 값이 유효한지 검증할 수 있습니다. 이 방식은 열거형 타입을 추상 타입으로 정의하고, 그 "값들"을 서브타입으로 만드는 방식보다 선호됩니다.
+
+</br>
+
+## 매크로를 남요하지 마세요 {#sec-dont_overuse_macro}
+
+매크로가 실제로는 함수로 작성될 수 있을 지 확인하세요.
+
+특히 매크로 내에서 `eval` 을 호출하는 것은 매우 위험한 신호입니다. `eval` 을 사용하면 해당 매크로는 최상위에서만 동작할 수 있게 됩니다. 만약 이런 매크로가 함수로서 쓰여질 수 있다면 런타임 값에 자연스럽게 접근할 수 있게 됩니다.
+
+</br>
+
+## 인터페이스 레벨에서 안전하지 않은 동작을 노출하지 마세요 {#sec-don_expose_unsafe_operations_at_the_interface_level}
+
+내이티브 포인터를 사용하는 타입을 사용한다고 합시다.
+
+```julia
+mutable struct NativeType
+    p::Ptr{UInt8}
+    ...
+end
+```
+
+아래와 같은 정의를 작성하지 마세요.
+
+```julia
+getindex(x::NativeType, i) = unsafe_load(x.p, i)
+```
+
+문제는 이것이 안전하지 않으며, 메모리 버그에 취약하다는 것을 알지 못한채 사용자가 `x[i]` 에 무언가를 쓸 수 있다는 것입니다. 
+
+이러한 함수는 안정성을 보장하기 위해 작업을 확인하거나, 그렇지 않으면 `unsafe` 라는 이름을 포함하여 호출자에게 경고를 해야 합니다.
+
+</br>
+
+## 기본 콘테이너 타입의 메서드를 

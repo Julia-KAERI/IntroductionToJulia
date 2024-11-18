@@ -1,167 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/summary.html</loc>
-    <lastmod>2024-09-27T01:40:37.331Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/08_type_hierarchy.html</loc>
+    <lastmod>2024-10-06T05:24:44.213Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/11_polynomial.html</loc>
-    <lastmod>2024-09-27T01:40:37.327Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/10_metaprogramming_and_macro.html</loc>
-    <lastmod>2024-10-14T23:44:37.551Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/11_interfaces.html</loc>
+    <lastmod>2024-11-08T00:09:25.184Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/09_composite_types.html</loc>
-    <lastmod>2024-09-27T01:40:37.326Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/08_type_hierarchy.html</loc>
-    <lastmod>2024-11-14T23:49:23.229Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/07_module_package.html</loc>
-    <lastmod>2024-09-27T01:40:37.325Z</lastmod>
+    <lastmod>2024-10-06T05:24:44.213Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/06_arrays.html</loc>
-    <lastmod>2024-09-27T01:40:37.325Z</lastmod>
+    <lastmod>2024-10-06T05:24:44.213Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/05_control_flows.html</loc>
-    <lastmod>2024-09-27T01:40:37.324Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/04I_splat_operator.html</loc>
-    <lastmod>2024-09-27T01:40:37.323Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/04_containers.html</loc>
+    <lastmod>2024-11-08T00:09:25.183Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/02_variables_basic_types.html</loc>
-    <lastmod>2024-10-07T06:38:48.389Z</lastmod>
+    <lastmod>2024-11-08T00:09:25.183Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/00_part1.html</loc>
-    <lastmod>2024-10-07T05:45:46.443Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/unittest.html</loc>
+    <lastmod>2024-10-06T05:24:44.212Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/staticarray.html</loc>
-    <lastmod>2024-11-14T22:55:30.737Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/random.html</loc>
+    <lastmod>2024-10-06T05:24:44.211Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/pkg_dev.html</loc>
-    <lastmod>2024-11-14T01:31:37.469Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/makie.html</loc>
+    <lastmod>2024-10-06T05:24:44.210Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/leastsquarefit.html</loc>
-    <lastmod>2024-09-27T01:40:37.308Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/dataframes.html</loc>
-    <lastmod>2024-10-07T05:55:53.949Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/fileio.html</loc>
+    <lastmod>2024-11-14T07:43:19.177Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/string_literal.html</loc>
-    <lastmod>2024-10-15T04:58:20.534Z</lastmod>
+    <lastmod>2024-11-08T00:09:25.182Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/performance_tips.html</loc>
-    <lastmod>2024-11-17T10:20:17.526Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/multithreads.html</loc>
+    <lastmod>2024-11-08T00:09:25.182Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/more_on_types.html</loc>
-    <lastmod>2024-11-15T01:45:09.713Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/asynchronous.html</loc>
+    <lastmod>2024-11-08T00:09:25.181Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/summary.html</loc>
+    <lastmod>2024-10-06T05:24:44.217Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/11_polynomial.html</loc>
+    <lastmod>2024-10-06T05:24:44.214Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/09I_pretty_printing.html</loc>
+    <lastmod>2024-10-06T05:24:44.213Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/07I_sort.html</loc>
+    <lastmod>2024-10-06T05:24:44.213Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/04I_splat_operator.html</loc>
+    <lastmod>2024-10-06T05:24:44.212Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/00_part3.html</loc>
+    <lastmod>2024-11-08T00:09:25.182Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/references.html</loc>
+    <lastmod>2024-10-06T05:24:44.203Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/index.html</loc>
+    <lastmod>2024-10-06T05:24:44.202Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/intro.html</loc>
+    <lastmod>2024-10-06T05:24:44.202Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/00_part2.html</loc>
     <lastmod>2024-11-08T00:09:25.181Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/intro.html</loc>
-    <lastmod>2024-09-27T01:40:37.304Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/about.html</loc>
-    <lastmod>2024-09-27T01:40:37.261Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/index.html</loc>
-    <lastmod>2024-10-04T05:35:43.351Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/references.html</loc>
-    <lastmod>2024-09-27T01:40:37.304Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/asynchronous.html</loc>
-    <lastmod>2024-10-15T02:12:20.467Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/multithreads.html</loc>
-    <lastmod>2024-09-27T01:40:37.321Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/pkg.html</loc>
-    <lastmod>2024-11-18T10:20:53.048Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/00_part3.html</loc>
-    <lastmod>2024-10-07T05:45:19.979Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/fileio.html</loc>
-    <lastmod>2024-09-27T01:40:37.307Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/makie.html</loc>
-    <lastmod>2024-09-27T01:40:37.320Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/random.html</loc>
-    <lastmod>2024-09-27T01:40:37.322Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/unittest.html</loc>
-    <lastmod>2024-09-27T01:40:37.322Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/01_julia_language.html</loc>
-    <lastmod>2024-09-30T07:30:20.357Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/03_functions_and_operators.html</loc>
-    <lastmod>2024-09-27T01:40:37.323Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/04_containers.html</loc>
-    <lastmod>2024-10-11T05:37:43.037Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/00_part1.html</loc>
+    <lastmod>2024-11-08T00:09:25.183Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/06I_function_composition_and_piping.html</loc>
-    <lastmod>2024-09-27T01:40:37.324Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/07I_sort.html</loc>
-    <lastmod>2024-09-27T01:40:37.325Z</lastmod>
+    <lastmod>2024-10-06T05:24:44.213Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/08I_documentation.html</loc>
-    <lastmod>2024-09-27T01:40:37.325Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/09I_pretty_printing.html</loc>
-    <lastmod>2024-09-27T01:40:37.326Z</lastmod>
+    <lastmod>2024-10-06T05:24:44.213Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/10I_exception.html</loc>
-    <lastmod>2024-09-27T01:40:37.326Z</lastmod>
-  </url>
-  <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/11_interfaces.html</loc>
-    <lastmod>2024-10-11T05:38:10.767Z</lastmod>
+    <lastmod>2024-10-06T05:24:44.214Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/index.html</loc>
-    <lastmod>2024-09-27T01:40:37.328Z</lastmod>
+    <lastmod>2024-10-06T05:24:44.214Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/about.html</loc>
+    <lastmod>2024-10-06T05:24:44.180Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/more_on_types.html</loc>
+    <lastmod>2024-11-17T10:19:52.503Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/pkg.html</loc>
+    <lastmod>2024-11-18T11:45:36.483Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/dataframes.html</loc>
+    <lastmod>2024-10-06T05:24:44.204Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/leastsquarefit.html</loc>
+    <lastmod>2024-10-06T05:24:44.205Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/pkg_dev.html</loc>
+    <lastmod>2024-11-14T07:43:47.958Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/staticarray.html</loc>
+    <lastmod>2024-11-14T12:49:58.572Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/01_julia_language.html</loc>
+    <lastmod>2024-10-06T05:24:44.212Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/03_functions_and_operators.html</loc>
+    <lastmod>2024-10-06T05:24:44.212Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/05_control_flows.html</loc>
+    <lastmod>2024-10-06T05:24:44.212Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/07_module_package.html</loc>
+    <lastmod>2024-10-06T05:24:44.213Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/10_metaprogramming_and_macro.html</loc>
+    <lastmod>2024-11-08T00:09:25.183Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/performance_tips.html</loc>
+    <lastmod>2024-11-18T13:23:24.498Z</lastmod>
+  </url>
+  <url>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/style_guide.html</loc>
+    <lastmod>2024-11-18T13:42:13.670Z</lastmod>
   </url>
 </urlset>

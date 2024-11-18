@@ -362,7 +362,7 @@ julia> !isconcretetype(Array), !isabstracttype(Array), isstructtype(Array), !isc
 
 <br>
 
-### 추상 컨테이너를 필드로 갖는 것을 피하라. {#sec-avoid_field_with_abstract_container}
+### 추상 컨테이너를 필드로 갖는 것을 피하라{#sec-avoid_field_with_abstract_container}
 
 동일한 최선의 방법은 컨테이너 타입에도 적용된다:
 

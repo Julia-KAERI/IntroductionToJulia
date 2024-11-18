@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Julia 스타일 가이드 – Introduction To Julia</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../src/application_of_julia/more_on_types.html" rel="next">
+<link href="../../src/application_of_julia/00_part2.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Introduction To Julia</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="탐색 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../src/introduction_to_julia/01_julia_language.html"> 
+<span class="menu-text">Julia 언어의 기초</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../src/application_of_julia/00_part2.html" aria-current="page"> 
+<span class="menu-text">Julia 언어의 활용</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../src/ecosystem_of_julia/00_part3.html"> 
+<span class="menu-text">Julia 언어 생태계</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="mailto:julia.kaeri@gmail.com" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-envelope"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../src/application_of_julia/style_guide.html">Julia 스타일 가이드</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/application_of_julia/00_part2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Julia 언어의 활용</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/application_of_julia/style_guide.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Julia 스타일 가이드</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/application_of_julia/more_on_types.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">타입에 대해 더 알아보기</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/application_of_julia/pkg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pkg.jl</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/application_of_julia/string_literal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">문자열 리터럴</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/application_of_julia/performance_tips.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Julia 성능 팁</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/application_of_julia/multithreads.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">다중스레딩</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../src/application_of_julia/asynchronous.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">비동기 프로그래밍</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#sec-indentation" id="toc-sec-indentation" class="nav-link active" data-scroll-target="#sec-indentation"><span class="header-section-number">1</span> 들여쓰기</a></li>
+  <li><a href="#sec-write_functions" id="toc-sec-write_functions" class="nav-link" data-scroll-target="#sec-write_functions"><span class="header-section-number">2</span> 단순한 스크립트가 아닌 함수를 사용한다</a></li>
+  <li><a href="#sec-avoid_writing_overly-specific_types" id="toc-sec-avoid_writing_overly-specific_types" class="nav-link" data-scroll-target="#sec-avoid_writing_overly-specific_types"><span class="header-section-number">3</span> 과도하게 타입을 특정하는것을 피하세요</a></li>
+  <li><a href="#sec-handle_excess_argument_diversity_in_the_caller" id="toc-sec-handle_excess_argument_diversity_in_the_caller" class="nav-link" data-scroll-target="#sec-handle_excess_argument_diversity_in_the_caller"><span class="header-section-number">4</span> 과도한 인자의 다양성을 호출할 때 처리세요</a></li>
+  <li><a href="#인자를-변경하는-함수의-이름-끝에-를-붙이세요-sec-append__at_the_end_of_function_name" id="toc-인자를-변경하는-함수의-이름-끝에-를-붙이세요-sec-append__at_the_end_of_function_name" class="nav-link" data-scroll-target="#인자를-변경하는-함수의-이름-끝에-를-붙이세요-sec-append__at_the_end_of_function_name"><span class="header-section-number">5</span> 인자를 변경하는 함수의 이름 끝에 <code>!</code> 를 붙이세요 {#sec-append_!_at_the_end_of_function_name}</a></li>
+  <li><a href="#sec-avoid_strange_type_unios" id="toc-sec-avoid_strange_type_unios" class="nav-link" data-scroll-target="#sec-avoid_strange_type_unios"><span class="header-section-number">6</span> 이상한 타입 <code>Unions</code> 를 피하세요</a></li>
+  <li><a href="#sec-avoid_elaborate_container_types" id="toc-sec-avoid_elaborate_container_types" class="nav-link" data-scroll-target="#sec-avoid_elaborate_container_types"><span class="header-section-number">7</span> 복잡한 컨테이너 타입을 피하세요</a></li>
+  <li><a href="#sec-prefer_exported_methods_over_direct_field_access" id="toc-sec-prefer_exported_methods_over_direct_field_access" class="nav-link" data-scroll-target="#sec-prefer_exported_methods_over_direct_field_access"><span class="header-section-number">8</span> 직접적으로 필드에 접근하기보다는 export 된 메서드를 사용하세요</a></li>
+  <li><a href="#sec-using_naming_convections_with_julia_base" id="toc-sec-using_naming_convections_with_julia_base" class="nav-link" data-scroll-target="#sec-using_naming_convections_with_julia_base"><span class="header-section-number">9</span> Julia <code>base/</code> 와 일치하도록 이름을 붙이세요</a></li>
+  <li><a href="#sec-write_functions_with_argument_ordering_simmilar_to_julia_base" id="toc-sec-write_functions_with_argument_ordering_simmilar_to_julia_base" class="nav-link" data-scroll-target="#sec-write_functions_with_argument_ordering_simmilar_to_julia_base"><span class="header-section-number">10</span> 함수 인자의 순서를 Julia Base 와 비슷하게 하세요</a></li>
+  <li><a href="#sec-dont_overuse_try_catch" id="toc-sec-dont_overuse_try_catch" class="nav-link" data-scroll-target="#sec-dont_overuse_try_catch"><span class="header-section-number">11</span> <code>try-catch</code> 를 남용하지 마세요</a></li>
+  <li><a href="#sec-dont_parrenthesize_conditions" id="toc-sec-dont_parrenthesize_conditions" class="nav-link" data-scroll-target="#sec-dont_parrenthesize_conditions"><span class="header-section-number">12</span> 조건문을 괄호로 싸지 마세요</a></li>
+  <li><a href="#sec-don_overuse_splicing" id="toc-sec-don_overuse_splicing" class="nav-link" data-scroll-target="#sec-don_overuse_splicing"><span class="header-section-number">13</span> <code>...</code> 를 남용하지 마세요</a></li>
+  <li><a href="#sec-ensure_constructors_return_type" id="toc-sec-ensure_constructors_return_type" class="nav-link" data-scroll-target="#sec-ensure_constructors_return_type"><span class="header-section-number">14</span> 생성자가 바로 그 타입을 반환하는지 확인하세요</a></li>
+  <li><a href="#sec-dont_use_unnecessary_static_parameters" id="toc-sec-dont_use_unnecessary_static_parameters" class="nav-link" data-scroll-target="#sec-dont_use_unnecessary_static_parameters"><span class="header-section-number">15</span> 불필요한 정적 매개변수를 사용하지 마세요</a></li>
+  <li><a href="#sec-avoid_confusion_whether_between_something_is_an_istance_or_type" id="toc-sec-avoid_confusion_whether_between_something_is_an_istance_or_type" class="nav-link" data-scroll-target="#sec-avoid_confusion_whether_between_something_is_an_istance_or_type"><span class="header-section-number">16</span> 인스턴스와 타입에 대한 혼동을 피하라</a></li>
+  <li><a href="#sec-dont_overuse_macro" id="toc-sec-dont_overuse_macro" class="nav-link" data-scroll-target="#sec-dont_overuse_macro"><span class="header-section-number">17</span> 매크로를 남요하지 마세요</a></li>
+  <li><a href="#sec-don_expose_unsafe_operations_at_the_interface_level" id="toc-sec-don_expose_unsafe_operations_at_the_interface_level" class="nav-link" data-scroll-target="#sec-don_expose_unsafe_operations_at_the_interface_level"><span class="header-section-number">18</span> 인터페이스 레벨에서 안전하지 않은 동작을 노출하지 마세요</a></li>
+  <li><a href="#기본-콘테이너-타입의-메서드를" id="toc-기본-콘테이너-타입의-메서드를" class="nav-link" data-scroll-target="#기본-콘테이너-타입의-메서드를"><span class="header-section-number">19</span> 기본 콘테이너 타입의 메서드를</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Julia 스타일 가이드</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>이 문서는 관례적인 julia 언어의 코딩 스타일의 몇가지 모습에 대해 다룹니다. 이 규칙들중에 어떤 것도 절대적이지 않으며 단지 당신이 언어에 친숙해지고 다른 여러가지중에 선택하도록 제안하는 것입니다.</p>
+<p><br></p>
+<section id="sec-indentation" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="sec-indentation"><span class="header-section-number">1</span> 들여쓰기</h2>
+<p>각 들여쓰기 레벨마다 4개의 공백을 사용합니다.</p>
+<p><br></p>
+</section>
+<section id="sec-write_functions" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="sec-write_functions"><span class="header-section-number">2</span> 단순한 스크립트가 아닌 함수를 사용한다</h2>
+<p>Writing code as a series of steps at the top level is a quick way to get started solving a problem, but you should try to divide a program into functions as soon as possible. Functions are more reusable and testable, and clarify what steps are being done and what their inputs and outputs are. Furthermore, code inside functions tends to run much faster than top level code, due to how Julia’s compiler works.</p>
+<p>It is also worth emphasizing that functions should take arguments, instead of operating directly on global variables (aside from constants like pi).</p>
+<p>코드를 최상위 단계에서 일련의 단계로 작성하는 것은 문제를 해결하는 빠른 시작 방법이지만 가능한 한 빨리 프로그램을 함수로 나누는 것이 좋습니다. 함수는 재사용 가능하고 테스트하기 쉬우며, 수행 중인 단계와 입력 및 출력이 무엇인지 명확하게 해줍니다. 더욱이, Julia의 컴파일러 작동 방식 때문에 함수 내부의 코드는 최상위 레벨 코드보다 훨씬 더 빠르게 실행되는 경향이 있습니다.</p>
+<p>또한, 함수는 전역 변수를 직접 사용하는 대신(π와 같은 상수를 제외하고) 인자를 받아야 한다는 점을 강조할 가치가 있습니다.</p>
+<p><br></p>
+</section>
+<section id="sec-avoid_writing_overly-specific_types" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="sec-avoid_writing_overly-specific_types"><span class="header-section-number">3</span> 과도하게 타입을 특정하는것을 피하세요</h2>
+<p>코드는 가능한 한 generic 해야 합니다. Generic 이란 코드 작성 시점이 아니라 코드 동작 시점에서 결정되는 것을 말합니다.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Complex</span><span class="dt">{Float64}</span>(x)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>보다는 generic 함수를 사용하여 다음과 같이 쓰는 것이 좋습니다.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">complex</span>(<span class="fu">float</span>(x))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>이 버젼은 <code>x</code> 를 항상 같은 타입이 아닌 적당한 타입으로 변경합니다.</p>
+<p>이 스타일 지침은 특히 함수의 인자와 관련이 있습니다. 예를 들어, 실제로 어떤 정수든 가능하다면 특정 인자를 반드시 <code>Int</code> 나 <code>Int32</code> 로 선언하지 말고 추상 타입인 <code>Integer</code> 를 사용하세요. 사실, 다른 메서드 정의와의 모호성을 해결할 필요가 없다면, 많은 경우 인수 타입을 생략할 수도 있습니다. 필요한 작업을 지원하지 않는 타입이 전달되면 어쨌든 <code>MethodError</code> 가 발생하기 때문입니다. (이를 <a href="https://en.wikipedia.org/wiki/Duck_typing">덕 타이핑</a>이라고 합니다.)</p>
+<p>아래의 <code>addone</code> 함수의 정의를 예를 들어 봅시다. 이 함수는 인자에 <code>1</code> 을 더한 값을 반환합니다.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">addone</span>(x<span class="op">::</span><span class="dt">Int</span>) <span class="op">=</span> x <span class="op">+</span> <span class="fl">1</span>                 <span class="co"># works only for Int</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">addone</span>(x<span class="op">::</span><span class="dt">Integer</span>) <span class="op">=</span> x <span class="op">+</span> <span class="fu">oneunit</span>(x)    <span class="co"># any integer type</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">addone</span>(x<span class="op">::</span><span class="dt">Number</span>) <span class="op">=</span> x <span class="op">+</span> <span class="fu">oneunit</span>(x)     <span class="co"># any numeric type</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">addone</span>(x) <span class="op">=</span> x <span class="op">+</span> <span class="fu">oneunit</span>(x)             <span class="co"># any type supporting + and oneunit</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>addone</code> 의 마지막 정의는 <code>oneunit</code> 을 지원하는 모든 타입과 해당 타입에서 동작하는 <code>+</code> 연산을 처리할 수 있습니다. (<code>oneunit(x)</code> 는 <code>x</code> 와 동일한 타입에서 <code>1</code> 을 반환하며, 의도치 않은 타입 승격을 방지합니다.) 핵심은, <code>addone(x) = x + oneunit(x)</code> 와 같은 일반적인 정의만 작성해도 성능상의 손실이 전혀 없다는 점입니다. Julia는 필요에 따라 자동으로 특화된 버전을 컴파일하기 때문입니다.</p>
+<p>예를 들어, <code>addone(12)</code> 를 처음 호출하면, Julia는 <code>x::Int</code> 인수를 위한 특화된 <code>addone</code> 함수를 자동으로 컴파일하고, <code>oneunit</code> 호출을 인라인된 값 <code>1</code>로 대체합니다. 따라서 위에서 언급한 <code>addone</code> 함수의 처음 세 가지 정의는 네 번째 정의와 완전히 중복됩니다.</p>
+<p><br></p>
+</section>
+<section id="sec-handle_excess_argument_diversity_in_the_caller" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="sec-handle_excess_argument_diversity_in_the_caller"><span class="header-section-number">4</span> 과도한 인자의 다양성을 호출할 때 처리세요</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">foo</span>(x, y)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="fu">Int</span>(x); y <span class="op">=</span> <span class="fu">Int</span>(y)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">foo</span>(x, y)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>를 쓰는 대신에 아래를 사용하세요.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">foo</span>(x<span class="op">::</span><span class="dt">Int</span>, y<span class="op">::</span><span class="dt">Int</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">foo</span>(<span class="fu">Int</span>(x), <span class="fu">Int</span>(y))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>foo</code> 실제로는 모든 타입의 수를 받지는 않기 때문에 후자가 더 나은 스타일입니다. 단지 <code>Int</code> 들을 받을 뿐입니다.</p>
+<p>여기서 하나의 문제는 함수가 본질적으로 정수만을 필요로 한다면, 함수를 호출할 때 정수가 아닌 수에 대해 어떻게 변환할지(예: <code>floor</code> 나 <code>ceil</code>)를 명시적으로 결정하도록 강제하는 것이 더 나을 수 있다는 점입니다. 또 다른 문제는 더 구체적인 타입을 선언하면 향후 메서드 정의를 위한 더 많은 “여지”을 남길 수 있다는 점입니다. 즉, 특정 타입에 대해 메서드를 정의하면, 추후 다른 타입이나 추상 타입에 대해 별도의 메서드를 정의하기가 더 용이해질 수 있습니다.</p>
+<p><br></p>
+</section>
+<section id="인자를-변경하는-함수의-이름-끝에-를-붙이세요-sec-append__at_the_end_of_function_name" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="인자를-변경하는-함수의-이름-끝에-를-붙이세요-sec-append__at_the_end_of_function_name"><span class="header-section-number">5</span> 인자를 변경하는 함수의 이름 끝에 <code>!</code> 를 붙이세요 {#sec-append_!_at_the_end_of_function_name}</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">double</span>(a<span class="op">::</span><span class="dt">AbstractArray{&lt;:Number}</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(a)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        a[i] <span class="op">*=</span> <span class="fl">2</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>대신에</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">double!</span>(a<span class="op">::</span><span class="dt">AbstractArray{&lt;:Number}</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(a)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        a[i] <span class="op">*=</span> <span class="fl">2</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>를 사용하세요.</p>
+<p>Julia Base는 이러한 관례를 전반적으로 사용하며, 복사 와 수정 형태를 모두 제공하는 함수(예: <code>sort</code>와 <code>sort!</code>)와 단순히 수정만 하는 함수(예: <code>push!</code>, <code>pop!</code>, <code>splice!</code>)의 예제를 포함하고 있습니다. 이러한 함수들은 편의를 위해 수정된 배열을 반환하는 것이 일반적입니다.</p>
+<p>입출력(IO) 또는 난수 생성기(RNG)를 사용하는 함수는 주목할 만한 예외입니다. 이 함수들은 거의 반드시 IO나 RNG를 변형해야 하므로, 함수 이름 끝에 !를 붙이는 것은 IO 변형이나 RNG 상태 진행 이외의 다른 변형이 있음을 나타냅니다. 예를 들어 <code>rand(x)</code>는 RNG를 변형하지만, <code>rand!(x)</code> 는 RNG와 x를 모두 변형합니다. 마찬가지로, <code>read(io)</code> 는 <code>io</code>를 변형하지만, <code>read!(io, x)</code>는 <code>io</code>와 <code>x</code> 를 모두 변형합니다.</p>
+<p><br></p>
+</section>
+<section id="sec-avoid_strange_type_unios" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="sec-avoid_strange_type_unios"><span class="header-section-number">6</span> 이상한 타입 <code>Unions</code> 를 피하세요</h2>
+<p><code>Union{Function, AbstractString}</code> 과 같은 타입은 대개 설계가 더 분명해야 한다는 것을 의미합니다.</p>
+<p><br></p>
+</section>
+<section id="sec-avoid_elaborate_container_types" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="sec-avoid_elaborate_container_types"><span class="header-section-number">7</span> 복잡한 컨테이너 타입을 피하세요</h2>
+<p>다음과 같은 배열을 만드는 것은 보통 도움이 안됩니다.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{Union{Int,AbstractString,Tuple,Array}}</span>(<span class="cn">undef</span>, n)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>이경우 <code>Vector{Any}(undef, n)</code> 이 낫습니다. 하나의 타입에 많은 것들을 때려박는 것보다는 특정 사용에서 <code>a[i]::Int</code> 와 같이 컴파일러에게 알려주는 것이 더 도움이 됩니다.</p>
+<p><br></p>
+</section>
+<section id="sec-prefer_exported_methods_over_direct_field_access" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="sec-prefer_exported_methods_over_direct_field_access"><span class="header-section-number">8</span> 직접적으로 필드에 접근하기보다는 export 된 메서드를 사용하세요</h2>
+<p>관례적인 Julia 코드는 일반적으로 모듈에서 export된 메서드를 해당 타입에 대한 인터페이스로 간주해야 합니다. 객체의 필드는 대개 구현의 세부사항으로 취급되며, API로 명시되지 않는 한 사용자 코드에서 직접 접근해서는 안 됩니다. 이는 다음과 같은 여러 이점을 제공합니다.</p>
+<ol type="1">
+<li><p>패키지 개발자는 구현을 변경해도 사용자 코드를 깨뜨리지 않을 수 있습니다.</p></li>
+<li><p>메서드는 <code>map</code> 과 같은 고차 함수에 전달할 수 있습니다. 예를 들어, <code>map(imag, zs)</code>는 <code>[z.im for z in zs]</code> 보다 간결하고 추상적입니다.</p></li>
+<li><p>메서드는 추상 타입에 정의될 수 있습니다.</p></li>
+<li><p>메서드는 서로 다른 타입 간에 공유될 수 있는 개념적 연산을 기술할 수 있습니다. 예를 들어, <code>real(z)</code> 는 복소수(Complex)와 사원수(Quaternion) 모두에서 동작합니다.</p></li>
+</ol>
+<p>Julia의 디스패치 시스템은 이러한 스타일을 권장합니다. 예를 들어, <code>play(x::MyType)</code> 는 특정 타입에 대해서만 <code>play</code> 메서드를 정의하며, 다른 타입은 각자의 구현을 가질 수 있습니다.</p>
+<p>마찬가지로, <code>export</code> 되지 않은 함수는 내부적으로 사용되며 변경될 가능성이 높습니다. 문서에서 명시하지 않는 한, 이러한 함수는 공개 API로 간주되지 않습니다.</p>
+<p>이 규칙에 대한 반례는 <a href="https://docs.julialang.org/en/v1/base/base/#Core.NamedTuple"><code>NamedTupe</code></a>, <a href="https://docs.julialang.org/en/v1/base/strings/#Base.match"><code>RegexMatch</code></a>, <a href="https://docs.julialang.org/en/v1/base/file/#Base.stat"><code>StatStruct</code></a> 가 있습니다.</p>
+<p><br></p>
+</section>
+<section id="sec-using_naming_convections_with_julia_base" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="sec-using_naming_convections_with_julia_base"><span class="header-section-number">9</span> Julia <code>base/</code> 와 일치하도록 이름을 붙이세요</h2>
+<p>Julia 코드에서 이름 지정에 대한 스타일 가이드는 다음과 같습니다:</p>
+<ul>
+<li><p>모듈 및 타입 이름에는 대문자와 카멜 케이스(CamelCase)를 사용합니다. : <code>module SparseArrays</code>, <code>struct UnitRange</code></p></li>
+<li><p>함수 이름에는 소문자를 사용합니다(<code>maximum</code>, <code>convert</code>). 읽기 괜찮다면 여러 단어를 붙여 씁니다(<code>isequal</code>, <code>haskey</code>). 필요할 때는 단어 구분자로 밑줄(<code>_</code>)을 사용합니다. 개념을 조합한 경우에도 혹은 수식어가 있을 때에도 밑줄을 사용합니다(<code>remotecall_fetch</code> 는 <code>fetch(remotecall(...))</code> 의 더 효율적인 구현을 의미합니다). .</p></li>
+<li><p>하나 이상의 인수를 수정하는 함수는 이름 끝에 <code>!</code> 를 붙입니다(<code>sort!</code>, <code>push!</code>).</p></li>
+<li><p>간결함을 중시하되, 약어는 피합니다(<code>indxin</code> 보다는 <code>indexin</code>). 약어는 기억하기 어렵고, 특정 단어를 어떻게 축약했는지 혼동을 일으킬 수 있습니다.</p></li>
+</ul>
+<p>여러 단어가 필요한 함수 이름은 해당 함수가 하나 이상의 개념을 표현하는지 고려하십시오. 필요하다면 함수 이름을 더 작은 조각으로 나누는 것이 좋습니다.</p>
+<p><br></p>
+</section>
+<section id="sec-write_functions_with_argument_ordering_simmilar_to_julia_base" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="sec-write_functions_with_argument_ordering_simmilar_to_julia_base"><span class="header-section-number">10</span> 함수 인자의 순서를 Julia Base 와 비슷하게 하세요</h2>
+<p>Julia 의 Base 라이브러리는 함수 인수의 순서를 다음과 같은 일반 규칙에 따라 배치합니다. 이는 적용 가능한 경우에 해당하며, 일관된 사용자 경험을 제공합니다:</p>
+<ol type="1">
+<li><p><strong>함수 인자</strong>. 첫 번째 인수로 함수가 올 경우, <code>do</code> 블록을 사용해 다중 라인의 익명 함수를 전달할 수 있습니다.</p></li>
+<li><p><strong>I/O 스트림</strong>. I/O 객체가 첫 번째로 오면 <code>sprint</code> 와 같은 함수에 전달하기 용이합니다/ 예: <code>sprint(show, x).</code></p></li>
+<li><p><strong>수정되는 입력</strong> 수정되는 입력은 먼저 나옵니다. 예를 들어 <code>fill!(x, v)</code> 에서 <code>x</code> 는 수정 대상이고, 값 <code>v</code> 는 뒤에 옵니다.</p></li>
+<li><p><strong>타입</strong>. 보통 타입 인자가 있을 경우 함수의 출력이 이 타입을 갖도록 되는 경우가 많습니다.예를 들어 <code>parse(Int, "1")</code>.그러나 <code>read(io, String)</code> 의 경우, I/O 객체가 타입보다 앞에 오며, 일반 규칙에 맞는 예외입니다.</p></li>
+<li><p><strong>수정되지 않는 입력</strong>. 수정되지 않는 입력은 수정되는 입력 뒤에 옵니다. 예를 들어 <code>fill!(x, v)</code> 에서 <code>v</code> 는 수정되지 않는 입력입니다.</p></li>
+<li><p><strong>키</strong>. 연관 컬렉션에서는 키-값 쌍의 키를 나타냅니다. 인덱스 컬렉션에서는 인덱스를 나타냅니다.</p></li>
+<li><p><strong>값</strong>. 연관 컬렉션에서는 키-값 쌍의 값입니다. <code>fill!(x, v)</code> 의 경유와 비슷합니다.</p></li>
+<li><p><strong>기타 인자</strong>. 위에 해당하지 않는 나머지 인수입니다.</p></li>
+<li><p><strong>가변 인수(Varargs)</strong>. 함수 호출 시 끝에 무제한 나열 가능한 인수입니다. 예를 들어 <code>Matrix{T}(undef, dims)</code> 에서 차원(<code>dims</code>) 는 튜플로도(<code>Matrix{T}(undef, (1,2))</code>), 가변 인수(<code>Vararg</code>)로 도 (<code>Matrix{T}(undef, 1, 2)</code>) 전달 가능합니다.</p></li>
+<li><p><strong>키워드 인수</strong>. 키워드 인수는 항상 함수 정의의 마지막에 위치합니다.</p></li>
+</ol>
+<p>대다수 함수는 위에 나열된 모든 종류의 인자를 받지 않습니다. 숫자는 단지 함수에 적용 가능한 인자들의 우선순위를 나타내기 위한 것입니다.</p>
+<p>물론 예외도 있습니다. <code>convert</code> 에서 첫번째 인자는 항상 타입입니다. <code>setindex!</code> 에서는 값이 인덱스보다 앞에 옵니다. 이는 인덱스를 가변 인자로 제공할 수 있게 하기 위함입니다.</p>
+<p>API를 설계할 때 이 순서를 최대한 준수하면 함수 사용자가 일관된 경험을 할 수 있습니다.</p>
+<p><br></p>
+</section>
+<section id="sec-dont_overuse_try_catch" class="level2" data-number="11">
+<h2 data-number="11" class="anchored" data-anchor-id="sec-dont_overuse_try_catch"><span class="header-section-number">11</span> <code>try-catch</code> 를 남용하지 마세요</h2>
+<p><code>try-catch</code> 로 에러를 탐지하는 것보다 피하는 것이 낫습니다.</p>
+<p><br></p>
+</section>
+<section id="sec-dont_parrenthesize_conditions" class="level2" data-number="12">
+<h2 data-number="12" class="anchored" data-anchor-id="sec-dont_parrenthesize_conditions"><span class="header-section-number">12</span> 조건문을 괄호로 싸지 마세요</h2>
+<p>Julia 는 <code>if</code> 나 <code>while</code> 문에서 괄호를 요구하지 않습니다. <code>if (a == b)</code> 대신에 <code>if a == b</code> 를 사용하세요.</p>
+<p><br></p>
+</section>
+<section id="sec-don_overuse_splicing" class="level2" data-number="13">
+<h2 data-number="13" class="anchored" data-anchor-id="sec-don_overuse_splicing"><span class="header-section-number">13</span> <code>...</code> 를 남용하지 마세요</h2>
+<p>함수 인자 에서 <strong>스플라이싱(splicing)</strong> 을 자주 사용하면 중독성이 있을 수 있습니다. 예를 들어, <code>[a..., b...]</code> 대신에 간단히 <code>[a; b]</code> 를 사용하세요. 또한, <code>collect(a)</code> 는 <code>[a...]</code> 보다 더 나은 방법입니다. 하지만 <code>a</code> 가 이미 이터러블(iterable) 한 객체라면, 굳이 배열로 변환하지 않고 그대로 두는 것이 더 효율적일 때가 많습니다.</p>
+<p><br></p>
+</section>
+<section id="sec-ensure_constructors_return_type" class="level2" data-number="14">
+<h2 data-number="14" class="anchored" data-anchor-id="sec-ensure_constructors_return_type"><span class="header-section-number">14</span> 생성자가 바로 그 타입을 반환하는지 확인하세요</h2>
+<p>타입 <code>T</code> 에 대한 <code>T(x)</code> 메서드를 호출할 때 보통 <code>T</code> 타입을 반환할것을 기대합니다. 예상하지 못한 타입을 반환하는 생성자(constructor) 는 혼란과 예측하지 못한 행동을 일으킬 수 있습니다.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="kw">struct</span> Foo{T}</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>           x<span class="op">::</span><span class="dt">T</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>       <span class="kw">end</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="bu">Base</span>.<span class="fu">Float64</span>(foo<span class="op">::</span><span class="dt">Foo</span>) <span class="op">=</span> <span class="fu">Foo</span>(<span class="fu">Float64</span>(foo.x))  <span class="co"># Do not define methods like this</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="fu">Float64</span>(<span class="fu">Foo</span>(<span class="fl">3</span>))  <span class="co"># Should return `Float64`</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">Foo</span><span class="dt">{Float64}</span>(<span class="fl">3.0</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="fu">Foo</span><span class="dt">{Int}</span>(x) <span class="op">=</span> <span class="fu">Foo</span><span class="dt">{Float64}</span>(x)  <span class="co"># Do not define methods like this</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="fu">Foo</span><span class="dt">{Int}</span>(<span class="fl">3</span>)  <span class="co"># Should return `Foo{Int}`</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="fu">Foo</span><span class="dt">{Float64}</span>(<span class="fl">3.0</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>코드의 명확성과 타입 일관성을 유지하기 위해 항상 생성자가 생성하는 타입을 반환하도록 설계하세요</p>
+<p><br></p>
+</section>
+<section id="sec-dont_use_unnecessary_static_parameters" class="level2" data-number="15">
+<h2 data-number="15" class="anchored" data-anchor-id="sec-dont_use_unnecessary_static_parameters"><span class="header-section-number">15</span> 불필요한 정적 매개변수를 사용하지 마세요</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">foo</span>(x<span class="op">::</span><span class="dt">T</span>) <span class="kw">where</span> {T<span class="op">&lt;:</span><span class="dt">Real</span>} <span class="op">=</span> <span class="op">...</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>와 같은 함수 시그너쳐는 <code>T</code> 가 함수 내부에서 사용되지 않는다면 아래와 같이 변경되어야 합니다.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">foo</span>(x<span class="op">::</span><span class="dt">Real</span>) <span class="op">=</span> <span class="op">...</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>심지어 <code>T</code> 가 사용되더라도 <code>typeof(T)</code> 로 대체될 수 있습니다. 성능 차이는 없습니다. 이것은 일반적인 정적 매개변수 사용에 대한 주의(caution) 은 아니며 단지 필요하지 않을 경우에 대한 주의입니다.</p>
+<p>또한 컨테이너 타입은 함수 내부에 타입 매개변수가 필요할 수 있습니다. <a href="../../src/application_of_julia/performance_tips.html#sec-avoid_field_with_abstract_container">추상 컨테이너를 필드로 갖는 것을 피하라</a> 를 참고하시기 바랍니다.</p>
+<p><br></p>
+</section>
+<section id="sec-avoid_confusion_whether_between_something_is_an_istance_or_type" class="level2" data-number="16">
+<h2 data-number="16" class="anchored" data-anchor-id="sec-avoid_confusion_whether_between_something_is_an_istance_or_type"><span class="header-section-number">16</span> 인스턴스와 타입에 대한 혼동을 피하라</h2>
+<p>다음과 같은 정의는 혼란스럽습니다.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">foo</span>(<span class="op">::</span><span class="dt">Type{MyType}</span>) <span class="op">=</span> <span class="op">...</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">foo</span>(<span class="op">::</span><span class="dt">MyType</span>) <span class="op">=</span> <span class="fu">foo</span>(MyType)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>해당 개념이 <code>MyType</code> 으로 작성될지 아니면 <code>MyType()</code> 으로 작성될지 결정하고, 그 결정을 일관되게 유지하는 것이 중요합니다.</p>
+<p>선호되는 스타일은 기본적으로 인스턴스를 사용하고 필요하다면 <code>Type{MyType}</code> 에 대한 메서드를 추가하는 것입니다.</p>
+<p>만약 타입이 사실상 열거형(enumeration)이라면, 이를 단일 타입(이상적으로는 immutable struct 혹은 원시 타입(primitive type))으로 정의하고, 열거형 값들을 그 타입의 인스턴스로 만드는 것이 좋습니다. 생성자와 변환 함수는 값이 유효한지 검증할 수 있습니다. 이 방식은 열거형 타입을 추상 타입으로 정의하고, 그 “값들”을 서브타입으로 만드는 방식보다 선호됩니다.</p>
+<p><br></p>
+</section>
+<section id="sec-dont_overuse_macro" class="level2" data-number="17">
+<h2 data-number="17" class="anchored" data-anchor-id="sec-dont_overuse_macro"><span class="header-section-number">17</span> 매크로를 남요하지 마세요</h2>
+<p>매크로가 실제로는 함수로 작성될 수 있을 지 확인하세요.</p>
+<p>특히 매크로 내에서 <code>eval</code> 을 호출하는 것은 매우 위험한 신호입니다. <code>eval</code> 을 사용하면 해당 매크로는 최상위에서만 동작할 수 있게 됩니다. 만약 이런 매크로가 함수로서 쓰여질 수 있다면 런타임 값에 자연스럽게 접근할 수 있게 됩니다.</p>
+<p><br></p>
+</section>
+<section id="sec-don_expose_unsafe_operations_at_the_interface_level" class="level2" data-number="18">
+<h2 data-number="18" class="anchored" data-anchor-id="sec-don_expose_unsafe_operations_at_the_interface_level"><span class="header-section-number">18</span> 인터페이스 레벨에서 안전하지 않은 동작을 노출하지 마세요</h2>
+<p>내이티브 포인터를 사용하는 타입을 사용한다고 합시다.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">mutable struct</span> NativeType</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    p<span class="op">::</span><span class="dt">Ptr{UInt8}</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>아래와 같은 정의를 작성하지 마세요.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getindex</span>(x<span class="op">::</span><span class="dt">NativeType</span>, i) <span class="op">=</span> <span class="fu">unsafe_load</span>(x.p, i)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>문제는 이것이 안전하지 않으며, 메모리 버그에 취약하다는 것을 알지 못한채 사용자가 <code>x[i]</code> 에 무언가를 쓸 수 있다는 것입니다.</p>
+<p>이러한 함수는 안정성을 보장하기 위해 작업을 확인하거나, 그렇지 않으면 <code>unsafe</code> 라는 이름을 포함하여 호출자에게 경고를 해야 합니다.</p>
+<p><br></p>
+</section>
+<section id="기본-콘테이너-타입의-메서드를" class="level2" data-number="19">
+<h2 data-number="19" class="anchored" data-anchor-id="기본-콘테이너-타입의-메서드를"><span class="header-section-number">19</span> 기본 콘테이너 타입의 메서드를</h2>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/julia-kaeri\.github\.io\/IntroductionToJulia\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../src/application_of_julia/00_part2.html" class="pagination-link" aria-label="Julia 언어의 활용">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Julia 언어의 활용</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../src/application_of_julia/more_on_types.html" class="pagination-link" aria-label="타입에 대해 더 알아보기">
+        <span class="nav-page-text">타입에 대해 더 알아보기</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
