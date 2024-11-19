@@ -453,7 +453,7 @@ window.Quarto = {
 <li><p><a href="#profiling">Profiling</a> 은 당신의 코드를 실행시키는 성능을 측정하며 병목 지점을 찾아준다. 복잡한 프로젝트용으로는 <a href="https://github.com/timholy/ProfileView.jl">ProfileView</a> 패키지가 당신의 프로파일링 결과를 시각화하는데 도움이 될 것이다.</p></li>
 <li><p><a href="https://github.com/aviatesk/JET.jl">JET</a> 패키지는 당신의 코드에 나타나는 공통적인 성능 문제를 찾는데 도움을 줄 수 있다.</p></li>
 <li><p><code>@time</code>, <code>@allocated</code> , 또는 프로파일러(가비지 컬렉션 루틴 호출을 통해)가 보고하는 예상보다 큰 메모리 할당은 코드에 문제가 있음을 시사한다. 할당에 대한 다른 명확한 이유가 보이지 않는다면 타입 문제를 의심하라. 또한, <code>--track-allocation=user</code> 옵션으로 Julia를 시작하고 생성된 <code>*.mem</code> 파일을 확인하여 이러한 할당이 발생하는 위치에 대한 정보를 얻을 수 있다. 자세한 내용은 <a href="https://docs.julialang.org/en/v1/manual/profile/#Memory-allocation-analysis">메모리 할당 분석</a>을 참조하세요.</p></li>
-<li><p><code>@code warntype</code> 은 타입 불확실성을 발생시키는 표현을 찾는데 도움이 되는 정보를 제공한다. 아래의 <a href="#code_warntype"><span class="citation" data-cites="code_warntype">(<span><strong>code_warntype?</strong></span>)</span></a> 을 읽어보라.</p></li>
+<li><p><code>@code warntype</code> 은 타입 불확실성을 발생시키는 표현을 찾는데 도움이 되는 정보를 제공한다. 아래의 <a href="#code_warntype"><code>@code_warntype</code></a> 을 읽어보라.</p></li>
 </ul>
 <p><br></p>
 </section>
@@ -1121,7 +1121,7 @@ window.Quarto = {
 <span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>    refs[idx] <span class="op">=</span> <span class="pp">@spawnat</span> pid <span class="fu">foo</span>(args<span class="op">...</span>)</span>
 <span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
 <span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>responses <span class="op">=</span> [<span class="fu">fetch</span>(r) for r <span class="kw">in</span> refs]</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The former results in a single network round-trip to every worker, while the latter results in two network calls - first by the <span class="citation" data-cites="spawnat">(<a href="#ref-spawnat" role="doc-biblioref"><strong>spawnat?</strong></a>)</span> and the second due to the fetch (or even a wait). The fetch/wait is also being executed serially resulting in an overall poorer performance.</p>
+<p>The former results in a single network round-trip to every worker, while the latter results in two network calls - first by the <code>@spawnat</code> and the second due to the fetch (or even a wait). The fetch/wait is also being executed serially resulting in an overall poorer performance.</p>
 <p><br></p>
 </section>
 <section id="sec-fix_deprecation_warrnings" class="level2" data-number="23">

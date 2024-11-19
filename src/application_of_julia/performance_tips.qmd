@@ -176,7 +176,7 @@ Julia 와 Julia 패키지 생태계는 당신이 문제를 진단하고 코드�
 
 - `@time`, `@allocated` , 또는 프로파일러(가비지 컬렉션 루틴 호출을 통해)가 보고하는 예상보다 큰 메모리 할당은 코드에 문제가 있음을 시사한다. 할당에 대한 다른 명확한 이유가 보이지 않는다면 타입 문제를 의심하라. 또한, `--track-allocation=user` 옵션으로 Julia를 시작하고 생성된 `*.mem` 파일을 확인하여 이러한 할당이 발생하는 위치에 대한 정보를 얻을 수 있다. 자세한 내용은 [메모리 할당 분석](https://docs.julialang.org/en/v1/manual/profile/#Memory-allocation-analysis)을 참조하세요.
 
-- `@code warntype` 은 타입 불확실성을 발생시키는 표현을 찾는데 도움이 되는 정보를 제공한다. 아래의 [@code_warntype](#code_warntype) 을 읽어보라.
+- `@code warntype` 은 타입 불확실성을 발생시키는 표현을 찾는데 도움이 되는 정보를 제공한다. 아래의 [`@code_warntype`](#code_warntype) 을 읽어보라.
 
 
 <br>
@@ -1134,7 +1134,7 @@ end
 responses = [fetch(r) for r in refs]
 ```
 
-The former results in a single network round-trip to every worker, while the latter results in two network calls - first by the @spawnat and the second due to the fetch (or even a wait). The fetch/wait is also being executed serially resulting in an overall poorer performance.
+The former results in a single network round-trip to every worker, while the latter results in two network calls - first by the `@spawnat` and the second due to the fetch (or even a wait). The fetch/wait is also being executed serially resulting in an overall poorer performance.
 
 <br>
 
