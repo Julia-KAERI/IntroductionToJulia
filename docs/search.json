@@ -1545,7 +1545,7 @@
     "href": "src/application_of_julia/performance_tips.html#sec-type_declarations",
     "title": "Julia 성능 팁",
     "section": "6 타입 선언",
-    "text": "6 타입 선언\n타입 선언이 선택 사항인 많은 언어에서는, 선언을 하는 것이 빠르게 동작하는 코드를 만드는 지름길이다. Julia 에서는 그렇지 않다. Julia에서는 컴파일러가 보통 모든 함수 인자, 지역변수와 표현(expression)의 타입을 알고 있다. 그러나 그러나 몇몇 특정 상황에서는 선언이 도움이 된다.\n\n\n6.1 추상 타입을 가진 필드를 피하라\n타입은 그 필드의 타입을 특정하지 않고 선언 될 수 있다.\njulia&gt; struct MyAmbiguousType\n           a\n       end\n\n위 코드에서 a 는 어떤 타입도 될 수 있다. 이것은 때대로 유용하지만 단점도 존재한다: 컴파일러는 MyAmbiguousType 객체에 대해 고성능 코드를 생성할 수 없다. 컴파일러는 어떻게 코드를 빌드할 지 결정하기위해 값이 아닌 객체의 타입을 사용하기 때문이다. 안타깝지만 MyAmbiguousType 객체에 대해 추정할 수 있는 것이 거의 없다.\n\njulia&gt; b = MyAmbiguousType(\"Hello\")\nMyAmbiguousType(\"Hello\")\n\njulia&gt; c = MyAmbiguousType(17)\nMyAmbiguousType(17)\n\njulia&gt; typeof(b)\nMyAmbiguousType\n\njulia&gt; typeof(c)\nMyAmbiguousType\n비록 b 와 c 에 대한 메모리 내부에서의 내재적인 데이터 표현이 아주 다를지라도, 그 둘의 값은 같은 타입이다. a 필드에 수를 저장하더라도, UInt8 의 메모리 표현과 Float64의 메모리 표현이 다르다는 사실은 CPU가 두개의 서로 다른 종류의 명령어(instructions)를 사용하여 다룰 필요가 있다는 것을 의미한다. 타입으로부터 필요한 정보를 얻을 수 없으므로 이 결정은 런타임에 이루어진다. 이것이 성능을 떨어트린다.\na의 타입을 선언하면 이를 개선시킬 수 있다. 여기서, 우리는 a 가 여러 타입들 중 아무거나 하나의 타입이 될 수 있는 경우에 초점을 두자. 이 경우 매개변수를 쓰는 것이 자연스러운 해법이다. 예를 들어 다음과 같다.\njulia&gt; mutable struct MyType{T&lt;:AbstractFloat}\n           a::T\n       end\n이것은 아래보다 좋은 선택이다.\njulia&gt; mutable struct MyStillAmbiguousType\n           a::AbstractFloat\n       end\n왜냐면 첫번째 버젼은 wrapper 객체의 타입에서 a 의 타입을 지정했기 때문이다. 예를 들어보자:\njulia&gt; m = MyType(3.2)\nMyType{Float64}(3.2)\n\njulia&gt; t = MyStillAmbiguousType(3.2)\nMyStillAmbiguousType(3.2)\n\njulia&gt; typeof(m)\nMyType{Float64}\n\njulia&gt; typeof(t)\nMyStillAmbiguousType\n필드 a 의 타입은 m의 타입으로 부터 쉽게 결정되지만 t 의 타입으로부터는 그렇지 않다. 물론 t 내부에서 필드 a의 타입을 바꾸는 것이 가능하다.\njulia&gt; typeof(t.a)\nFloat64\n\njulia&gt; t.a = 4.5f0\n4.5f0\n\njulia&gt; typeof(t.a)\nFloat32\n반대로, m 이 만들어진 다음에는 m.a 의 type 은 변할 수 없다.\njulia&gt; m.a = 4.5f0\n4.5f0\n\njulia&gt; typeof(m.a)\nFloat64\nm 의 타입으로부터 m.a 의 타입을 알 수 있다는 사실과, 이 타입이 mid-function 을 변경시킬수 없다는 사실은 컴파일러가 t 와 같은 객체가 아닌 m 과 같은 객체에 대해 고도로 최적화된 코드를 생성하도록 해 준다.\n물론, 이 모든것은 우리가 m 을 구체적 타입(concrete type)을 이용하여 m 을 구성했을 경우에만 사실이다. 이것은 abstract 타입을 이용하여 명시적으로 구성했을 경우에는 사실이 아니다.\njulia&gt; m = MyType{AbstractFloat}(3.2)\nMyType{AbstractFloat}(3.2)\n\njulia&gt; typeof(m.a)\nFloat64\n\njulia&gt; m.a = 4.5f0\n4.5f0\n\njulia&gt; typeof(m.a)\nFloat32\n실제적인 경우에는 이러한 객체는 MyStillAmbiguousType 과 동일하게 행동한다.\n아래의 간단한 함수\nfunc(m::MyType) = m.a+1\n에 대해\ncode_llvm(func, Tuple{MyType{Float64}})\ncode_llvm(func, Tuple{MyType{AbstractFloat}})\n를 사용하여 간단한 함수를 위해 생성된 대량의 코드를 비교하는 것은 매우 교육적으로 유익하다.1\n결과가 너무 길어서 여기에 제시하지 않지만 여러분이 직접 해보길 바란다. 첫번째 경우는 타입이 완전히 지정되었으므로 컴파일러가 실행시간에 타입을 결정하는 코드를 만들 필요가 전혀 없다. 결과적으로 짧고 빠른 코드가 된다.\n전적으로 매개화되지 않은 타입(not-fully-parameterized type)은 추상 타입처럼 행동한다. 예를 들어, 전적으로 특정된 Array{T, n} 은 concrete 하지만 파라미터가 없는 Array 자체는 concrete 하지 않다.\njulia&gt; !isconcretetype(Array), !isabstracttype(Array), isstructtype(Array), !isconcretetype(Array{Int}), isconcretetype(Array{Int,1})\n(true, true, true, true, true)\n이 경우 MyType 의 필드를 a::Array 로 선언하지 않고, 대신에 a::Array{T, N} 으로 선언하거나 이나 a::A 으로 선언하며 {T, N} 이나 A 를 MyType 의 파라미터로 선언하는 것이 낫다.\n\n\n\n6.2 추상 컨테이너를 필드로 갖는 것을 피하라.\n동일한 최선의 방법은 컨테이너 타입에도 적용된다:\njulia&gt; struct MySimpleContainer{A&lt;:AbstractVector}\n           a::A\n       end\n\njulia&gt; struct MyAmbiguousContainer{T}\n           a::AbstractVector{T}\n       end\n\njulia&gt; struct MyAlsoAmbiguousContainer\n           a::Array\n       end\n예를 들어 :\njulia&gt; c = MySimpleContainer(1:3);\n\njulia&gt; typeof(c)\nMySimpleContainer{UnitRange{Int64}}\n\njulia&gt; c = MySimpleContainer([1:3;]);\n\njulia&gt; typeof(c)\nMySimpleContainer{Vector{Int64}}\n\njulia&gt; b = MyAmbiguousContainer(1:3);\n\njulia&gt; typeof(b)\nMyAmbiguousContainer{Int64}\n\njulia&gt; b = MyAmbiguousContainer([1:3;]);\n\njulia&gt; typeof(b)\nMyAmbiguousContainer{Int64}\n\njulia&gt; d = MyAlsoAmbiguousContainer(1:3);\n\njulia&gt; typeof(d), typeof(d.a)\n(MyAlsoAmbiguousContainer, Vector{Int64})\n\njulia&gt; d = MyAlsoAmbiguousContainer(1:1.0:3);\n\njulia&gt; typeof(d), typeof(d.a)\n(MyAlsoAmbiguousContainer, Vector{Float64})\nMySimpleContainer 객체는 그 타입과 매개변수가 전부 지정되었으므로 컴파일러가 최적화된 함수를 생성할수 있다. 대부분의 경우는 이것으로 충분하다.\n이제 컴파일러가 완벽히 일을 해치울 수 있는 반면, 당신이 a의 원소의 타입에 따라 다른 일을 하는 코드를 작성해야 하는 경우도 있다. 이에 대한 가장 좋은 방법은 별도의 함수(여기서는 foo) 를 이용하여 당신이 원하는 기능을 감싸는 것이다.\njulia&gt; function sumfoo(c::MySimpleContainer)\n           s = 0\n           for x in c.a\n               s += foo(x)\n           end\n           s\n       end\nsumfoo (generic function with 1 method)\n\njulia&gt; foo(x::Integer) = x\nfoo (generic function with 1 method)\n\njulia&gt; foo(x::AbstractFloat) = round(x)\nfoo (generic function with 2 methods)\n이렇게 컴파일러가 모든 경우에서 최적화된 코드를 생성하도록 하면서, 모든 것을 단순하게 유지할 수 있다.\n그러나, MySimpleContianer 의 a 필드의 AbstractVector의 타입이나 상이한 원소 타입 대해 각각 다른 버젼의 외부 함수를 선언해야 할 필요가 있을 수도 있다. 당신은 이렇게 할 수 있다:\njulia&gt; function myfunc(c::MySimpleContainer{&lt;:AbstractArray{&lt;:Integer}})\n           return c.a[1]+1\n       end\nmyfunc (generic function with 1 method)\n\njulia&gt; function myfunc(c::MySimpleContainer{&lt;:AbstractArray{&lt;:AbstractFloat}})\n           return c.a[1]+2\n       end\nmyfunc (generic function with 2 methods)\n\njulia&gt; function myfunc(c::MySimpleContainer{Vector{T}}) where T &lt;: Integer\n           return c.a[1]+3\n       end\nmyfunc (generic function with 3 methods)\njulia&gt; myfunc(MySimpleContainer(1:3))\n2\n\njulia&gt; myfunc(MySimpleContainer(1.0:3))\n3.0\n\njulia&gt; myfunc(MySimpleContainer([1:3;]))\n4\n\n\n\n6.3 타입이 지정되지 않은 위치로부터 값을 지정하기\n많은 경우 임의의 타입을 저장 할 수 있는 자료구조(Array{Any} 타입의 배열) 를 이용하는것이 편하다. 그러나 이런 구조들 가운데 하나를 이용하면서 동시에 원소의 타입을 안다면, 컴파일러와 이 지식을 공유하는 것이 도움이 된다:\nfunction foo(a::Array{Any,1})\n    x = a[1]::Int32\n    b = x+1\n    ...\nend\n여기서 우리는 a 의 첫번째 원소가 Int32 타입이라는 것을 안다. 이렇게 지정하게 되면, 그 값이 기대했던 타입이 아닐 때 런타임 에러를 발생시키며, 잠재적으로 어떤 버그를 미리 발견할수도 있다.\na[1] 의 타입을 정확히 알지 못하는 경우 x 는 x = convert(Int32, a[1]) 로 선언 될 수 있다. convert 함수를 사용하게 되면 a[1] 은 Int32 로 변환될 수 있는 어떤 객체(예를 들면 UInt8)도 될 수 있으며, 타입 요구 조건을 완하함으로서 코드의 일반성을 향상시킨다. convert 함수 자체가 타입 안정성을 확보하기 위해 문맥상에서(in the context) 타입 지정을 필요로 한다는 것에 유의하라. 이는 컴파일러가 함수의 모든 인자들의 타입을 알지 못하면, convert 함수에 있어서 조차 함수의 리턴 값의 타입을 추론하지 못하기 때문이다.\n만약 타입이 추상적 타입이거나 런타임에 구성된다면 타입 지정은 성능을 향상시킬수 없다.(실제로 저하시킬수도 있다.) 이는 컴파일러가 뒤따르는 코드를 특정하는데 타입 지정을 사용할 수 없으며, 따라서 타입을 확인하는데 시간이 걸리기 때문이다. 예를 들어 다음 코드 를 보자.\nfunction nr(a, prec)\n    ctype = prec == 32 ? Float32 : Float64\n    b = Complex{ctype}(a)\n    c = (b + 1.0f0)::Complex{ctype}\n    abs(c)\nend\nc 에 대한 지정은 성능을 해친다. 런타임에 구성되는 타입에 관련된 성능 좋은 코드를 작성하기 위해서는 아래에 논의될 function-barrier technique 를 사용하고, 구성되는 타입이 커널 함수의 인자에 나타나서, 커널 작동이 컴파일러에 의해 제대로 특정되도록 해야 한다. 예를 들어, 위의 코드에서 b 가 구성되자 마자 다른 함수 k (the kernel) 에 전달 될 수 있다. 예를 들어 함수 k 가 b 를 타입 파라미터 T 에 대해 Complex{T} 로 선언하였다면, k 에서의 할당문(assignment statement) 에서 나타나는 아래와 같은 타입 지정\nc = (b + 1.0f0)::Complex{T}\n은 성능을 해치지 않는데(도움도 되지 않지만) 이는 컴파일러가 c 의 타입을 k가 컴파일 될 때 결정하기 때문이다.\n\n\n\n6.4 언제 Julia가 specializing(타입 특정) 을 피하는지 숙지하라.\n경험적으로 Julia는 Type, Function 및 Vararg의 세 가지 특정한 경우에서 인자 타입 매개변수를 자동으로 특정하는것을 피한다. Julia는 인자가 메서드 내부에서 사용될 때 항상 특정하지만, 이 인자가 다른 함수에 전달될 때는 특정하지 않는다. 이렇게 하면 보통 실행시간에는 성능에 영항을 주지 않으며 컴파일러의 성능을 향상시킨다. 만약 당신이 런타임에 성능에 영향이 있다는것을 발견한다면, 메서드 선언에서 타입 변수를 추가하여 타입 특정을 유도할 수 있다. 여기에 몇몇 예를 제시하겠다.\n이것은 타입특정을 하지 않는다. (함수 인지 t 는 Type 이다.)\nfunction f_type(t)  # or t::Type\n    x = ones(t, 10)\n    return sum(map(sin, x))\nend\n그러나 아래는 특정한다.\nfunction g_type(t::Type{T}) where T\n    x = ones(T, 10)\n    return sum(map(sin, x))\nend\n아래는 특정하지 않는다. (g_func 의 인자 g 는 Function 타입이다. )\nf_func(f, num) = ntuple(f, div(num, 2))\ng_func(g::Function, num) = ntuple(g, div(num, 2))\n그러나 아래는 특정한다.\nh_func(h::H, num) where {H} = ntuple(h, div(num, 2))\n다음은 특정하지 않는다. (Vararg 의 경우)\nf_vararg(x::Int...) = tuple(x...)\n그러나 아래는 특정한다.\ng_vararg(x::Vararg{Int, N}) where {N} = tuple(x...)\n여러 타입 파라미터중 오직 하나만 강제로 특정하고, 나머지는 제한을 두지 않고 싶을수도 있다. 예를 들어 다음의 코드는 특정하며, 모든 인자들이 같은 타입이 아닐 때 유용하다.\nh_vararg(x::Vararg{Any, N}) where {N} = tuple(x...)\n@code_typed 와 그 친구들은 비록 Julia 가 보통은 메쏘드 호츨에서 특정하지 않더라도 항상 타입을 특정한 코드를 보여준다. 함수 인자 타입이 변했을 때 타입 특정을 생성하는지 확인하고 싶다면, 즉 (@which f(...)).specializations 가 궁금한 인자에 대해 타입 특정을 포함하고 있는지 알고 싶다면, method internals 를 확인할 필요가 있다.",
+    "text": "6 타입 선언\n타입 선언이 선택 사항인 많은 언어에서는, 선언을 하는 것이 빠르게 동작하는 코드를 만드는 지름길이다. Julia 에서는 그렇지 않다. Julia에서는 컴파일러가 보통 모든 함수 인자, 지역변수와 표현(expression)의 타입을 알고 있다. 그러나 그러나 몇몇 특정 상황에서는 선언이 도움이 된다.\n\n\n6.1 추상 타입을 가진 필드를 피하라\n타입은 그 필드의 타입을 특정하지 않고 선언 될 수 있다.\njulia&gt; struct MyAmbiguousType\n           a\n       end\n\n위 코드에서 a 는 어떤 타입도 될 수 있다. 이것은 때대로 유용하지만 단점도 존재한다: 컴파일러는 MyAmbiguousType 객체에 대해 고성능 코드를 생성할 수 없다. 컴파일러는 어떻게 코드를 빌드할 지 결정하기위해 값이 아닌 객체의 타입을 사용하기 때문이다. 안타깝지만 MyAmbiguousType 객체에 대해 추정할 수 있는 것이 거의 없다.\n\njulia&gt; b = MyAmbiguousType(\"Hello\")\nMyAmbiguousType(\"Hello\")\n\njulia&gt; c = MyAmbiguousType(17)\nMyAmbiguousType(17)\n\njulia&gt; typeof(b)\nMyAmbiguousType\n\njulia&gt; typeof(c)\nMyAmbiguousType\n비록 b 와 c 에 대한 메모리 내부에서의 내재적인 데이터 표현이 아주 다를지라도, 그 둘의 값은 같은 타입이다. a 필드에 수를 저장하더라도, UInt8 의 메모리 표현과 Float64의 메모리 표현이 다르다는 사실은 CPU가 두개의 서로 다른 종류의 명령어(instructions)를 사용하여 다룰 필요가 있다는 것을 의미한다. 타입으로부터 필요한 정보를 얻을 수 없으므로 이 결정은 런타임에 이루어진다. 이것이 성능을 떨어트린다.\na의 타입을 선언하면 이를 개선시킬 수 있다. 여기서, 우리는 a 가 여러 타입들 중 아무거나 하나의 타입이 될 수 있는 경우에 초점을 두자. 이 경우 매개변수를 쓰는 것이 자연스러운 해법이다. 예를 들어 다음과 같다.\njulia&gt; mutable struct MyType{T&lt;:AbstractFloat}\n           a::T\n       end\n이것은 아래보다 좋은 선택이다.\njulia&gt; mutable struct MyStillAmbiguousType\n           a::AbstractFloat\n       end\n왜냐면 첫번째 버젼은 wrapper 객체의 타입에서 a 의 타입을 지정했기 때문이다. 예를 들어보자:\njulia&gt; m = MyType(3.2)\nMyType{Float64}(3.2)\n\njulia&gt; t = MyStillAmbiguousType(3.2)\nMyStillAmbiguousType(3.2)\n\njulia&gt; typeof(m)\nMyType{Float64}\n\njulia&gt; typeof(t)\nMyStillAmbiguousType\n필드 a 의 타입은 m의 타입으로 부터 쉽게 결정되지만 t 의 타입으로부터는 그렇지 않다. 물론 t 내부에서 필드 a의 타입을 바꾸는 것이 가능하다.\njulia&gt; typeof(t.a)\nFloat64\n\njulia&gt; t.a = 4.5f0\n4.5f0\n\njulia&gt; typeof(t.a)\nFloat32\n반대로, m 이 만들어진 다음에는 m.a 의 type 은 변할 수 없다.\njulia&gt; m.a = 4.5f0\n4.5f0\n\njulia&gt; typeof(m.a)\nFloat64\nm 의 타입으로부터 m.a 의 타입을 알 수 있다는 사실과, 이 타입이 mid-function 을 변경시킬수 없다는 사실은 컴파일러가 t 와 같은 객체가 아닌 m 과 같은 객체에 대해 고도로 최적화된 코드를 생성하도록 해 준다.\n물론, 이 모든것은 우리가 m 을 구체적 타입(concrete type)을 이용하여 m 을 구성했을 경우에만 사실이다. 이것은 abstract 타입을 이용하여 명시적으로 구성했을 경우에는 사실이 아니다.\njulia&gt; m = MyType{AbstractFloat}(3.2)\nMyType{AbstractFloat}(3.2)\n\njulia&gt; typeof(m.a)\nFloat64\n\njulia&gt; m.a = 4.5f0\n4.5f0\n\njulia&gt; typeof(m.a)\nFloat32\n실제적인 경우에는 이러한 객체는 MyStillAmbiguousType 과 동일하게 행동한다.\n아래의 간단한 함수\nfunc(m::MyType) = m.a+1\n에 대해\ncode_llvm(func, Tuple{MyType{Float64}})\ncode_llvm(func, Tuple{MyType{AbstractFloat}})\n를 사용하여 간단한 함수를 위해 생성된 대량의 코드를 비교하는 것은 매우 교육적으로 유익하다.1\n결과가 너무 길어서 여기에 제시하지 않지만 여러분이 직접 해보길 바란다. 첫번째 경우는 타입이 완전히 지정되었으므로 컴파일러가 실행시간에 타입을 결정하는 코드를 만들 필요가 전혀 없다. 결과적으로 짧고 빠른 코드가 된다.\n전적으로 매개화되지 않은 타입(not-fully-parameterized type)은 추상 타입처럼 행동한다. 예를 들어, 전적으로 특정된 Array{T, n} 은 concrete 하지만 파라미터가 없는 Array 자체는 concrete 하지 않다.\njulia&gt; !isconcretetype(Array), !isabstracttype(Array), isstructtype(Array), !isconcretetype(Array{Int}), isconcretetype(Array{Int,1})\n(true, true, true, true, true)\n이 경우 MyType 의 필드를 a::Array 로 선언하지 않고, 대신에 a::Array{T, N} 으로 선언하거나 이나 a::A 으로 선언하며 {T, N} 이나 A 를 MyType 의 파라미터로 선언하는 것이 낫다.\n\n\n\n6.2 추상 컨테이너를 필드로 갖는 것을 피하라\n동일한 최선의 방법은 컨테이너 타입에도 적용된다:\njulia&gt; struct MySimpleContainer{A&lt;:AbstractVector}\n           a::A\n       end\n\njulia&gt; struct MyAmbiguousContainer{T}\n           a::AbstractVector{T}\n       end\n\njulia&gt; struct MyAlsoAmbiguousContainer\n           a::Array\n       end\n예를 들어 :\njulia&gt; c = MySimpleContainer(1:3);\n\njulia&gt; typeof(c)\nMySimpleContainer{UnitRange{Int64}}\n\njulia&gt; c = MySimpleContainer([1:3;]);\n\njulia&gt; typeof(c)\nMySimpleContainer{Vector{Int64}}\n\njulia&gt; b = MyAmbiguousContainer(1:3);\n\njulia&gt; typeof(b)\nMyAmbiguousContainer{Int64}\n\njulia&gt; b = MyAmbiguousContainer([1:3;]);\n\njulia&gt; typeof(b)\nMyAmbiguousContainer{Int64}\n\njulia&gt; d = MyAlsoAmbiguousContainer(1:3);\n\njulia&gt; typeof(d), typeof(d.a)\n(MyAlsoAmbiguousContainer, Vector{Int64})\n\njulia&gt; d = MyAlsoAmbiguousContainer(1:1.0:3);\n\njulia&gt; typeof(d), typeof(d.a)\n(MyAlsoAmbiguousContainer, Vector{Float64})\nMySimpleContainer 객체는 그 타입과 매개변수가 전부 지정되었으므로 컴파일러가 최적화된 함수를 생성할수 있다. 대부분의 경우는 이것으로 충분하다.\n이제 컴파일러가 완벽히 일을 해치울 수 있는 반면, 당신이 a의 원소의 타입에 따라 다른 일을 하는 코드를 작성해야 하는 경우도 있다. 이에 대한 가장 좋은 방법은 별도의 함수(여기서는 foo) 를 이용하여 당신이 원하는 기능을 감싸는 것이다.\njulia&gt; function sumfoo(c::MySimpleContainer)\n           s = 0\n           for x in c.a\n               s += foo(x)\n           end\n           s\n       end\nsumfoo (generic function with 1 method)\n\njulia&gt; foo(x::Integer) = x\nfoo (generic function with 1 method)\n\njulia&gt; foo(x::AbstractFloat) = round(x)\nfoo (generic function with 2 methods)\n이렇게 컴파일러가 모든 경우에서 최적화된 코드를 생성하도록 하면서, 모든 것을 단순하게 유지할 수 있다.\n그러나, MySimpleContianer 의 a 필드의 AbstractVector의 타입이나 상이한 원소 타입 대해 각각 다른 버젼의 외부 함수를 선언해야 할 필요가 있을 수도 있다. 당신은 이렇게 할 수 있다:\njulia&gt; function myfunc(c::MySimpleContainer{&lt;:AbstractArray{&lt;:Integer}})\n           return c.a[1]+1\n       end\nmyfunc (generic function with 1 method)\n\njulia&gt; function myfunc(c::MySimpleContainer{&lt;:AbstractArray{&lt;:AbstractFloat}})\n           return c.a[1]+2\n       end\nmyfunc (generic function with 2 methods)\n\njulia&gt; function myfunc(c::MySimpleContainer{Vector{T}}) where T &lt;: Integer\n           return c.a[1]+3\n       end\nmyfunc (generic function with 3 methods)\njulia&gt; myfunc(MySimpleContainer(1:3))\n2\n\njulia&gt; myfunc(MySimpleContainer(1.0:3))\n3.0\n\njulia&gt; myfunc(MySimpleContainer([1:3;]))\n4\n\n\n\n6.3 타입이 지정되지 않은 위치로부터 값을 지정하기\n많은 경우 임의의 타입을 저장 할 수 있는 자료구조(Array{Any} 타입의 배열) 를 이용하는것이 편하다. 그러나 이런 구조들 가운데 하나를 이용하면서 동시에 원소의 타입을 안다면, 컴파일러와 이 지식을 공유하는 것이 도움이 된다:\nfunction foo(a::Array{Any,1})\n    x = a[1]::Int32\n    b = x+1\n    ...\nend\n여기서 우리는 a 의 첫번째 원소가 Int32 타입이라는 것을 안다. 이렇게 지정하게 되면, 그 값이 기대했던 타입이 아닐 때 런타임 에러를 발생시키며, 잠재적으로 어떤 버그를 미리 발견할수도 있다.\na[1] 의 타입을 정확히 알지 못하는 경우 x 는 x = convert(Int32, a[1]) 로 선언 될 수 있다. convert 함수를 사용하게 되면 a[1] 은 Int32 로 변환될 수 있는 어떤 객체(예를 들면 UInt8)도 될 수 있으며, 타입 요구 조건을 완하함으로서 코드의 일반성을 향상시킨다. convert 함수 자체가 타입 안정성을 확보하기 위해 문맥상에서(in the context) 타입 지정을 필요로 한다는 것에 유의하라. 이는 컴파일러가 함수의 모든 인자들의 타입을 알지 못하면, convert 함수에 있어서 조차 함수의 리턴 값의 타입을 추론하지 못하기 때문이다.\n만약 타입이 추상적 타입이거나 런타임에 구성된다면 타입 지정은 성능을 향상시킬수 없다.(실제로 저하시킬수도 있다.) 이는 컴파일러가 뒤따르는 코드를 특정하는데 타입 지정을 사용할 수 없으며, 따라서 타입을 확인하는데 시간이 걸리기 때문이다. 예를 들어 다음 코드 를 보자.\nfunction nr(a, prec)\n    ctype = prec == 32 ? Float32 : Float64\n    b = Complex{ctype}(a)\n    c = (b + 1.0f0)::Complex{ctype}\n    abs(c)\nend\nc 에 대한 지정은 성능을 해친다. 런타임에 구성되는 타입에 관련된 성능 좋은 코드를 작성하기 위해서는 아래에 논의될 function-barrier technique 를 사용하고, 구성되는 타입이 커널 함수의 인자에 나타나서, 커널 작동이 컴파일러에 의해 제대로 특정되도록 해야 한다. 예를 들어, 위의 코드에서 b 가 구성되자 마자 다른 함수 k (the kernel) 에 전달 될 수 있다. 예를 들어 함수 k 가 b 를 타입 파라미터 T 에 대해 Complex{T} 로 선언하였다면, k 에서의 할당문(assignment statement) 에서 나타나는 아래와 같은 타입 지정\nc = (b + 1.0f0)::Complex{T}\n은 성능을 해치지 않는데(도움도 되지 않지만) 이는 컴파일러가 c 의 타입을 k가 컴파일 될 때 결정하기 때문이다.\n\n\n\n6.4 언제 Julia가 specializing(타입 특정) 을 피하는지 숙지하라.\n경험적으로 Julia는 Type, Function 및 Vararg의 세 가지 특정한 경우에서 인자 타입 매개변수를 자동으로 특정하는것을 피한다. Julia는 인자가 메서드 내부에서 사용될 때 항상 특정하지만, 이 인자가 다른 함수에 전달될 때는 특정하지 않는다. 이렇게 하면 보통 실행시간에는 성능에 영항을 주지 않으며 컴파일러의 성능을 향상시킨다. 만약 당신이 런타임에 성능에 영향이 있다는것을 발견한다면, 메서드 선언에서 타입 변수를 추가하여 타입 특정을 유도할 수 있다. 여기에 몇몇 예를 제시하겠다.\n이것은 타입특정을 하지 않는다. (함수 인지 t 는 Type 이다.)\nfunction f_type(t)  # or t::Type\n    x = ones(t, 10)\n    return sum(map(sin, x))\nend\n그러나 아래는 특정한다.\nfunction g_type(t::Type{T}) where T\n    x = ones(T, 10)\n    return sum(map(sin, x))\nend\n아래는 특정하지 않는다. (g_func 의 인자 g 는 Function 타입이다. )\nf_func(f, num) = ntuple(f, div(num, 2))\ng_func(g::Function, num) = ntuple(g, div(num, 2))\n그러나 아래는 특정한다.\nh_func(h::H, num) where {H} = ntuple(h, div(num, 2))\n다음은 특정하지 않는다. (Vararg 의 경우)\nf_vararg(x::Int...) = tuple(x...)\n그러나 아래는 특정한다.\ng_vararg(x::Vararg{Int, N}) where {N} = tuple(x...)\n여러 타입 파라미터중 오직 하나만 강제로 특정하고, 나머지는 제한을 두지 않고 싶을수도 있다. 예를 들어 다음의 코드는 특정하며, 모든 인자들이 같은 타입이 아닐 때 유용하다.\nh_vararg(x::Vararg{Any, N}) where {N} = tuple(x...)\n@code_typed 와 그 친구들은 비록 Julia 가 보통은 메쏘드 호츨에서 특정하지 않더라도 항상 타입을 특정한 코드를 보여준다. 함수 인자 타입이 변했을 때 타입 특정을 생성하는지 확인하고 싶다면, 즉 (@which f(...)).specializations 가 궁금한 인자에 대해 타입 특정을 포함하고 있는지 알고 싶다면, method internals 를 확인할 필요가 있다.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 성능 팁"
@@ -1842,7 +1842,7 @@
     "href": "src/application_of_julia/style_guide.html#sec-write_functions",
     "title": "Julia 스타일 가이드",
     "section": "2 단순한 스크립트가 아닌 함수를 사용한다",
-    "text": "2 단순한 스크립트가 아닌 함수를 사용한다\nWriting code as a series of steps at the top level is a quick way to get started solving a problem, but you should try to divide a program into functions as soon as possible. Functions are more reusable and testable, and clarify what steps are being done and what their inputs and outputs are. Furthermore, code inside functions tends to run much faster than top level code, due to how Julia’s compiler works.\nIt is also worth emphasizing that functions should take arguments, instead of operating directly on global variables (aside from constants like pi).\n코드를 최상위 단계에서 일련의 단계로 작성하는 것은 문제를 해결하는 빠른 시작 방법이지만 가능한 한 빨리 프로그램을 함수로 나누는 것이 좋습니다. 함수는 재사용 가능하고 테스트하기 쉬우며, 수행 중인 단계와 입력 및 출력이 무엇인지 명확하게 해줍니다. 더욱이, Julia의 컴파일러 작동 방식 때문에 함수 내부의 코드는 최상위 레벨 코드보다 훨씬 더 빠르게 실행되는 경향이 있습니다.\n또한, 함수는 전역 변수를 직접 사용하는 대신(π와 같은 상수를 제외하고) 인자를 받아야 한다는 점을 강조할 가치가 있습니다.",
+    "text": "2 단순한 스크립트가 아닌 함수를 사용한다\n코드를 최상위 단계에서 일련의 단계로 작성하는 것은 문제를 해결하는 빠른 시작 방법이지만 가능한 한 빨리 프로그램을 함수로 나누는 것이 좋습니다. 함수는 재사용 가능하고 테스트하기 쉬우며, 수행 중인 단계와 입력 및 출력이 무엇인지 명확하게 해줍니다. 더욱이, Julia의 컴파일러 작동 방식 때문에 함수 내부의 코드는 최상위 레벨 코드보다 훨씬 더 빠르게 실행되는 경향이 있습니다.\n또한, 함수는 전역 변수를 직접 사용하는 대신(π와 같은 상수를 제외하고) 인자를 받아야 한다는 점을 강조할 가치가 있습니다.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
@@ -1852,8 +1852,8 @@
     "objectID": "src/application_of_julia/style_guide.html#sec-avoid_writing_overly-specific_types",
     "href": "src/application_of_julia/style_guide.html#sec-avoid_writing_overly-specific_types",
     "title": "Julia 스타일 가이드",
-    "section": "3 과도하게 타입을 특정하는것을 피하세요",
-    "text": "3 과도하게 타입을 특정하는것을 피하세요\n코드는 가능한 한 generic 해야 합니다. Generic 이란 코드 작성 시점이 아니라 코드 동작 시점에서 결정되는 것을 말합니다.\nComplex{Float64}(x)\n보다는 generic 함수를 사용하여 다음과 같이 쓰는 것이 좋습니다.\ncomplex(float(x))\n이 버젼은 x 를 항상 같은 타입이 아닌 적당한 타입으로 변경합니다.\n이 스타일 지침은 특히 함수의 인자와 관련이 있습니다. 예를 들어, 실제로 어떤 정수든 가능하다면 특정 인자를 반드시 Int 나 Int32 로 선언하지 말고 추상 타입인 Integer 를 사용하세요. 사실, 다른 메서드 정의와의 모호성을 해결할 필요가 없다면, 많은 경우 인수 타입을 생략할 수도 있습니다. 필요한 작업을 지원하지 않는 타입이 전달되면 어쨌든 MethodError 가 발생하기 때문입니다. (이를 덕 타이핑이라고 합니다.)\n아래의 addone 함수의 정의를 예를 들어 봅시다. 이 함수는 인자에 1 을 더한 값을 반환합니다.\naddone(x::Int) = x + 1                 # works only for Int\naddone(x::Integer) = x + oneunit(x)    # any integer type\naddone(x::Number) = x + oneunit(x)     # any numeric type\naddone(x) = x + oneunit(x)             # any type supporting + and oneunit\naddone 의 마지막 정의는 oneunit 을 지원하는 모든 타입과 해당 타입에서 동작하는 + 연산을 처리할 수 있습니다. (oneunit(x) 는 x 와 동일한 타입에서 1 을 반환하며, 의도치 않은 타입 승격을 방지합니다.) 핵심은, addone(x) = x + oneunit(x) 와 같은 일반적인 정의만 작성해도 성능상의 손실이 전혀 없다는 점입니다. Julia는 필요에 따라 자동으로 특화된 버전을 컴파일하기 때문입니다.\n예를 들어, addone(12) 를 처음 호출하면, Julia는 x::Int 인수를 위한 특화된 addone 함수를 자동으로 컴파일하고, oneunit 호출을 인라인된 값 1로 대체합니다. 따라서 위에서 언급한 addone 함수의 처음 세 가지 정의는 네 번째 정의와 완전히 중복됩니다.",
+    "section": "3 과도하게 타입을 특정하는것을 피한다",
+    "text": "3 과도하게 타입을 특정하는것을 피한다\n코드는 가능한 한 generic 해야 합니다. Generic 이란 특정 타입에 종속되지 않고 가능한 하나 다양한 타입에 대해 작동하도록 프로그래밍 하는 것을 말합니다.\nComplex{Float64}(x)\n보다는 generic 함수를 사용하여 다음과 같이 쓰는 것이 좋습니다.\ncomplex(float(x))\n이 버젼은 x 를 항상 같은 타입이 아닌 적당한 타입으로 변경합니다.\n이 스타일 지침은 특히 함수의 인자와 관련이 있습니다. 예를 들어, 실제로 어떤 정수든 가능하다면 특정 인자를 반드시 Int 나 Int32 로 선언하지 말고 추상 타입인 Integer 를 사용하세요. 사실, 다른 메서드 정의와의 모호성을 해결할 필요가 없다면, 많은 경우 인수 타입을 생략할 수도 있습니다. 필요한 작업을 지원하지 않는 타입이 전달되면 어쨌든 MethodError 가 발생하기 때문입니다. (이를 덕 타이핑이라고 합니다.)\n아래의 addone 함수의 정의를 예를 들어 봅시다. 이 함수는 인자에 1 을 더한 값을 반환합니다.\naddone(x::Int) = x + 1                 # works only for Int\naddone(x::Integer) = x + oneunit(x)    # any integer type\naddone(x::Number) = x + oneunit(x)     # any numeric type\naddone(x) = x + oneunit(x)             # any type supporting + and oneunit\naddone 의 마지막 정의는 oneunit 을 지원하는 모든 타입과 해당 타입에서 동작하는 + 연산을 처리할 수 있습니다. (oneunit(x) 는 x 와 동일한 타입에서 1 을 반환하며, 의도치 않은 타입 승격을 방지합니다.) 핵심은, addone(x) = x + oneunit(x) 와 같은 일반적인 정의만 작성해도 성능상의 손실이 전혀 없다는 점입니다. Julia는 필요에 따라 자동으로 특화된 버전을 컴파일하기 때문입니다.\n예를 들어, addone(12) 를 처음 호출하면, Julia는 x::Int 인수를 위한 특화된 addone 함수를 자동으로 컴파일하고, oneunit 호출을 인라인된 값 1로 대체합니다. 따라서 위에서 언급한 addone 함수의 처음 세 가지 정의는 네 번째 정의와 완전히 중복됩니다.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
@@ -1863,8 +1863,8 @@
     "objectID": "src/application_of_julia/style_guide.html#sec-handle_excess_argument_diversity_in_the_caller",
     "href": "src/application_of_julia/style_guide.html#sec-handle_excess_argument_diversity_in_the_caller",
     "title": "Julia 스타일 가이드",
-    "section": "4 과도한 인자의 다양성을 호출할 때 처리세요",
-    "text": "4 과도한 인자의 다양성을 호출할 때 처리세요\nfunction foo(x, y)\n    x = Int(x); y = Int(y)\n    ...\nend\nfoo(x, y)\n를 쓰는 대신에 아래를 사용하세요.\nfunction foo(x::Int, y::Int)\n    ...\nend\nfoo(Int(x), Int(y))\nfoo 실제로는 모든 타입의 수를 받지는 않기 때문에 후자가 더 나은 스타일입니다. 단지 Int 들을 받을 뿐입니다.\n여기서 하나의 문제는 함수가 본질적으로 정수만을 필요로 한다면, 함수를 호출할 때 정수가 아닌 수에 대해 어떻게 변환할지(예: floor 나 ceil)를 명시적으로 결정하도록 강제하는 것이 더 나을 수 있다는 점입니다. 또 다른 문제는 더 구체적인 타입을 선언하면 향후 메서드 정의를 위한 더 많은 “여지”을 남길 수 있다는 점입니다. 즉, 특정 타입에 대해 메서드를 정의하면, 추후 다른 타입이나 추상 타입에 대해 별도의 메서드를 정의하기가 더 용이해질 수 있습니다.",
+    "section": "4 과도한 인자의 다양성은 함수 내부가 아니라 함수를 호출할 때 처리한다",
+    "text": "4 과도한 인자의 다양성은 함수 내부가 아니라 함수를 호출할 때 처리한다\nfunction foo(x, y)\n    x = Int(x); y = Int(y)\n    ...\nend\nfoo(x, y)\n를 쓰는 대신에 아래를 사용하세요.\nfunction foo(x::Int, y::Int)\n    ...\nend\nfoo(Int(x), Int(y))\nfoo 실제로는 모든 타입의 수를 받지는 않기 때문에 후자가 더 나은 스타일입니다. 단지 Int 들을 받을 뿐입니다.\n여기서 하나의 문제는 함수가 본질적으로 정수만을 필요로 한다면, 함수를 호출할 때 정수가 아닌 수에 대해 어떻게 변환할지(예: floor 나 ceil)를 명시적으로 결정하도록 강제하는 것이 더 나을 수 있다는 점입니다. 또 다른 문제는 더 구체적인 타입을 선언하면 향후 메서드 정의를 위한 더 많은 “여지”을 남길 수 있다는 점입니다. 즉, 특정 타입에 대해 메서드를 정의하면, 추후 다른 타입이나 추상 타입에 대해 별도의 메서드를 정의하기가 더 용이해질 수 있습니다.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
@@ -1885,8 +1885,8 @@
     "objectID": "src/application_of_julia/style_guide.html#sec-avoid_strange_type_unios",
     "href": "src/application_of_julia/style_guide.html#sec-avoid_strange_type_unios",
     "title": "Julia 스타일 가이드",
-    "section": "6 이상한 타입 Unions 를 피하세요",
-    "text": "6 이상한 타입 Unions 를 피하세요\nUnion{Function, AbstractString} 과 같은 타입은 대개 설계가 더 분명해야 한다는 것을 의미합니다.",
+    "section": "6 이상한 타입 Unions 은 피한다",
+    "text": "6 이상한 타입 Unions 은 피한다\nUnion{Function, AbstractString} 과 같은 타입은 대개 설계가 더 분명해야 한다는 것을 의미합니다.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
@@ -1896,8 +1896,8 @@
     "objectID": "src/application_of_julia/style_guide.html#sec-avoid_elaborate_container_types",
     "href": "src/application_of_julia/style_guide.html#sec-avoid_elaborate_container_types",
     "title": "Julia 스타일 가이드",
-    "section": "7 복잡한 컨테이너 타입을 피하세요",
-    "text": "7 복잡한 컨테이너 타입을 피하세요\n다음과 같은 배열을 만드는 것은 보통 도움이 안됩니다.\na = Vector{Union{Int,AbstractString,Tuple,Array}}(undef, n)\n이경우 Vector{Any}(undef, n) 이 낫습니다. 하나의 타입에 많은 것들을 때려박는 것보다는 특정 사용에서 a[i]::Int 와 같이 컴파일러에게 알려주는 것이 더 도움이 됩니다.",
+    "section": "7 복잡한 컨테이너 타입을 피한다",
+    "text": "7 복잡한 컨테이너 타입을 피한다\n다음과 같은 배열을 만드는 것은 보통 도움이 안됩니다.\na = Vector{Union{Int,AbstractString,Tuple,Array}}(undef, n)\n이경우 Vector{Any}(undef, n) 이 낫습니다. 하나의 타입에 많은 것들을 때려박는 것보다는 특정 사용에서 a[i]::Int 와 같이 컴파일러에게 알려주는 것이 더 도움이 됩니다.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
@@ -1918,8 +1918,8 @@
     "objectID": "src/application_of_julia/style_guide.html#sec-prefer_exported_methods_over_direct_field_access",
     "href": "src/application_of_julia/style_guide.html#sec-prefer_exported_methods_over_direct_field_access",
     "title": "Julia 스타일 가이드",
-    "section": "8 직접적으로 필드에 접근하기보다는 export 된 메서드를 사용하세요",
-    "text": "8 직접적으로 필드에 접근하기보다는 export 된 메서드를 사용하세요\n관례적인 Julia 코드는 일반적으로 모듈에서 export된 메서드를 해당 타입에 대한 인터페이스로 간주해야 합니다. 객체의 필드는 대개 구현의 세부사항으로 취급되며, API로 명시되지 않는 한 사용자 코드에서 직접 접근해서는 안 됩니다. 이는 다음과 같은 여러 이점을 제공합니다.\n\n패키지 개발자는 구현을 변경해도 사용자 코드를 깨뜨리지 않을 수 있습니다.\n메서드는 map 과 같은 고차 함수에 전달할 수 있습니다. 예를 들어, map(imag, zs)는 [z.im for z in zs] 보다 간결하고 추상적입니다.\n메서드는 추상 타입에 정의될 수 있습니다.\n메서드는 서로 다른 타입 간에 공유될 수 있는 개념적 연산을 기술할 수 있습니다. 예를 들어, real(z) 는 복소수(Complex)와 사원수(Quaternion) 모두에서 동작합니다.\n\nJulia의 디스패치 시스템은 이러한 스타일을 권장합니다. 예를 들어, play(x::MyType) 는 특정 타입에 대해서만 play 메서드를 정의하며, 다른 타입은 각자의 구현을 가질 수 있습니다.\n마찬가지로, export 되지 않은 함수는 내부적으로 사용되며 변경될 가능성이 높습니다. 문서에서 명시하지 않는 한, 이러한 함수는 공개 API로 간주되지 않습니다.\n이 규칙에 대한 반례는 NamedTupe, RegexMatch, StatStruct 가 있습니다.",
+    "section": "8 직접적으로 필드에 접근하기보다는 export 된 메서드를 사용한다",
+    "text": "8 직접적으로 필드에 접근하기보다는 export 된 메서드를 사용한다\n관례적인 Julia 코드는 일반적으로 모듈에서 export된 메서드를 해당 타입에 대한 인터페이스로 간주해야 합니다. 객체의 필드는 대개 구현의 세부사항으로 취급되며, API로 명시되지 않는 한 사용자 코드에서 직접 접근해서는 안 됩니다. 이는 다음과 같은 여러 이점을 제공합니다.\n\n패키지 개발자는 구현을 변경해도 사용자 코드를 깨뜨리지 않을 수 있습니다.\n메서드는 map 과 같은 고차 함수에 전달할 수 있습니다. 예를 들어, map(imag, zs)는 [z.im for z in zs] 보다 간결하고 추상적입니다.\n메서드는 추상 타입에 정의될 수 있습니다.\n메서드는 서로 다른 타입 간에 공유될 수 있는 개념적 연산을 기술할 수 있습니다. 예를 들어, real(z) 는 복소수(Complex)와 사원수(Quaternion) 모두에서 동작합니다.\n\nJulia의 디스패치 시스템은 이러한 스타일을 권장합니다. 예를 들어, play(x::MyType) 는 특정 타입에 대해서만 play 메서드를 정의하며, 다른 타입은 각자의 구현을 가질 수 있습니다.\n마찬가지로, export 되지 않은 함수는 내부적으로 사용되며 변경될 가능성이 높습니다. 문서에서 명시하지 않는 한, 이러한 함수는 공개 API로 간주되지 않습니다.\n이 규칙에 대한 반례는 NamedTupe, RegexMatch, StatStruct 가 있습니다.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
@@ -1929,8 +1929,8 @@
     "objectID": "src/application_of_julia/style_guide.html#sec-using_naming_convections_with_julia_base",
     "href": "src/application_of_julia/style_guide.html#sec-using_naming_convections_with_julia_base",
     "title": "Julia 스타일 가이드",
-    "section": "9 Julia base/ 와 일치하도록 이름을 붙이세요",
-    "text": "9 Julia base/ 와 일치하도록 이름을 붙이세요\nJulia 코드에서 이름 지정에 대한 스타일 가이드는 다음과 같습니다:\n\n모듈 및 타입 이름에는 대문자와 카멜 케이스(CamelCase)를 사용합니다. : module SparseArrays, struct UnitRange\n함수 이름에는 소문자를 사용합니다(maximum, convert). 읽기 괜찮다면 여러 단어를 붙여 씁니다(isequal, haskey). 필요할 때는 단어 구분자로 밑줄(_)을 사용합니다. 개념을 조합한 경우에도 혹은 수식어가 있을 때에도 밑줄을 사용합니다(remotecall_fetch 는 fetch(remotecall(...)) 의 더 효율적인 구현을 의미합니다). .\n하나 이상의 인수를 수정하는 함수는 이름 끝에 ! 를 붙입니다(sort!, push!).\n간결함을 중시하되, 약어는 피합니다(indxin 보다는 indexin). 약어는 기억하기 어렵고, 특정 단어를 어떻게 축약했는지 혼동을 일으킬 수 있습니다.\n\n여러 단어가 필요한 함수 이름은 해당 함수가 하나 이상의 개념을 표현하는지 고려하십시오. 필요하다면 함수 이름을 더 작은 조각으로 나누는 것이 좋습니다.",
+    "section": "9 Julia base/ 와 일치하도록 이름을 붙인다",
+    "text": "9 Julia base/ 와 일치하도록 이름을 붙인다\nJulia 코드에서 이름 지정에 대한 스타일 가이드는 다음과 같습니다:\n\n모듈 및 타입 이름에는 대문자와 카멜 케이스(CamelCase)를 사용합니다. : module SparseArrays, struct UnitRange\n함수 이름에는 소문자를 사용합니다(maximum, convert). 읽기 괜찮다면 여러 단어를 붙여 씁니다(isequal, haskey). 필요할 때는 단어 구분자로 밑줄(_)을 사용합니다. 개념을 조합한 경우에도 혹은 수식어가 있을 때에도 밑줄을 사용합니다(remotecall_fetch 는 fetch(remotecall(...)) 의 더 효율적인 구현을 의미합니다). .\n하나 이상의 인수를 수정하는 함수는 이름 끝에 ! 를 붙입니다(sort!, push!).\n간결함을 중시하되, 약어는 피합니다(indxin 보다는 indexin). 약어는 기억하기 어렵고, 특정 단어를 어떻게 축약했는지 혼동을 일으킬 수 있습니다.\n\n여러 단어가 필요한 함수 이름은 해당 함수가 하나 이상의 개념을 표현하는지 고려하십시오. 필요하다면 함수 이름을 더 작은 조각으로 나누는 것이 좋습니다.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
@@ -1940,8 +1940,8 @@
     "objectID": "src/application_of_julia/style_guide.html#sec-write_functions_with_argument_ordering_simmilar_to_julia_base",
     "href": "src/application_of_julia/style_guide.html#sec-write_functions_with_argument_ordering_simmilar_to_julia_base",
     "title": "Julia 스타일 가이드",
-    "section": "10 함수 인자의 순서를 Julia Base 와 비슷하게 하세요",
-    "text": "10 함수 인자의 순서를 Julia Base 와 비슷하게 하세요\nJulia 의 Base 라이브러리는 함수 인수의 순서를 다음과 같은 일반 규칙에 따라 배치합니다. 이는 적용 가능한 경우에 해당하며, 일관된 사용자 경험을 제공합니다:\n\n함수 인자. 첫 번째 인수로 함수가 올 경우, do 블록을 사용해 다중 라인의 익명 함수를 전달할 수 있습니다.\nI/O 스트림. I/O 객체가 첫 번째로 오면 sprint 와 같은 함수에 전달하기 용이합니다/ 예: sprint(show, x).\n수정되는 입력 수정되는 입력은 먼저 나옵니다. 예를 들어 fill!(x, v) 에서 x 는 수정 대상이고, 값 v 는 뒤에 옵니다.\n타입. 보통 타입 인자가 있을 경우 함수의 출력이 이 타입을 갖도록 되는 경우가 많습니다.예를 들어 parse(Int, \"1\").그러나 read(io, String) 의 경우, I/O 객체가 타입보다 앞에 오며, 일반 규칙에 맞는 예외입니다.\n수정되지 않는 입력. 수정되지 않는 입력은 수정되는 입력 뒤에 옵니다. 예를 들어 fill!(x, v) 에서 v 는 수정되지 않는 입력입니다.\n키. 연관 컬렉션에서는 키-값 쌍의 키를 나타냅니다. 인덱스 컬렉션에서는 인덱스를 나타냅니다.\n값. 연관 컬렉션에서는 키-값 쌍의 값입니다. fill!(x, v) 의 경유와 비슷합니다.\n기타 인자. 위에 해당하지 않는 나머지 인수입니다.\n가변 인수(Varargs). 함수 호출 시 끝에 무제한 나열 가능한 인수입니다. 예를 들어 Matrix{T}(undef, dims) 에서 차원(dims) 는 튜플로도(Matrix{T}(undef, (1,2))), 가변 인수(Vararg)로 도 (Matrix{T}(undef, 1, 2)) 전달 가능합니다.\n키워드 인수. 키워드 인수는 항상 함수 정의의 마지막에 위치합니다.\n\n대다수 함수는 위에 나열된 모든 종류의 인자를 받지 않습니다. 숫자는 단지 함수에 적용 가능한 인자들의 우선순위를 나타내기 위한 것입니다.\n물론 예외도 있습니다. convert 에서 첫번째 인자는 항상 타입입니다. setindex! 에서는 값이 인덱스보다 앞에 옵니다. 이는 인덱스를 가변 인자로 제공할 수 있게 하기 위함입니다.\nAPI를 설계할 때 이 순서를 최대한 준수하면 함수 사용자가 일관된 경험을 할 수 있습니다.",
+    "section": "10 함수 인자의 순서를 Julia Base 와 비슷하게 한다",
+    "text": "10 함수 인자의 순서를 Julia Base 와 비슷하게 한다\nJulia 의 Base 라이브러리는 함수 인수의 순서를 다음과 같은 일반 규칙에 따라 배치합니다. 이는 적용 가능한 경우에 해당하며, 일관된 사용자 경험을 제공합니다:\n\n함수 인자. 첫 번째 인수로 함수가 올 경우, do 블록을 사용해 다중 라인의 익명 함수를 전달할 수 있습니다.\nI/O 스트림. I/O 객체가 첫 번째로 오면 sprint 와 같은 함수에 전달하기 용이합니다/ 예: sprint(show, x).\n수정되는 입력 수정되는 입력은 먼저 나옵니다. 예를 들어 fill!(x, v) 에서 x 는 수정 대상이고, 값 v 는 뒤에 옵니다.\n타입. 보통 타입 인자가 있을 경우 함수의 출력이 이 타입을 갖도록 되는 경우가 많습니다.예를 들어 parse(Int, \"1\").그러나 read(io, String) 의 경우, I/O 객체가 타입보다 앞에 오며, 일반 규칙에 맞는 예외입니다.\n수정되지 않는 입력. 수정되지 않는 입력은 수정되는 입력 뒤에 옵니다. 예를 들어 fill!(x, v) 에서 v 는 수정되지 않는 입력입니다.\n키. 연관 컬렉션에서는 키-값 쌍의 키를 나타냅니다. 인덱스 컬렉션에서는 인덱스를 나타냅니다.\n값. 연관 컬렉션에서는 키-값 쌍의 값입니다. fill!(x, v) 의 경유와 비슷합니다.\n기타 인자. 위에 해당하지 않는 나머지 인수입니다.\n가변 인수(Varargs). 함수 호출 시 끝에 무제한 나열 가능한 인수입니다. 예를 들어 Matrix{T}(undef, dims) 에서 차원(dims) 는 튜플로도(Matrix{T}(undef, (1,2))), 가변 인수(Vararg)로 도 (Matrix{T}(undef, 1, 2)) 전달 가능합니다.\n키워드 인수. 키워드 인수는 항상 함수 정의의 마지막에 위치합니다.\n\n대다수 함수는 위에 나열된 모든 종류의 인자를 받지 않습니다. 숫자는 단지 함수에 적용 가능한 인자들의 우선순위를 나타내기 위한 것입니다.\n물론 예외도 있습니다. convert 에서 첫번째 인자는 항상 타입입니다. setindex! 에서는 값이 인덱스보다 앞에 옵니다. 이는 인덱스를 가변 인자로 제공할 수 있게 하기 위함입니다.\nAPI를 설계할 때 이 순서를 최대한 준수하면 함수 사용자가 일관된 경험을 할 수 있습니다.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
@@ -1951,8 +1951,8 @@
     "objectID": "src/application_of_julia/style_guide.html#sec-dont_overuse_try_catch",
     "href": "src/application_of_julia/style_guide.html#sec-dont_overuse_try_catch",
     "title": "Julia 스타일 가이드",
-    "section": "11 try-catch 를 남용하지 마세요",
-    "text": "11 try-catch 를 남용하지 마세요\ntry-catch 로 에러를 탐지하는 것보다 피하는 것이 낫습니다.",
+    "section": "11 try-catch 를 남용하지 않는다",
+    "text": "11 try-catch 를 남용하지 않는다\ntry-catch 로 에러를 탐지하는 것보다 피하는 것이 낫습니다.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
@@ -1962,8 +1962,8 @@
     "objectID": "src/application_of_julia/style_guide.html#sec-dont_parrenthesize_conditions",
     "href": "src/application_of_julia/style_guide.html#sec-dont_parrenthesize_conditions",
     "title": "Julia 스타일 가이드",
-    "section": "12 조건문을 괄호로 싸지 마세요",
-    "text": "12 조건문을 괄호로 싸지 마세요\nJulia 는 if 나 while 문에서 괄호를 요구하지 않습니다. if (a == b) 대신에 if a == b 를 사용하세요.",
+    "section": "12 조건문을 괄호로 싸지 않는다",
+    "text": "12 조건문을 괄호로 싸지 않는다\nJulia 는 if 나 while 문에서 괄호를 요구하지 않습니다. if (a == b) 대신에 if a == b 를 사용하세요.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
@@ -1984,8 +1984,8 @@
     "objectID": "src/application_of_julia/style_guide.html#sec-don_overuse_splicing",
     "href": "src/application_of_julia/style_guide.html#sec-don_overuse_splicing",
     "title": "Julia 스타일 가이드",
-    "section": "13 ... 를 남용하지 마세요",
-    "text": "13 ... 를 남용하지 마세요\n함수 인자 에서 스플라이싱(splicing) 을 자주 사용하면 중독성이 있을 수 있습니다. 예를 들어, [a..., b...] 대신에 간단히 [a; b] 를 사용하세요. 또한, collect(a) 는 [a...] 보다 더 나은 방법입니다. 하지만 a 가 이미 이터러블(iterable) 한 객체라면, 굳이 배열로 변환하지 않고 그대로 두는 것이 더 효율적일 때가 많습니다.",
+    "section": "13 ... 를 않는다",
+    "text": "13 ... 를 않는다\n함수 인자 에서 스플라이싱(splicing) 을 자주 사용하면 중독성이 있을 수 있습니다. 예를 들어, [a..., b...] 대신에 간단히 [a; b] 를 사용하세요. 또한, collect(a) 는 [a...] 보다 더 나은 방법입니다. 하지만 a 가 이미 이터러블(iterable) 한 객체라면, 굳이 배열로 변환하지 않고 그대로 두는 것이 더 효율적일 때가 많습니다.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
@@ -1995,8 +1995,8 @@
     "objectID": "src/application_of_julia/style_guide.html#sec-ensure_constructors_return_type",
     "href": "src/application_of_julia/style_guide.html#sec-ensure_constructors_return_type",
     "title": "Julia 스타일 가이드",
-    "section": "14 생성자가 바로 그 타입을 반환하는지 확인하세요",
-    "text": "14 생성자가 바로 그 타입을 반환하는지 확인하세요\n타입 T 에 대한 T(x) 메서드를 호출할 때 보통 T 타입을 반환할것을 기대합니다. 예상하지 못한 타입을 반환하는 생성자(constructor) 는 혼란과 예측하지 못한 행동을 일으킬 수 있습니다.\njulia&gt; struct Foo{T}\n           x::T\n       end\n\njulia&gt; Base.Float64(foo::Foo) = Foo(Float64(foo.x))  # Do not define methods like this\n\njulia&gt; Float64(Foo(3))  # Should return `Float64`\nFoo{Float64}(3.0)\n\njulia&gt; Foo{Int}(x) = Foo{Float64}(x)  # Do not define methods like this\n\njulia&gt; Foo{Int}(3)  # Should return `Foo{Int}`\nFoo{Float64}(3.0)\n코드의 명확성과 타입 일관성을 유지하기 위해 항상 생성자가 생성하는 타입을 반환하도록 설계하세요",
+    "section": "14 생성자가 바로 그 타입을 반환하는지 확인한다",
+    "text": "14 생성자가 바로 그 타입을 반환하는지 확인한다\n타입 T 에 대한 T(x) 메서드를 호출할 때 보통 T 타입을 반환할것을 기대합니다. 예상하지 못한 타입을 반환하는 생성자(constructor) 는 혼란과 예측하지 못한 행동을 일으킬 수 있습니다.\njulia&gt; struct Foo{T}\n           x::T\n       end\n\njulia&gt; Base.Float64(foo::Foo) = Foo(Float64(foo.x))  # Do not define methods like this\n\njulia&gt; Float64(Foo(3))  # Should return `Float64`\nFoo{Float64}(3.0)\n\njulia&gt; Foo{Int}(x) = Foo{Float64}(x)  # Do not define methods like this\n\njulia&gt; Foo{Int}(3)  # Should return `Foo{Int}`\nFoo{Float64}(3.0)\n코드의 명확성과 타입 일관성을 유지하기 위해 항상 생성자가 생성하는 타입을 반환하도록 설계하세요",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
@@ -2006,8 +2006,8 @@
     "objectID": "src/application_of_julia/style_guide.html#sec-dont_use_unnecessary_static_parameters",
     "href": "src/application_of_julia/style_guide.html#sec-dont_use_unnecessary_static_parameters",
     "title": "Julia 스타일 가이드",
-    "section": "15 불필요한 정적 매개변수를 사용하지 마세요",
-    "text": "15 불필요한 정적 매개변수를 사용하지 마세요\nfoo(x::T) where {T&lt;:Real} = ...\n와 같은 함수 시그너쳐는 T 가 함수 내부에서 사용되지 않는다면 아래와 같이 변경되어야 합니다.\nfoo(x::Real) = ...\n심지어 T 가 사용되더라도 typeof(T) 로 대체될 수 있습니다. 성능 차이는 없습니다. 이것은 일반적인 정적 매개변수 사용에 대한 주의(caution) 은 아니며 단지 필요하지 않을 경우에 대한 주의입니다.\n또한 컨테이너 타입은 함수 내부에 타입 매개변수가 필요할 수 있습니다. 추상 컨테이너를 필드로 갖는 것을 피하라 를 참고하시기 바랍니다.",
+    "section": "15 불필요한 정적 매개변수를 사용하지않는다",
+    "text": "15 불필요한 정적 매개변수를 사용하지않는다\nfoo(x::T) where {T&lt;:Real} = ...\n와 같은 함수 시그너쳐는 T 가 함수 내부에서 사용되지 않는다면 아래와 같이 변경되어야 합니다.\nfoo(x::Real) = ...\n심지어 T 가 사용되더라도 typeof(T) 로 대체될 수 있습니다. 성능 차이는 없습니다. 이것은 일반적인 정적 매개변수 사용에 대한 주의(caution) 은 아니며 단지 필요하지 않을 경우에 대한 주의입니다.\n또한 컨테이너 타입은 함수 내부에 타입 매개변수가 필요할 수 있습니다. 추상 컨테이너를 필드로 갖는 것을 피하라 를 참고하시기 바랍니다.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
@@ -2017,8 +2017,8 @@
     "objectID": "src/application_of_julia/style_guide.html#sec-avoid_confusion_whether_between_something_is_an_istance_or_type",
     "href": "src/application_of_julia/style_guide.html#sec-avoid_confusion_whether_between_something_is_an_istance_or_type",
     "title": "Julia 스타일 가이드",
-    "section": "16 인스턴스와 타입에 대한 혼동을 피하라",
-    "text": "16 인스턴스와 타입에 대한 혼동을 피하라\n다음과 같은 정의는 혼란스럽습니다.\nfoo(::Type{MyType}) = ...\nfoo(::MyType) = foo(MyType)\n해당 개념이 MyType 으로 작성될지 아니면 MyType() 으로 작성될지 결정하고, 그 결정을 일관되게 유지하는 것이 중요합니다.\n선호되는 스타일은 기본적으로 인스턴스를 사용하고 필요하다면 Type{MyType} 에 대한 메서드를 추가하는 것입니다.\n만약 타입이 사실상 열거형(enumeration)이라면, 이를 단일 타입(이상적으로는 immutable struct 혹은 원시 타입(primitive type))으로 정의하고, 열거형 값들을 그 타입의 인스턴스로 만드는 것이 좋습니다. 생성자와 변환 함수는 값이 유효한지 검증할 수 있습니다. 이 방식은 열거형 타입을 추상 타입으로 정의하고, 그 “값들”을 서브타입으로 만드는 방식보다 선호됩니다.",
+    "section": "16 인스턴스와 타입에 대한 혼동을 피한다",
+    "text": "16 인스턴스와 타입에 대한 혼동을 피한다\n다음과 같은 정의는 혼란스럽습니다.\nfoo(::Type{MyType}) = ...\nfoo(::MyType) = foo(MyType)\n해당 개념이 MyType 으로 작성될지 아니면 MyType() 으로 작성될지 결정하고, 그 결정을 일관되게 유지하는 것이 중요합니다.\n선호되는 스타일은 기본적으로 인스턴스를 사용하고 필요하다면 Type{MyType} 에 대한 메서드를 추가하는 것입니다.\n만약 타입이 사실상 열거형(enumeration)이라면, 이를 단일 타입(이상적으로는 immutable struct 혹은 원시 타입(primitive type))으로 정의하고, 열거형 값들을 그 타입의 인스턴스로 만드는 것이 좋습니다. 생성자와 변환 함수는 값이 유효한지 검증할 수 있습니다. 이 방식은 열거형 타입을 추상 타입으로 정의하고, 그 “값들”을 서브타입으로 만드는 방식보다 선호됩니다.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
@@ -2028,8 +2028,8 @@
     "objectID": "src/application_of_julia/style_guide.html#sec-dont_overuse_macro",
     "href": "src/application_of_julia/style_guide.html#sec-dont_overuse_macro",
     "title": "Julia 스타일 가이드",
-    "section": "17 매크로를 남요하지 마세요",
-    "text": "17 매크로를 남요하지 마세요\n매크로가 실제로는 함수로 작성될 수 있을 지 확인하세요.\n특히 매크로 내에서 eval 을 호출하는 것은 매우 위험한 신호입니다. eval 을 사용하면 해당 매크로는 최상위에서만 동작할 수 있게 됩니다. 만약 이런 매크로가 함수로서 쓰여질 수 있다면 런타임 값에 자연스럽게 접근할 수 있게 됩니다.",
+    "section": "17 매크로를 남용하지 않는다",
+    "text": "17 매크로를 남용하지 않는다\n매크로가 실제로는 함수로 작성될 수 있을 지 확인하세요.\n특히 매크로 내에서 eval 을 호출하는 것은 매우 위험한 신호입니다. eval 을 사용하면 해당 매크로는 최상위에서만 동작할 수 있게 됩니다. 만약 이런 매크로가 함수로서 쓰여질 수 있다면 런타임 값에 자연스럽게 접근할 수 있게 됩니다.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
@@ -2039,8 +2039,8 @@
     "objectID": "src/application_of_julia/style_guide.html#sec-don_expose_unsafe_operations_at_the_interface_level",
     "href": "src/application_of_julia/style_guide.html#sec-don_expose_unsafe_operations_at_the_interface_level",
     "title": "Julia 스타일 가이드",
-    "section": "18 인터페이스 레벨에서 안전하지 않은 동작을 노출하지 마세요",
-    "text": "18 인터페이스 레벨에서 안전하지 않은 동작을 노출하지 마세요\n내이티브 포인터를 사용하는 타입을 사용한다고 합시다.\nmutable struct NativeType\n    p::Ptr{UInt8}\n    ...\nend\n아래와 같은 정의를 작성하지 마세요.\ngetindex(x::NativeType, i) = unsafe_load(x.p, i)\n문제는 이것이 안전하지 않으며, 메모리 버그에 취약하다는 것을 알지 못한채 사용자가 x[i] 에 무언가를 쓸 수 있다는 것입니다.\n이러한 함수는 안정성을 보장하기 위해 작업을 확인하거나, 그렇지 않으면 unsafe 라는 이름을 포함하여 호출자에게 경고를 해야 합니다.",
+    "section": "18 인터페이스 레벨에서 안전하지 않은 동작을 노출하지 않는다",
+    "text": "18 인터페이스 레벨에서 안전하지 않은 동작을 노출하지 않는다\n내이티브 포인터를 사용하는 타입을 사용한다고 합시다.\nmutable struct NativeType\n    p::Ptr{UInt8}\n    ...\nend\n아래와 같은 정의를 작성하지 마세요.\ngetindex(x::NativeType, i) = unsafe_load(x.p, i)\n문제는 이것이 안전하지 않으며, 메모리 버그에 취약하다는 것을 알지 못한채 사용자가 x[i] 에 무언가를 쓸 수 있다는 것입니다.\n이러한 함수는 안정성을 보장하기 위해 작업을 확인하거나, 그렇지 않으면 unsafe 라는 이름을 포함하여 호출자에게 경고를 해야 합니다.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
@@ -2052,6 +2052,83 @@
     "title": "Julia 스타일 가이드",
     "section": "19 기본 콘테이너 타입의 메서드를",
     "text": "19 기본 콘테이너 타입의 메서드를",
+    "crumbs": [
+      "Julia 언어의 활용",
+      "Julia 스타일 가이드"
+    ]
+  },
+  {
+    "objectID": "src/application_of_julia/style_guide.html#인자를-변경하는-함수의-이름-끝에-를-붙인다-sec-append__at_the_end_of_function_name",
+    "href": "src/application_of_julia/style_guide.html#인자를-변경하는-함수의-이름-끝에-를-붙인다-sec-append__at_the_end_of_function_name",
+    "title": "Julia 스타일 가이드",
+    "section": "5 인자를 변경하는 함수의 이름 끝에 ! 를 붙인다 {#sec-append_!_at_the_end_of_function_name}",
+    "text": "5 인자를 변경하는 함수의 이름 끝에 ! 를 붙인다 {#sec-append_!_at_the_end_of_function_name}\nfunction double(a::AbstractArray{&lt;:Number})\n    for i in eachindex(a)\n        a[i] *= 2\n    end\n    return a\nend\n대신에\nfunction double!(a::AbstractArray{&lt;:Number})\n    for i in eachindex(a)\n        a[i] *= 2\n    end\n    return a\nend\n를 사용하세요.\nJulia Base는 이러한 관례를 전반적으로 사용하며, 복사 와 수정 형태를 모두 제공하는 함수(예: sort와 sort!)와 단순히 수정만 하는 함수(예: push!, pop!, splice!)의 예제를 포함하고 있습니다. 이러한 함수들은 편의를 위해 수정된 배열을 반환하는 것이 일반적입니다.\n입출력(IO) 또는 난수 생성기(RNG)를 사용하는 함수는 주목할 만한 예외입니다. 이 함수들은 거의 반드시 IO나 RNG를 변형해야 하므로, 함수 이름 끝에 !를 붙이는 것은 IO 변형이나 RNG 상태 진행 이외의 다른 변형이 있음을 나타냅니다. 예를 들어 rand(x)는 RNG를 변형하지만, rand!(x) 는 RNG와 x를 모두 변형합니다. 마찬가지로, read(io) 는 io를 변형하지만, read!(io, x)는 io와 x 를 모두 변형합니다.",
+    "crumbs": [
+      "Julia 언어의 활용",
+      "Julia 스타일 가이드"
+    ]
+  },
+  {
+    "objectID": "src/application_of_julia/style_guide.html#sec-append_exclamation_at_the_end_of_function_name",
+    "href": "src/application_of_julia/style_guide.html#sec-append_exclamation_at_the_end_of_function_name",
+    "title": "Julia 스타일 가이드",
+    "section": "5 인자를 변경하는 함수의 이름 끝에 ! 를 붙인다",
+    "text": "5 인자를 변경하는 함수의 이름 끝에 ! 를 붙인다\nfunction double(a::AbstractArray{&lt;:Number})\n    for i in eachindex(a)\n        a[i] *= 2\n    end\n    return a\nend\n대신에\nfunction double!(a::AbstractArray{&lt;:Number})\n    for i in eachindex(a)\n        a[i] *= 2\n    end\n    return a\nend\n를 사용하세요.\nJulia Base는 이러한 관례를 전반적으로 사용하며, 복사 와 수정 형태를 모두 제공하는 함수(예: sort와 sort!)와 단순히 수정만 하는 함수(예: push!, pop!, splice!)의 예제를 포함하고 있습니다. 이러한 함수들은 편의를 위해 수정된 배열을 반환하는 것이 일반적입니다.\n입출력(IO) 또는 난수 생성기(RNG)를 사용하는 함수는 주목할 만한 예외입니다. 이 함수들은 거의 반드시 IO나 RNG를 변형해야 하므로, 함수 이름 끝에 !를 붙이는 것은 IO 변형이나 RNG 상태 진행 이외의 다른 변형이 있음을 나타냅니다. 예를 들어 rand(x)는 RNG를 변형하지만, rand!(x) 는 RNG와 x를 모두 변형합니다. 마찬가지로, read(io) 는 io를 변형하지만, read!(io, x)는 io와 x 를 모두 변형합니다.",
+    "crumbs": [
+      "Julia 언어의 활용",
+      "Julia 스타일 가이드"
+    ]
+  },
+  {
+    "objectID": "src/application_of_julia/style_guide.html#sec-dont_overload_methods_of_base_containers",
+    "href": "src/application_of_julia/style_guide.html#sec-dont_overload_methods_of_base_containers",
+    "title": "Julia 스타일 가이드",
+    "section": "19 기본 콘테이너 타입의 메서드를 재정의(overload) 하지 않는다",
+    "text": "19 기본 콘테이너 타입의 메서드를 재정의(overload) 하지 않는다\n다음과 같은 정의를 봅시다.\nshow(io::IO, v::Vector{MyType}) = ...\n위의 코드는 사용자 정의 타입(MyType) 에 대한 벡터를 표시하는 맞춤식 출력을 제공합니다. 끌릴 수도 있지만 피해야합니다. 문제는 사용자가 Vector() 와 같은 잘 알려진 타입에 대해서는 어떤 특정한 방식으로 작동하기를 기대하며, 과도하게 이를 벗어나는 것은 작업을 힘들게 합니다.",
+    "crumbs": [
+      "Julia 언어의 활용",
+      "Julia 스타일 가이드"
+    ]
+  },
+  {
+    "objectID": "src/application_of_julia/style_guide.html#sec-type_piracy",
+    "href": "src/application_of_julia/style_guide.html#sec-type_piracy",
+    "title": "Julia 스타일 가이드",
+    "section": "20 타입 해적질을 피하라",
+    "text": "20 타입 해적질을 피하라\n“타입 해적질(type piracy)”은 Base나 다른 패키지의 메서드를 당신이 정의하지 않은 타입에 대해 확장하거나 재정의하는 행위를 말합니다. 극단적인 경우, 메서드 확장이나 재정의가 잘못된 입력을 ccall 에 전달하게 만들어 Julia를 크래시시킬 수도 있습니다. 타입 해적질은 코드의 논리를 복잡하게 만들고, 예측하거나 진단하기 어려운 비호환성을 초래할 수 있습니다.\n예를 들어 당신이 모듈의 심볼에 대한 곱셈을 정의한다고 해 봅시다.\nmodule A\nimport Base.*\n*(x::Symbol, y::Symbol) = Symbol(x,y)\nend\n문제는 이제 Base.* 를 사용하는 다른 모든 모듈에서도 이 정의를 볼 수 있다는 점입니다. Symbol 은 Base에 정의되어 있으며 다른 모듈에서도 사용되기 때문에, 이는 관련 없는 코드의 동작을 예상치 못하게 변경할 수 있습니다. 이를 피하는 방법으로는 함수 이름을 다르게 사용하거나, Symbol 을 사용자가 정의한 또 다른 타입으로 감싸는 등의(역주 : Symbol 을 필드로 갖는 struct 를 정의하고 이에 대한 곱셈 연산을 정의한다던가) 여러 대안이 있습니다.\n때로는 관련된 패키지들이 기능을 정의와 분리하기 위해 타입 해적질을 활용하기도 합니다. 특히 패키지가 협업하는 작성자들에 의해 설계되었거나 정의가 재사용 가능한 경우에 그렇습니다. 예를 들어, 하나의 패키지는 색상 작업에 유용한 타입들을 제공할 수 있고, 또 다른 패키지는 이러한 타입에 대해 색상 공간 간 변환을 가능하게 하는 메서드를 정의할 수 있습니다. 또 다른 예로는 일부 C 코드에 대한 간단한 래퍼 역할을 하는 패키지와, 이를 해적하여 더 높은 수준의 Julia 친화적인 API를 구현하는 또 다른 패키지가 있을 수 있습니다.",
+    "crumbs": [
+      "Julia 언어의 활용",
+      "Julia 스타일 가이드"
+    ]
+  },
+  {
+    "objectID": "src/application_of_julia/style_guide.html#sec-be_careful_with_type_equality",
+    "href": "src/application_of_julia/style_guide.html#sec-be_careful_with_type_equality",
+    "title": "Julia 스타일 가이드",
+    "section": "21 타입이 동등성에 조심할 것",
+    "text": "21 타입이 동등성에 조심할 것\n타입 조건을 시험하기 위해 isa 나 &lt;: 를 많이 사용합니다. 타입이 정확하게 같다는 것을 확인하는 것은 알려진 구체적 타입과 비교하거나 (예를 들어 T == Float64 와 같이) 당신이 무엇을 하고 있는지 정말로 정확하게 알 때에만 의미가 있습니다.",
+    "crumbs": [
+      "Julia 언어의 활용",
+      "Julia 스타일 가이드"
+    ]
+  },
+  {
+    "objectID": "src/application_of_julia/style_guide.html#sec-dont_write_a_trivial_anonymous_function_for_a_named_function",
+    "href": "src/application_of_julia/style_guide.html#sec-dont_write_a_trivial_anonymous_function_for_a_named_function",
+    "title": "Julia 스타일 가이드",
+    "section": "22 이름이 붙여힌 함수 f 에 대해 x->f(x) 와 같은 익명함수를 작성하지 말것",
+    "text": "22 이름이 붙여힌 함수 f 에 대해 x-&gt;f(x) 와 같은 익명함수를 작성하지 말것\n고차 함수는 익명함수와 함께 호출되는 경우가 많기 때문에 이것이 바람직하거나 혹은 최소한 필요하다고 결론내리기 쉽습니다. 그러나 어떤 함수도 익명함수에 포장되지 않고 직접적으로 전달 될 수 있습니다. map(x-&gt;f(x), a) 를 사용하지 말고 map(f, a) 를 사용하세요.",
+    "crumbs": [
+      "Julia 언어의 활용",
+      "Julia 스타일 가이드"
+    ]
+  },
+  {
+    "objectID": "src/application_of_julia/style_guide.html#sec-avoid_using_float_for_numeric_literals_in_generic_code",
+    "href": "src/application_of_julia/style_guide.html#sec-avoid_using_float_for_numeric_literals_in_generic_code",
+    "title": "Julia 스타일 가이드",
+    "section": "23 가능하다면 generic 코드의 숫자형 리터럴에 부동소수를 피하라",
+    "text": "23 가능하다면 generic 코드의 숫자형 리터럴에 부동소수를 피하라\n수를 다루는 generic code 를 작성한다면, 그리고 많은 수 타입의 인자와 함께 실행되어야 한다면 타입 프로모션에 의해 가장 덜 영향을 받는 수 타입의 리터럴을 사용하는 것이 좋다.\n예를 들어\njulia&gt; f(x) = 2.0 * x\nf (generic function with 1 method)\n\njulia&gt; f(1//2)\n1.0\n\njulia&gt; f(1/2)\n1.0\n\njulia&gt; f(1)\n2.0\n이지만\njulia&gt; g(x) = 2 * x\ng (generic function with 1 method)\n\njulia&gt; g(1//2)\n1//1\n\njulia&gt; g(1/2)\n1.0\n\njulia&gt; g(1)\n2\n이다. 차이가 보이는가? 첫번째(f(x)) 에서는 2.0 이라는 부동소수형 리터럴을 사용한 반면에 두번째(g(x)) 에서는 2 라는 Int 형 리터럴을 사용했다. 따라서 f 는 대부분의 인자 타입에 대해 결과가 부동소수이지만 g 의 경우는 인자 타입을 보존한다. 이것은 서로 다른 두 수 타입을 곱할 때 타입 프로모션이 발생하며 타입 프로모션 규칙에 의해 Float64 가 Int64 보다 타입 교란적이다. (A 타입과 B 타입의 연산 결과가 A 타입이 되면 A 를 타입 교란적이라고 한다.) Rational 은 Int64 보다 타입 교란적이지만 Float64 보다는 덜 타입 교란적이므로 정수가 아닌 수를 사용한다면 Rational 을 사용해보라.\njulia&gt; h(x) = 2//1 * x\nh (generic function with 1 method)\n\njulia&gt; h(1//2)\n1//1\n\njulia&gt; h(1/2)\n1.0\n\njulia&gt; h(1)\n2//1",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"
