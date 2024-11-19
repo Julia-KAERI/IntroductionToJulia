@@ -731,8 +731,8 @@
     "objectID": "src/application_of_julia/style_guide.html#sec-don_overuse_splicing",
     "href": "src/application_of_julia/style_guide.html#sec-don_overuse_splicing",
     "title": "Julia 스타일 가이드",
-    "section": "13 ... 를 않는다",
-    "text": "13 ... 를 않는다\n함수 인자 에서 스플라이싱(splicing) 을 자주 사용하면 중독성이 있을 수 있습니다. 예를 들어, [a..., b...] 대신에 간단히 [a; b] 를 사용하세요. 또한, collect(a) 는 [a...] 보다 더 나은 방법입니다. 하지만 a 가 이미 이터러블(iterable) 한 객체라면, 굳이 배열로 변환하지 않고 그대로 두는 것이 더 효율적일 때가 많습니다.",
+    "section": "13 ... 를 남용하지 않는다",
+    "text": "13 ... 를 남용하지 않는다\n함수 인자 에서 스플라이싱(splicing) 을 자주 사용하면 중독성이 있을 수 있습니다. 예를 들어, [a..., b...] 대신에 간단히 [a; b] 를 사용하세요. 또한, collect(a) 는 [a...] 보다 더 나은 방법입니다. 하지만 a 가 이미 이터러블(iterable) 한 객체라면, 굳이 배열로 변환하지 않고 그대로 두는 것이 더 효율적일 때가 많습니다.",
     "crumbs": [
       "Julia 언어의 활용",
       "Julia 스타일 가이드"

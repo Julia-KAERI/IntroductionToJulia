@@ -238,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sec-write_functions_with_argument_ordering_simmilar_to_julia_base" id="toc-sec-write_functions_with_argument_ordering_simmilar_to_julia_base" class="nav-link" data-scroll-target="#sec-write_functions_with_argument_ordering_simmilar_to_julia_base"><span class="header-section-number">10</span> 함수 인자의 순서를 Julia Base 와 비슷하게 한다</a></li>
   <li><a href="#sec-dont_overuse_try_catch" id="toc-sec-dont_overuse_try_catch" class="nav-link" data-scroll-target="#sec-dont_overuse_try_catch"><span class="header-section-number">11</span> <code>try-catch</code> 를 남용하지 않는다</a></li>
   <li><a href="#sec-dont_parrenthesize_conditions" id="toc-sec-dont_parrenthesize_conditions" class="nav-link" data-scroll-target="#sec-dont_parrenthesize_conditions"><span class="header-section-number">12</span> 조건문을 괄호로 싸지 않는다</a></li>
-  <li><a href="#sec-don_overuse_splicing" id="toc-sec-don_overuse_splicing" class="nav-link" data-scroll-target="#sec-don_overuse_splicing"><span class="header-section-number">13</span> <code>...</code> 를 않는다</a></li>
+  <li><a href="#sec-don_overuse_splicing" id="toc-sec-don_overuse_splicing" class="nav-link" data-scroll-target="#sec-don_overuse_splicing"><span class="header-section-number">13</span> <code>...</code> 를 남용하지 않는다</a></li>
   <li><a href="#sec-ensure_constructors_return_type" id="toc-sec-ensure_constructors_return_type" class="nav-link" data-scroll-target="#sec-ensure_constructors_return_type"><span class="header-section-number">14</span> 생성자가 바로 그 타입을 반환하는지 확인한다</a></li>
   <li><a href="#sec-dont_use_unnecessary_static_parameters" id="toc-sec-dont_use_unnecessary_static_parameters" class="nav-link" data-scroll-target="#sec-dont_use_unnecessary_static_parameters"><span class="header-section-number">15</span> 불필요한 정적 매개변수를 사용하지않는다</a></li>
   <li><a href="#sec-avoid_confusion_whether_between_something_is_an_istance_or_type" id="toc-sec-avoid_confusion_whether_between_something_is_an_istance_or_type" class="nav-link" data-scroll-target="#sec-avoid_confusion_whether_between_something_is_an_istance_or_type"><span class="header-section-number">16</span> 인스턴스와 타입에 대한 혼동을 피한다</a></li>
@@ -410,7 +410,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><br></p>
 </section>
 <section id="sec-don_overuse_splicing" class="level2" data-number="13">
-<h2 data-number="13" class="anchored" data-anchor-id="sec-don_overuse_splicing"><span class="header-section-number">13</span> <code>...</code> 를 않는다</h2>
+<h2 data-number="13" class="anchored" data-anchor-id="sec-don_overuse_splicing"><span class="header-section-number">13</span> <code>...</code> 를 남용하지 않는다</h2>
 <p>함수 인자 에서 <strong>스플라이싱(splicing)</strong> 을 자주 사용하면 중독성이 있을 수 있습니다. 예를 들어, <code>[a..., b...]</code> 대신에 간단히 <code>[a; b]</code> 를 사용하세요. 또한, <code>collect(a)</code> 는 <code>[a...]</code> 보다 더 나은 방법입니다. 하지만 <code>a</code> 가 이미 이터러블(iterable) 한 객체라면, 굳이 배열로 변환하지 않고 그대로 두는 것이 더 효율적일 때가 많습니다.</p>
 <p><br></p>
 </section>
