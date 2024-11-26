@@ -1,0 +1,189 @@
+---
+title: "OpenCV.jl"
+
+number-sections: true
+number-depth: 3
+crossref:
+  chapters: false
+---
+
+<br>
+
+::: {.callout-caution}
+
+- 이 문서는 절대 공식 매뉴얼이 아니며 개인적인 필요에 의해 작성된 메모입니다. 
+
+- 또한 저자도 `OpenCV` 나 `OpenCV.jl` 를 능숙하게 사용하지 못합니다. 
+
+- 따라서 혹시나 이 문서를 보시는 분이 있다면 이 점에 유의하시기 바랍니다. 다만 이 문서의 오류에 대한 지적, 제안 등은 항상 환영합니다.
+
+- 혹시나 Julia 에 관심이 있는 것이 아니라 OpenCV 를 통한 영상처리에 관심이 있다면 python 에서 opencv 를 사용하는 것이 좋습니다. 배울 수 있는 자료가 훨씬 풍부합니다.  
+
+:::
+
+</br>
+
+
+## 소개
+
+[OpenCV](https://opencv.org) 오픈소스 컴퓨터 영상 라이브러리의 하나로 이 분야에서 가장 널리 쓰이는, 사실상의 표준 라이브러리 이다. C++ 코드 베이스 위에 Python, Java 언어에서 사용할 수 있는 wrapping 을 제공한다. 현재는 C++ 보다는 Python 에서 opencv 를 사용하는 경우가 더 많다고 한다. Julia wrapping 인 [OpenCV.jl](https://juliaimages.org/OpenCV.jl/dev/) 은 OpenCV 에서 제공하는 공식 wrapper 는 아니며 커뮤니티에서 개발하고 제공한다. 
+
+
+그런데 위의 OpenCV.jl 페이지를 방문해보면 알겠지만 tutorial, 그것도 가벼운 tutorial 수준의 문서밖에 없다. 게다가 Julia 와 OpenCV 의 다차원 배열이 서로 다른 관계로 처음 사용하는데 애를 먹었다.
+
+</br>
+
+## 이 문서의 한계와 개인적인 경험
+
+이 문서를 작성하기 전에 Python 에서 opencv 를 써 본 적이 있었다. 물론 진지하게는 아니며 이미지 처리에 대해서만 조금 아는 정도였다. 그렇다가 julia 를 사용하여 대용량의 이미지 처리를 하게 되었다. 수 ~ 수백 MB 용량의 수백장 이상의 이미지를 동시에 처리해야 하는 것이었다. 다른 기능들은 julia 가 python(+numpy + scipy + numba + cython + ..) 보다 꿀릴 게 없었지만 가장 병목이 되는 지점, 즉 노이즈 제거에서 걸리게 된다.
+
+이미지 데이터 노이즈 처리의 기본은 중간값 필터링(median filtering) 이다. 그리고 median filtering 은 선형 연산이 아니며, 평균값 필터링에 비해 시간이 오래 걸린다. Julia 에서 이미지의 median filtering 을 검색해보면 2차원 데이터 `img` 를 `(5, 5)` 크기의 커널로 중간값 필터링으 한다면 다음과 같이 사용한다는 것이 나올 것이다.
+
+
+```julia
+using ImageFiltering, Statistics
+img_filtered = mapwindow(median!, img, 5)
+```
+
+Python 에서 OpenCV 의 median 필터링을 수행하는 함수는 `cv2.medianBlur` 이다. 
+
+```python
+import cv2
+img_filttered = cv2.medianBlur(img, 5)
+```
+
+Julia 의 그것은.. 느리다. <u>그냥 느린 정도가 아니라 opencv 를 사용했을 때보다 수백배 혹은 그 이상 느릴 수 있다.</u> 
+
+이것을 확인 하고 나서 julia 에서 빠르게 사용 할 수 있는 중간값 필터를 찾아보았지만 opencv 만큼은 아니더라도 `mapwindow` 보다 어느정도 빠른 것 조차도 찾지 못했고, 당시에도 `OpenCV.jl` 이 있었지만 이상하게 설치하면 에러가 발생했다. 
+
+`mapwindow` 를 사용하면 또 하나 안좋은 것이 정수형 배열, 혹은 정수값을 갖는 2차원 이미지가 중간값 필터를 거치면 부동소수 이미지가 된다는 것이다. 이것은 julia `Statistics.jl` 패키지 의 `meidan` 함수때문이다.
+
+일반적으로 홀수개 원소를 갖는 배열에 대한 중간값은 배열에 포함되는 값이지만 짝수개 원소를 갖는 배열의 중간값은 배열에 포함되지 않는 값일 수 있다. `1, 2, 3, 4` 의 중간을 계산 할 때 타입의 보존을 중시하는 경우는 `2` 혹은  `3` 을 선택할 수 있지만, 그렇지 않은 경우는 `2` 와 `3` 의 평균을 사용할 수 있다. 그러나 이미지 처리에서의 중간값 필터는 대부분 홀수 x 홀수 크기의 필터에 대한 중간값을 사용하기 때문에 중간값은 항상 필터에 의해 덮여진 부분에 존재한다. 그러나 Julia 의 `Statistics.jl` 의 `median` 함수는 정수 배열에 대해서 홀수개의 원소에 대해서라도 항상 부동소수를 반환하도록 되어 있다.
+
+
+::: {.callout-caution}
+
+
+
+:::
+
+</br>
+
+
+## `OpenCV.jl` 의 사용법
+
+### 설치
+
+일반적인 패키지 설치의 방법대로 하면 된다.
+
+```julia
+] add OpenCV
+```
+
+</br>
+
+`OpenCV` 의 경우 내부적으로 2차원 혹은 3차원 배열이 성분 타입 `T` 에 대해 `OpenCV.Mat{T}` 타입으로 Julia 에서의 `Array{T}` 와 다르다. 
+
+
+흑백 `cameraman.png` 사진을 읽어 보자. `Images.jl` 과 `FileIO` 를 사용할 수도 있지만 `OpenCV` 의 `imread` 함수를 사용한다.
+
+```julia
+img = OpenCV.imread("cameraman.png", OpenCV.IMREAD_GRAYSCALE)
+```
+
+<img src = "cameraman.png">
+
+</br>
+
+```julia
+typeof(img)
+```
+```txt
+OpenCV.Mat{UInt8}
+```
+
+</br>
+
+```julia
+size(img)
+```
+```txt
+(1, 256, 256)
+```
+
+
+보다시피 일반적으로 사용하는 Array 축과는 다르다. 이것은 Julia 가 열우선 방식의 인덱스를 갖는데 비해 C++ 은 행 우선 방식의 인덱스를 갖기 때문이다. 이제 `OpenCV.Mat` 을 `Array` 로 바꾸는 함수 `Mat2Array` 와 `Array` 를 `OpenCV.Mat` 로 바꾸는 함수 `Array2Mat` 를 다음과 같이 만들 수 있다.
+
+```julia
+function Mat2Array(img::OpenCV.Mat{T}) where T<:Integer
+    return permutedims(img.data, [3,2,1])
+end
+
+
+function Array2Mat(img::Array{T}) where {T<:Real}
+    ll = length(size(img))
+    @assert ll ∈ (2, 3)
+    if ll == 3 
+        return OpenCV.Mat(permutedims(img, [3,1,2]))
+    else 
+        return OpenCV.Mat(permutedims(stack([img, ]), [3,1,2]))
+    end
+end
+```
+
+`permutedims` 함수는 다차원 배열의 축을 변환시키는 함수로 `Mat{T}` 의 관습과 `Array{T, 3}` 의 관습에 따라 위와 같이 만들었다. 이렇게 변환시키지 않으면 OpenCV 의 여러 함수가 정상적으로 기능하지 않는다.
+
+</br>
+
+이제 원본 이미지에 sand-pepper 노이즈를 추가하자. 다음과 같은 함수를 작성하였다.
+
+```julia
+function sand_pepper_noise(img::Matrix{T}, ratio::Real) where {T<:Integer}
+    @assert 0<ratio<1
+    tm, tM = typemin(T), typemax(T)
+    w, h = size(img)
+    Nnoise = round(Int, w*h*ratio)
+    _x, _y = rand(1:w, Nnoise), rand(1:h, Nnoise)
+    for i in 1:Nnoise 
+        if iseven(i)
+            img[_y[i], _x[i]] = tm
+        else 
+            img[_y[i], _x[i]] = tM
+        end
+    end
+    return img
+end 
+```
+
+`img` 가 정수의 하위타입 배열일 때 데이터 전체의 크기에서 `ratio` 만큼의 비율로 sand 노이즈(최고값) 와 pepper 노이즈(최저값) 노이즈를 생성한다. 전체 1만 픽셀이고 `ratio=0.01` 이면 sand 노이즈와 pepper 노이즈가 갯수가 같으며 총 합이 100 개가 된다. `UInt8` 타입 배열일 경우 sand noise 는 255 값을, pepper 노이즈는 0 을 값는다.
+
+이제 위의 `OpenCV.Mat{UInt8}` 타입의 `img` 배열을 `Array{UInt8, 2}` 타입으로 바꾸고 sand-pepper 노이즈를 생성하자.
+
+```julia
+arr1=Mat2Array(img)
+arr2 = sand_pepper_noise(arr1[:,:,1], 0.03)
+```
+
+<img src = "noisy_cameraman.png">
+
+이제 여기에 중간값 필터로 처리한다. 중간값 필터는 `OpenCV.medianBlur` 함수로 수행하며 첫번째 인자는 이미지, 두번째 인자는 커널 크기이다. 
+
+```julia
+img3 = OpenCV.medianBlur(Array2Mat(arr2), 3)[1,:,:]
+```
+
+<img src = "denoised_cameraman_1.png">
+
+</br>
+
+혹은 
+
+
+
+
+
+
+
+
+
+

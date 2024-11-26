@@ -2078,5 +2078,49 @@
     "title": "Introduction to Julia",
     "section": "",
     "text": "Introduction to Julia\nJulia 는 이제 나온지 10년이 조금 넘어가는 신생 언어입니다. 2024년 2월 현재 최신 버젼이 1.10 입니다. 많이 비교되는 파이썬은 30년이 조금 넘었으며 현재 최신 버젼이 3.10 입니다. 제가 파이썬을 처음 접한게 25년쯤 전이었는데 25년동안의 파이썬의 위상은 엄청나게 바뀌었습니다. 25년전의 파이썬은 배우기 쉽고 써먹기 좋은 언어로만 인식되었습니다. 그때는 numpy 도 없었으며(혹시나 해서 numpy 공식 사이트에서 확인해보니 2005년에 등장했군요), 과학/공학 분야에서도 코딩이 빠른 언어였지 진지한 계산에 사용할 만한 언어라는 인식은 별로 없었습니다. 파이썬으로 한시간 코딩해서 한시간동안 돌려서 결과를 볼것이냐, C/C++ 로 하루 코딩해서 1분만에 결과를 볼것이냐 하는 문제였죠. 현재는 다양한 파이썬 생태계로 인해 과학/공학 분야에서 널리 쓰이고 있으며 특히 인공지능 분야에서는 그 위치가 엄청나죠.\nJulia 에 대해 설명할 때 파이썬 만큼 쉽고 C 만큼 빠르다 라고 합니다. 어떤 면에서는 맞는 말입니다. 그런데 20년전의 파이썬과 비교해 봤을때 파이썬도 많이 어려워졌거든요. 파이썬도 잘 쓰려면 배워야 할 것이 많습니다. 그런 의미에서 Julia 가 파이썬 만큼 쉬우냐 하는 질문에는 제 경험상 큰 차이는 나지 않는다고 말하겠습니다. 또 C/C++/Fortran 으로 작성하여 컴파일한것을 파이썬에서 읽어서 실행시키는 부분은 C/C++/Fortran 직접 실행시켰을 때와 거의 차이가 나지 않습니다. 즉 어떤 부분에서는 (비록 내부적으로는 최적화된 C/C++/Fortran 으로 작성된 실행 코드를 돌릴지라도) 파이썬의 속도가 느리지 않습니다. 그리고 30년 동안 이루어진 파이썬의 생태계도 엄청나게 거대하죠. Julia 언어는 numpy 와 비교해서도 많은 부분에서 상당히 빠릅니다. 특히 이미 존재하는 함수를 그냥 가져다 쓰는 것이 아닌 경우, julia 로 for 루프를 돌리는 것이 아주 빠른 경우가 많습니다. 파이썬으로 대규모의 루프를 돌리는 것은 별로 권장할 만하지 않죠. 그렇다고 julia 가 C/C++/Fortran 만큼 빠르냐고 하면 꼭 그렇지는 않습니다. 하지만 연산 속도를 증가시키는 여러 테크닉(주로 매크로)을 사용할 때 비슷한 속도가 나오는 경우도 많습니다.\n저에게 있어 julia 언어의 장점중의 하나는 멀티스레딩입니다. 파이썬은 (적어도 공식적인 CPython 의 경우) 멀티쓰레딩이 가능하지만 수치해석적인 면에서 의미가 없습니다. Julia 는 멀티쓰레딩을 아주 편하게 사용 할 수 있으며, 강력합니다.\n반면 Julia 언어의 최대의 단점은 아직은 부족한 생태계입니다. 파이썬이나 매트랩에서 이미 구현되어 널리 사용되고 있는 어떤 기능이 Julia 에 없어서 당신이 필요한 계산을 하기 위해 바닥부터 코드를 작성해야 할 수 도 있습니다. 하지만 특히 과학/공학 분야에서 점점 사용자가 많아지고 있기 때문에 이 단점은 점점 감소될 것이라고 예상합니다. 또 연산이 매우 빠른 스크립트 언어라는 장점은 과학/공학 분야 뿐만 아니라 다른 분야에서도 아주 유용하기 때문에 Julia 의 사용이 점점 확산 될 것이라고 생각합니다."
+  },
+  {
+    "objectID": "src/ecosystem_of_julia/opencv.html",
+    "href": "src/ecosystem_of_julia/opencv.html",
+    "title": "OpenCV.jl",
+    "section": "",
+    "text": "OpenCV 오픈소스 컴퓨터 영상 라이브러리의 하나로 이 분야에서 가장 널리 쓰이는, 사실상의 표준 라이브러리 이다. C++ 코드 베이스 위에 Python, Java 언어에서 사용할 수 있는 wrapping 을 제공한다. 현재는 C++ 보다는 Python 에서 opencv 를 사용하는 경우가 더 많다고 한다. Julia wrapping 인 OpenCV.jl",
+    "crumbs": [
+      "Julia 언어 생태계",
+      "OpenCV.jl"
+    ]
+  },
+  {
+    "objectID": "src/ecosystem_of_julia/opencv.html#소개",
+    "href": "src/ecosystem_of_julia/opencv.html#소개",
+    "title": "OpenCV.jl",
+    "section": "1 소개",
+    "text": "1 소개\nOpenCV 오픈소스 컴퓨터 영상 라이브러리의 하나로 이 분야에서 가장 널리 쓰이는, 사실상의 표준 라이브러리 이다. C++ 코드 베이스 위에 Python, Java 언어에서 사용할 수 있는 wrapping 을 제공한다. 현재는 C++ 보다는 Python 에서 opencv 를 사용하는 경우가 더 많다고 한다. Julia wrapping 인 OpenCV.jl 은 OpenCV 에서 제공하는 공식 wrapper 는 아니며 커뮤니티에서 개발하고 제공한다.\n그런데 위의 OpenCV.jl 페이지를 방문해보면 알겠지만 tutorial, 그것도 가벼운 tutorial 수준의 문서밖에 없다. 게다가 Julia 와 OpenCV 의 다차원 배열이 서로 다른 관계로 처음 사용하는데 애를 먹었다.",
+    "crumbs": [
+      "Julia 언어 생태계",
+      "OpenCV.jl"
+    ]
+  },
+  {
+    "objectID": "src/ecosystem_of_julia/opencv.html#이-문서의-한계와-개인적인-경험",
+    "href": "src/ecosystem_of_julia/opencv.html#이-문서의-한계와-개인적인-경험",
+    "title": "OpenCV.jl",
+    "section": "2 이 문서의 한계와 개인적인 경험",
+    "text": "2 이 문서의 한계와 개인적인 경험\n이 문서를 작성하기 전에 Python 에서 opencv 를 써 본 적이 있었다. 물론 진지하게는 아니며 이미지 처리에 대해서만 조금 아는 정도였다. 그렇다가 julia 를 사용하여 대용량의 이미지 처리를 하게 되었다. 수 ~ 수백 MB 용량의 수백장 이상의 이미지를 동시에 처리해야 하는 것이었다. 다른 기능들은 julia 가 python(+numpy + scipy + numba + cython + ..) 보다 꿀릴 게 없었지만 가장 병목이 되는 지점, 즉 노이즈 제거에서 걸리게 된다.\n이미지 데이터 노이즈 처리의 기본은 중간값 필터링(median filtering) 이다. 그리고 median filtering 은 선형 연산이 아니며, 평균값 필터링에 비해 시간이 오래 걸린다. Julia 에서 이미지의 median filtering 을 검색해보면 2차원 데이터 img 를 (5, 5) 크기의 커널로 중간값 필터링으 한다면 다음과 같이 사용한다는 것이 나올 것이다.\nusing ImageFiltering, Statistics\nimg_filtered = mapwindow(median!, img, 5)\nPython 에서 OpenCV 의 median 필터링을 수행하는 함수는 cv2.medianBlur 이다.\nimport cv2\nimg_filttered = cv2.medianBlur(img, 5)\nJulia 의 그것은.. 느리다. 그냥 느린 정도가 아니라 opencv 를 사용했을 때보다 수백배 혹은 그 이상 느릴 수 있다.\n이것을 확인 하고 나서 julia 에서 빠르게 사용 할 수 있는 중간값 필터를 찾아보았지만 opencv 만큼은 아니더라도 mapwindow 보다 어느정도 빠른 것 조차도 찾지 못했고, 당시에도 OpenCV.jl 이 있었지만 이상하게 설치하면 에러가 발생했다.\nmapwindow 를 사용하면 또 하나 안좋은 것이 정수형 배열, 혹은 정수값을 갖는 2차원 이미지가 중간값 필터를 거치면 부동소수 이미지가 된다는 것이다. 이것은 julia Statistics.jl 패키지 의 meidan 함수때문이다.\n일반적으로 홀수개 원소를 갖는 배열에 대한 중간값은 배열에 포함되는 값이지만 짝수개 원소를 갖는 배열의 중간값은 배열에 포함되지 않는 값일 수 있다. 1, 2, 3, 4 의 중간을 계산 할 때 타입의 보존을 중시하는 경우는 2 혹은 3 을 선택할 수 있지만, 그렇지 않은 경우는 2 와 3 의 평균을 사용할 수 있다. 그러나 이미지 처리에서의 중간값 필터는 대부분 홀수 x 홀수 크기의 필터에 대한 중간값을 사용하기 때문에 중간값은 항상 필터에 의해 덮여진 부분에 존재한다. 그러나 Julia 의 Statistics.jl 의 median 함수는 정수 배열에 대해서 홀수개의 원소에 대해서라도 항상 부동소수를 반환하도록 되어 있다.\n\n\n\n\n\n\n주의",
+    "crumbs": [
+      "Julia 언어 생태계",
+      "OpenCV.jl"
+    ]
+  },
+  {
+    "objectID": "src/ecosystem_of_julia/opencv.html#opencv.jl-의-사용법",
+    "href": "src/ecosystem_of_julia/opencv.html#opencv.jl-의-사용법",
+    "title": "OpenCV.jl",
+    "section": "3 OpenCV.jl 의 사용법",
+    "text": "3 OpenCV.jl 의 사용법\n\n3.1 설치\n일반적인 패키지 설치의 방법대로 하면 된다.\n] add OpenCV\n\nOpenCV 의 경우 내부적으로 2차원 혹은 3차원 배열이 성분 타입 T 에 대해 OpenCV.Mat{T} 타입으로 Julia 에서의 Array{T} 와 다르다.\n흑백 cameraman.png 사진을 읽어 보자. Images.jl 과 FileIO 를 사용할 수도 있지만 OpenCV 의 imread 함수를 사용한다.\nimg = OpenCV.imread(\"cameraman.png\", OpenCV.IMREAD_GRAYSCALE)\n\n\ntypeof(img)\nOpenCV.Mat{UInt8}\n\nsize(img)\n(1, 256, 256)\n보다시피 일반적으로 사용하는 Array 축과는 다르다. 이것은 Julia 가 열우선 방식의 인덱스를 갖는데 비해 C++ 은 행 우선 방식의 인덱스를 갖기 때문이다. 이제 OpenCV.Mat 을 Array 로 바꾸는 함수 Mat2Array 와 Array 를 OpenCV.Mat 로 바꾸는 함수 Array2Mat 를 다음과 같이 만들 수 있다.\nfunction Mat2Array(img::OpenCV.Mat{T}) where T&lt;:Integer\n    return permutedims(img.data, [3,2,1])\nend\n\n\nfunction Array2Mat(img::Array{T}) where {T&lt;:Real}\n    ll = length(size(img))\n    @assert ll ∈ (2, 3)\n    if ll == 3 \n        return OpenCV.Mat(permutedims(img, [3,1,2]))\n    else \n        return OpenCV.Mat(permutedims(stack([img, ]), [3,1,2]))\n    end\nend\npermutedims 함수는 다차원 배열의 축을 변환시키는 함수로 Mat{T} 의 관습과 Array{T, 3} 의 관습에 따라 위와 같이 만들었다. 이렇게 변환시키지 않으면 OpenCV 의 여러 함수가 정상적으로 기능하지 않는다.\n\n이제 원본 이미지에 sand-pepper 노이즈를 추가하자. 다음과 같은 함수를 작성하였다.\nfunction sand_pepper_noise(img::Matrix{T}, ratio::Real) where {T&lt;:Integer}\n    @assert 0&lt;ratio&lt;1\n    tm, tM = typemin(T), typemax(T)\n    w, h = size(img)\n    Nnoise = round(Int, w*h*ratio)\n    _x, _y = rand(1:w, Nnoise), rand(1:h, Nnoise)\n    for i in 1:Nnoise \n        if iseven(i)\n            img[_y[i], _x[i]] = tm\n        else \n            img[_y[i], _x[i]] = tM\n        end\n    end\n    return img\nend \nimg 가 정수의 하위타입 배열일 때 데이터 전체의 크기에서 ratio 만큼의 비율로 sand 노이즈(최고값) 와 pepper 노이즈(최저값) 노이즈를 생성한다. 전체 1만 픽셀이고 ratio=0.01 이면 sand 노이즈와 pepper 노이즈가 갯수가 같으며 총 합이 100 개가 된다. UInt8 타입 배열일 경우 sand noise 는 255 값을, pepper 노이즈는 0 을 값는다.\n이제 위의 OpenCV.Mat{UInt8} 타입의 img 배열을 Array{UInt8, 2} 타입으로 바꾸고 sand-pepper 노이즈를 생성하자.\narr1=Mat2Array(img)\narr2 = sand_pepper_noise(arr1[:,:,1], 0.03)\n\n이제 여기에 중간값 필터로 처리한다. 중간값 필터는 OpenCV.medianBlur 함수로 수행하며 첫번째 인자는 이미지, 두번째 인자는 커널 크기이다.\nimg3 = OpenCV.medianBlur(Array2Mat(arr2), 3)[1,:,:]\n\n\n혹은",
+    "crumbs": [
+      "Julia 언어 생태계",
+      "OpenCV.jl"
+    ]
   }
 ]

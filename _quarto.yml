@@ -87,6 +87,7 @@ website:
         - href : src/ecosystem_of_julia/pkg_dev.qmd
         - href : src/ecosystem_of_julia/dataframes.qmd
         - href : src/ecosystem_of_julia/unittest.qmd
+        - href : src/ecosystem_of_julia/opencv.qmd
 
 
 bibliography: references.bib
