@@ -12,8 +12,13 @@ crossref:
 - [`Pkg.jl`  문서](https://pkgdocs.julialang.org/v1/) 에 대한 개인적인 번역
 
 - ver : 2024.11.17
+
+- `Pkg.jl` 을 이용한 환경과 패키지 개발의 기초에 대해서는 [환경과 패키지 개발](../ecosystem_of_julia/pkg_dev.qmd) 를 참고하세요. 이 글보다 먼저 읽어보는 것을 추천합니다.  
+
 :::
 
+
+</br>
 
 ## 들어가며 {#sec-introduction}
 
