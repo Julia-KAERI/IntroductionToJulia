@@ -50,7 +50,7 @@
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/pkg_dev.html</loc>
-    <lastmod>2024-11-14T01:31:37.469Z</lastmod>
+    <lastmod>2024-12-26T13:55:29.577Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/leastsquarefit.html</loc>
@@ -62,11 +62,11 @@
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/style_guide.html</loc>
-    <lastmod>2024-11-19T00:39:23.229Z</lastmod>
+    <lastmod>2024-12-26T08:26:28.086Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/pkg.html</loc>
-    <lastmod>2024-11-18T23:23:48.130Z</lastmod>
+    <lastmod>2024-11-18T11:45:36.483Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/multithreads.html</loc>
@@ -94,7 +94,7 @@
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/00_part2.html</loc>
-    <lastmod>2024-10-07T05:55:00.060Z</lastmod>
+    <lastmod>2024-11-08T00:09:25.181Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/more_on_types.html</loc>
@@ -102,7 +102,7 @@
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/performance_tips.html</loc>
-    <lastmod>2024-11-19T00:35:26.821Z</lastmod>
+    <lastmod>2024-12-26T08:26:12.382Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/string_literal.html</loc>
@@ -110,7 +110,7 @@
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/00_part3.html</loc>
-    <lastmod>2024-10-07T05:45:19.979Z</lastmod>
+    <lastmod>2024-11-08T00:09:25.182Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/fileio.html</loc>
@@ -130,7 +130,7 @@
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/01_julia_language.html</loc>
-    <lastmod>2024-09-30T07:30:20.357Z</lastmod>
+    <lastmod>2024-10-06T05:24:44.212Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/03_functions_and_operators.html</loc>
@@ -162,7 +162,7 @@
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/11_interfaces.html</loc>
-    <lastmod>2024-11-22T06:28:54.533Z</lastmod>
+    <lastmod>2024-12-26T08:26:12.384Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/introduction_to_julia/index.html</loc>
@@ -170,6 +170,6 @@
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/opencv.html</loc>
-    <lastmod>2024-11-26T11:21:01.307Z</lastmod>
+    <lastmod>2024-12-26T08:26:12.384Z</lastmod>
   </url>
 </urlset>
