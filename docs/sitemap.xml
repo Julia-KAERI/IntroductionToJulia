@@ -49,24 +49,24 @@
     <lastmod>2024-11-14T22:55:30.737Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/pkg_dev.html</loc>
-    <lastmod>2025-01-14T01:26:30.075Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/opencv.html</loc>
+    <lastmod>2024-11-26T11:21:01.307Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/makie.html</loc>
-    <lastmod>2024-09-27T01:40:37.320Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/leastsquarefit.html</loc>
+    <lastmod>2024-09-27T01:40:37.308Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/fileio.html</loc>
-    <lastmod>2024-09-27T01:40:37.307Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/dataframes.html</loc>
+    <lastmod>2024-10-07T05:55:53.949Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/00_part3.html</loc>
-    <lastmod>2024-10-07T05:45:19.979Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/style_guide.html</loc>
+    <lastmod>2025-01-15T01:05:35.533Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/string_literal.html</loc>
-    <lastmod>2024-10-15T04:58:20.534Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/pkg_env.html</loc>
+    <lastmod>2025-01-14T23:55:54.245Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/performance_tips.html</loc>
@@ -74,7 +74,7 @@
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/more_on_types.html</loc>
-    <lastmod>2024-11-15T01:45:09.713Z</lastmod>
+    <lastmod>2025-01-15T01:31:53.028Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/00_part2.html</loc>
@@ -106,23 +106,23 @@
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/pkg.html</loc>
-    <lastmod>2024-12-26T23:53:17.877Z</lastmod>
+    <lastmod>2025-01-15T01:02:49.156Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/style_guide.html</loc>
-    <lastmod>2024-11-19T00:39:23.229Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/application_of_julia/string_literal.html</loc>
+    <lastmod>2025-01-15T01:03:11.277Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/dataframes.html</loc>
-    <lastmod>2024-10-07T05:55:53.949Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/00_part3.html</loc>
+    <lastmod>2024-10-07T05:45:19.979Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/leastsquarefit.html</loc>
-    <lastmod>2024-09-27T01:40:37.308Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/fileio.html</loc>
+    <lastmod>2024-09-27T01:40:37.307Z</lastmod>
   </url>
   <url>
-    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/opencv.html</loc>
-    <lastmod>2024-11-26T11:21:01.307Z</lastmod>
+    <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/makie.html</loc>
+    <lastmod>2024-09-27T01:40:37.320Z</lastmod>
   </url>
   <url>
     <loc>https://julia-kaeri.github.io/IntroductionToJulia/src/ecosystem_of_julia/random.html</loc>

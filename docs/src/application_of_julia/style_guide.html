@@ -188,6 +188,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../src/application_of_julia/pkg_env.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">환경과 패키지 개발</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../src/application_of_julia/pkg.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Pkg.jl</span></a>
   </div>
@@ -226,29 +232,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">목차</h2>
    
   <ul>
-  <li><a href="#sec-indentation" id="toc-sec-indentation" class="nav-link active" data-scroll-target="#sec-indentation"><span class="header-section-number">1</span> 들여쓰기</a></li>
-  <li><a href="#sec-write_functions" id="toc-sec-write_functions" class="nav-link" data-scroll-target="#sec-write_functions"><span class="header-section-number">2</span> 단순한 스크립트가 아닌 함수를 사용한다</a></li>
-  <li><a href="#sec-avoid_writing_overly-specific_types" id="toc-sec-avoid_writing_overly-specific_types" class="nav-link" data-scroll-target="#sec-avoid_writing_overly-specific_types"><span class="header-section-number">3</span> 과도하게 타입을 특정하는것을 피한다</a></li>
-  <li><a href="#sec-handle_excess_argument_diversity_in_the_caller" id="toc-sec-handle_excess_argument_diversity_in_the_caller" class="nav-link" data-scroll-target="#sec-handle_excess_argument_diversity_in_the_caller"><span class="header-section-number">4</span> 과도한 인자의 다양성은 함수 내부가 아니라 함수를 호출할 때 처리한다</a></li>
-  <li><a href="#sec-append_exclamation_at_the_end_of_function_name" id="toc-sec-append_exclamation_at_the_end_of_function_name" class="nav-link" data-scroll-target="#sec-append_exclamation_at_the_end_of_function_name"><span class="header-section-number">5</span> 인자를 변경하는 함수의 이름 끝에 <code>!</code> 를 붙인다</a></li>
-  <li><a href="#sec-avoid_strange_type_unios" id="toc-sec-avoid_strange_type_unios" class="nav-link" data-scroll-target="#sec-avoid_strange_type_unios"><span class="header-section-number">6</span> 이상한 타입 <code>Unions</code> 은 피한다</a></li>
-  <li><a href="#sec-avoid_elaborate_container_types" id="toc-sec-avoid_elaborate_container_types" class="nav-link" data-scroll-target="#sec-avoid_elaborate_container_types"><span class="header-section-number">7</span> 복잡한 컨테이너 타입을 피한다</a></li>
-  <li><a href="#sec-prefer_exported_methods_over_direct_field_access" id="toc-sec-prefer_exported_methods_over_direct_field_access" class="nav-link" data-scroll-target="#sec-prefer_exported_methods_over_direct_field_access"><span class="header-section-number">8</span> 직접적으로 필드에 접근하기보다는 export 된 메서드를 사용한다</a></li>
-  <li><a href="#sec-using_naming_convections_with_julia_base" id="toc-sec-using_naming_convections_with_julia_base" class="nav-link" data-scroll-target="#sec-using_naming_convections_with_julia_base"><span class="header-section-number">9</span> Julia <code>base/</code> 와 일치하도록 이름을 붙인다</a></li>
-  <li><a href="#sec-write_functions_with_argument_ordering_simmilar_to_julia_base" id="toc-sec-write_functions_with_argument_ordering_simmilar_to_julia_base" class="nav-link" data-scroll-target="#sec-write_functions_with_argument_ordering_simmilar_to_julia_base"><span class="header-section-number">10</span> 함수 인자의 순서를 Julia Base 와 비슷하게 한다</a></li>
-  <li><a href="#sec-dont_overuse_try_catch" id="toc-sec-dont_overuse_try_catch" class="nav-link" data-scroll-target="#sec-dont_overuse_try_catch"><span class="header-section-number">11</span> <code>try-catch</code> 를 남용하지 않는다</a></li>
-  <li><a href="#sec-dont_parrenthesize_conditions" id="toc-sec-dont_parrenthesize_conditions" class="nav-link" data-scroll-target="#sec-dont_parrenthesize_conditions"><span class="header-section-number">12</span> 조건문을 괄호로 싸지 않는다</a></li>
-  <li><a href="#sec-don_overuse_splicing" id="toc-sec-don_overuse_splicing" class="nav-link" data-scroll-target="#sec-don_overuse_splicing"><span class="header-section-number">13</span> <code>...</code> 를 남용하지 않는다</a></li>
-  <li><a href="#sec-ensure_constructors_return_type" id="toc-sec-ensure_constructors_return_type" class="nav-link" data-scroll-target="#sec-ensure_constructors_return_type"><span class="header-section-number">14</span> 생성자가 바로 그 타입을 반환하는지 확인한다</a></li>
-  <li><a href="#sec-dont_use_unnecessary_static_parameters" id="toc-sec-dont_use_unnecessary_static_parameters" class="nav-link" data-scroll-target="#sec-dont_use_unnecessary_static_parameters"><span class="header-section-number">15</span> 불필요한 정적 매개변수를 사용하지않는다</a></li>
-  <li><a href="#sec-avoid_confusion_whether_between_something_is_an_istance_or_type" id="toc-sec-avoid_confusion_whether_between_something_is_an_istance_or_type" class="nav-link" data-scroll-target="#sec-avoid_confusion_whether_between_something_is_an_istance_or_type"><span class="header-section-number">16</span> 인스턴스와 타입에 대한 혼동을 피한다</a></li>
-  <li><a href="#sec-dont_overuse_macro" id="toc-sec-dont_overuse_macro" class="nav-link" data-scroll-target="#sec-dont_overuse_macro"><span class="header-section-number">17</span> 매크로를 남용하지 않는다</a></li>
-  <li><a href="#sec-don_expose_unsafe_operations_at_the_interface_level" id="toc-sec-don_expose_unsafe_operations_at_the_interface_level" class="nav-link" data-scroll-target="#sec-don_expose_unsafe_operations_at_the_interface_level"><span class="header-section-number">18</span> 인터페이스 레벨에서 안전하지 않은 동작을 노출하지 않는다</a></li>
-  <li><a href="#sec-dont_overload_methods_of_base_containers" id="toc-sec-dont_overload_methods_of_base_containers" class="nav-link" data-scroll-target="#sec-dont_overload_methods_of_base_containers"><span class="header-section-number">19</span> 기본 콘테이너 타입의 메서드를 재정의(overload) 하지 않는다</a></li>
-  <li><a href="#sec-type_piracy" id="toc-sec-type_piracy" class="nav-link" data-scroll-target="#sec-type_piracy"><span class="header-section-number">20</span> 타입 해적질을 피하라</a></li>
-  <li><a href="#sec-be_careful_with_type_equality" id="toc-sec-be_careful_with_type_equality" class="nav-link" data-scroll-target="#sec-be_careful_with_type_equality"><span class="header-section-number">21</span> 타입이 동등성에 조심할 것</a></li>
-  <li><a href="#sec-dont_write_a_trivial_anonymous_function_for_a_named_function" id="toc-sec-dont_write_a_trivial_anonymous_function_for_a_named_function" class="nav-link" data-scroll-target="#sec-dont_write_a_trivial_anonymous_function_for_a_named_function"><span class="header-section-number">22</span> 이름이 붙여힌 함수 <code>f</code> 에 대해 <code>x-&gt;f(x)</code> 와 같은 익명함수를 작성하지 말것</a></li>
-  <li><a href="#sec-avoid_using_float_for_numeric_literals_in_generic_code" id="toc-sec-avoid_using_float_for_numeric_literals_in_generic_code" class="nav-link" data-scroll-target="#sec-avoid_using_float_for_numeric_literals_in_generic_code"><span class="header-section-number">23</span> 가능하다면 generic 코드의 숫자형 리터럴에 부동소수를 피하라</a></li>
+  <li><a href="#sec-styleguide_indentation" id="toc-sec-styleguide_indentation" class="nav-link active" data-scroll-target="#sec-styleguide_indentation"><span class="header-section-number">1</span> 들여쓰기</a></li>
+  <li><a href="#sec-styleguide_write_functions" id="toc-sec-styleguide_write_functions" class="nav-link" data-scroll-target="#sec-styleguide_write_functions"><span class="header-section-number">2</span> 단순한 스크립트가 아닌 함수를 사용한다</a></li>
+  <li><a href="#sec-styleguide_avoid_writing_overly-specific_types" id="toc-sec-styleguide_avoid_writing_overly-specific_types" class="nav-link" data-scroll-target="#sec-styleguide_avoid_writing_overly-specific_types"><span class="header-section-number">3</span> 과도하게 타입을 특정하는것을 피한다</a></li>
+  <li><a href="#sec-styleguide_handle_excess_argument_diversity_in_the_caller" id="toc-sec-styleguide_handle_excess_argument_diversity_in_the_caller" class="nav-link" data-scroll-target="#sec-styleguide_handle_excess_argument_diversity_in_the_caller"><span class="header-section-number">4</span> 과도한 인자의 다양성은 함수 내부가 아니라 함수를 호출할 때 처리한다</a></li>
+  <li><a href="#sec-styleguide_append_exclamation_at_the_end_of_function_name" id="toc-sec-styleguide_append_exclamation_at_the_end_of_function_name" class="nav-link" data-scroll-target="#sec-styleguide_append_exclamation_at_the_end_of_function_name"><span class="header-section-number">5</span> 인자를 변경하는 함수의 이름 끝에 <code>!</code> 를 붙인다</a></li>
+  <li><a href="#sec-styleguide_avoid_strange_type_unios" id="toc-sec-styleguide_avoid_strange_type_unios" class="nav-link" data-scroll-target="#sec-styleguide_avoid_strange_type_unios"><span class="header-section-number">6</span> 이상한 타입 <code>Unions</code> 은 피한다</a></li>
+  <li><a href="#sec-styleguide_avoid_elaborate_container_types" id="toc-sec-styleguide_avoid_elaborate_container_types" class="nav-link" data-scroll-target="#sec-styleguide_avoid_elaborate_container_types"><span class="header-section-number">7</span> 복잡한 컨테이너 타입을 피한다</a></li>
+  <li><a href="#sec-styleguide_prefer_exported_methods_over_direct_field_access" id="toc-sec-styleguide_prefer_exported_methods_over_direct_field_access" class="nav-link" data-scroll-target="#sec-styleguide_prefer_exported_methods_over_direct_field_access"><span class="header-section-number">8</span> 직접적으로 필드에 접근하기보다는 export 된 메서드를 사용한다</a></li>
+  <li><a href="#sec-styleguide_using_naming_convections_with_julia_base" id="toc-sec-styleguide_using_naming_convections_with_julia_base" class="nav-link" data-scroll-target="#sec-styleguide_using_naming_convections_with_julia_base"><span class="header-section-number">9</span> Julia <code>base/</code> 와 일치하도록 이름을 붙인다</a></li>
+  <li><a href="#sec-styleguide_write_functions_with_argument_ordering_simmilar_to_julia_base" id="toc-sec-styleguide_write_functions_with_argument_ordering_simmilar_to_julia_base" class="nav-link" data-scroll-target="#sec-styleguide_write_functions_with_argument_ordering_simmilar_to_julia_base"><span class="header-section-number">10</span> 함수 인자의 순서를 Julia Base 와 비슷하게 한다</a></li>
+  <li><a href="#sec-styleguide_dont_overuse_try_catch" id="toc-sec-styleguide_dont_overuse_try_catch" class="nav-link" data-scroll-target="#sec-styleguide_dont_overuse_try_catch"><span class="header-section-number">11</span> <code>try-catch</code> 를 남용하지 않는다</a></li>
+  <li><a href="#sec-styleguide_dont_parrenthesize_conditions" id="toc-sec-styleguide_dont_parrenthesize_conditions" class="nav-link" data-scroll-target="#sec-styleguide_dont_parrenthesize_conditions"><span class="header-section-number">12</span> 조건문을 괄호로 싸지 않는다</a></li>
+  <li><a href="#sec-styleguide_don_overuse_splicing" id="toc-sec-styleguide_don_overuse_splicing" class="nav-link" data-scroll-target="#sec-styleguide_don_overuse_splicing"><span class="header-section-number">13</span> <code>...</code> 를 남용하지 않는다</a></li>
+  <li><a href="#sec-styleguide_ensure_constructors_return_type" id="toc-sec-styleguide_ensure_constructors_return_type" class="nav-link" data-scroll-target="#sec-styleguide_ensure_constructors_return_type"><span class="header-section-number">14</span> 생성자가 바로 그 타입을 반환하는지 확인한다</a></li>
+  <li><a href="#sec-styleguide_dont_use_unnecessary_static_parameters" id="toc-sec-styleguide_dont_use_unnecessary_static_parameters" class="nav-link" data-scroll-target="#sec-styleguide_dont_use_unnecessary_static_parameters"><span class="header-section-number">15</span> 불필요한 정적 매개변수를 사용하지않는다</a></li>
+  <li><a href="#sec-styleguide_avoid_confusion_whether_between_something_is_an_istance_or_type" id="toc-sec-styleguide_avoid_confusion_whether_between_something_is_an_istance_or_type" class="nav-link" data-scroll-target="#sec-styleguide_avoid_confusion_whether_between_something_is_an_istance_or_type"><span class="header-section-number">16</span> 인스턴스와 타입에 대한 혼동을 피한다</a></li>
+  <li><a href="#sec-styleguide_dont_overuse_macro" id="toc-sec-styleguide_dont_overuse_macro" class="nav-link" data-scroll-target="#sec-styleguide_dont_overuse_macro"><span class="header-section-number">17</span> 매크로를 남용하지 않는다</a></li>
+  <li><a href="#sec-styleguide_don_expose_unsafe_operations_at_the_interface_level" id="toc-sec-styleguide_don_expose_unsafe_operations_at_the_interface_level" class="nav-link" data-scroll-target="#sec-styleguide_don_expose_unsafe_operations_at_the_interface_level"><span class="header-section-number">18</span> 인터페이스 레벨에서 안전하지 않은 동작을 노출하지 않는다</a></li>
+  <li><a href="#sec-styleguide_dont_overload_methods_of_base_containers" id="toc-sec-styleguide_dont_overload_methods_of_base_containers" class="nav-link" data-scroll-target="#sec-styleguide_dont_overload_methods_of_base_containers"><span class="header-section-number">19</span> 기본 콘테이너 타입의 메서드를 재정의(overload) 하지 않는다</a></li>
+  <li><a href="#sec-styleguide_type_piracy" id="toc-sec-styleguide_type_piracy" class="nav-link" data-scroll-target="#sec-styleguide_type_piracy"><span class="header-section-number">20</span> 타입 해적질을 피하라</a></li>
+  <li><a href="#sec-styleguide_be_careful_with_type_equality" id="toc-sec-styleguide_be_careful_with_type_equality" class="nav-link" data-scroll-target="#sec-styleguide_be_careful_with_type_equality"><span class="header-section-number">21</span> 타입이 동등성에 조심할 것</a></li>
+  <li><a href="#sec-styleguide_dont_write_a_trivial_anonymous_function_for_a_named_function" id="toc-sec-styleguide_dont_write_a_trivial_anonymous_function_for_a_named_function" class="nav-link" data-scroll-target="#sec-styleguide_dont_write_a_trivial_anonymous_function_for_a_named_function"><span class="header-section-number">22</span> 이름이 붙여힌 함수 <code>f</code> 에 대해 <code>x-&gt;f(x)</code> 와 같은 익명함수를 작성하지 말것</a></li>
+  <li><a href="#sec-styleguide_avoid_using_float_for_numeric_literals_in_generic_code" id="toc-sec-styleguide_avoid_using_float_for_numeric_literals_in_generic_code" class="nav-link" data-scroll-target="#sec-styleguide_avoid_using_float_for_numeric_literals_in_generic_code"><span class="header-section-number">23</span> 가능하다면 generic 코드의 숫자형 리터럴에 부동소수를 피하라</a></li>
   </ul>
 </nav>
     </div>
@@ -277,19 +283,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><br></p>
 <p>이 문서는 관례적인 julia 언어의 코딩 스타일의 몇가지 모습에 대해 다룹니다. 이 규칙들중에 어떤 것도 절대적이지 않으며 단지 당신이 언어에 친숙해지고 다른 여러가지중에 선택하도록 제안하는 것입니다.</p>
 <p><br></p>
-<section id="sec-indentation" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="sec-indentation"><span class="header-section-number">1</span> 들여쓰기</h2>
+<section id="sec-styleguide_indentation" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="sec-styleguide_indentation"><span class="header-section-number">1</span> 들여쓰기</h2>
 <p>각 들여쓰기 레벨마다 4개의 공백을 사용합니다.</p>
 <p><br></p>
 </section>
-<section id="sec-write_functions" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="sec-write_functions"><span class="header-section-number">2</span> 단순한 스크립트가 아닌 함수를 사용한다</h2>
+<section id="sec-styleguide_write_functions" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="sec-styleguide_write_functions"><span class="header-section-number">2</span> 단순한 스크립트가 아닌 함수를 사용한다</h2>
 <p>코드를 최상위 단계에서 일련의 단계로 작성하는 것은 문제를 해결하는 빠른 시작 방법이지만 가능한 한 빨리 프로그램을 함수로 나누는 것이 좋습니다. 함수는 재사용 가능하고 테스트하기 쉬우며, 수행 중인 단계와 입력 및 출력이 무엇인지 명확하게 해줍니다. 더욱이, Julia의 컴파일러 작동 방식 때문에 함수 내부의 코드는 최상위 레벨 코드보다 훨씬 더 빠르게 실행되는 경향이 있습니다.</p>
 <p>또한, 함수는 전역 변수를 직접 사용하는 대신(π와 같은 상수를 제외하고) 인자를 받아야 한다는 점을 강조할 가치가 있습니다.</p>
 <p><br></p>
 </section>
-<section id="sec-avoid_writing_overly-specific_types" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="sec-avoid_writing_overly-specific_types"><span class="header-section-number">3</span> 과도하게 타입을 특정하는것을 피한다</h2>
+<section id="sec-styleguide_avoid_writing_overly-specific_types" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="sec-styleguide_avoid_writing_overly-specific_types"><span class="header-section-number">3</span> 과도하게 타입을 특정하는것을 피한다</h2>
 <p>코드는 가능한 한 generic 해야 합니다. Generic 이란 특정 타입에 종속되지 않고 가능한 하나 다양한 타입에 대해 작동하도록 프로그래밍 하는 것을 말합니다.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Complex</span><span class="dt">{Float64}</span>(x)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>보다는 generic 함수를 사용하여 다음과 같이 쓰는 것이 좋습니다.</p>
@@ -305,8 +311,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>예를 들어, <code>addone(12)</code> 를 처음 호출하면, Julia는 <code>x::Int</code> 인수를 위한 특화된 <code>addone</code> 함수를 자동으로 컴파일하고, <code>oneunit</code> 호출을 인라인된 값 <code>1</code>로 대체합니다. 따라서 위에서 언급한 <code>addone</code> 함수의 처음 세 가지 정의는 네 번째 정의와 완전히 중복됩니다.</p>
 <p><br></p>
 </section>
-<section id="sec-handle_excess_argument_diversity_in_the_caller" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="sec-handle_excess_argument_diversity_in_the_caller"><span class="header-section-number">4</span> 과도한 인자의 다양성은 함수 내부가 아니라 함수를 호출할 때 처리한다</h2>
+<section id="sec-styleguide_handle_excess_argument_diversity_in_the_caller" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="sec-styleguide_handle_excess_argument_diversity_in_the_caller"><span class="header-section-number">4</span> 과도한 인자의 다양성은 함수 내부가 아니라 함수를 호출할 때 처리한다</h2>
 <div class="sourceCode" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">foo</span>(x, y)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="fu">Int</span>(x); y <span class="op">=</span> <span class="fu">Int</span>(y)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
@@ -321,8 +327,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>여기서 하나의 문제는 함수가 본질적으로 정수만을 필요로 한다면, 함수를 호출할 때 정수가 아닌 수에 대해 어떻게 변환할지(예: <code>floor</code> 나 <code>ceil</code>)를 명시적으로 결정하도록 강제하는 것이 더 나을 수 있다는 점입니다. 또 다른 문제는 더 구체적인 타입을 선언하면 향후 메서드 정의를 위한 더 많은 “여지”을 남길 수 있다는 점입니다. 즉, 특정 타입에 대해 메서드를 정의하면, 추후 다른 타입이나 추상 타입에 대해 별도의 메서드를 정의하기가 더 용이해질 수 있습니다.</p>
 <p><br></p>
 </section>
-<section id="sec-append_exclamation_at_the_end_of_function_name" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="sec-append_exclamation_at_the_end_of_function_name"><span class="header-section-number">5</span> 인자를 변경하는 함수의 이름 끝에 <code>!</code> 를 붙인다</h2>
+<section id="sec-styleguide_append_exclamation_at_the_end_of_function_name" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="sec-styleguide_append_exclamation_at_the_end_of_function_name"><span class="header-section-number">5</span> 인자를 변경하는 함수의 이름 끝에 <code>!</code> 를 붙인다</h2>
 <div class="sourceCode" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">double</span>(a<span class="op">::</span><span class="dt">AbstractArray{&lt;:Number}</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(a)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        a[i] <span class="op">*=</span> <span class="fl">2</span></span>
@@ -341,20 +347,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>입출력(IO) 또는 난수 생성기(RNG)를 사용하는 함수는 주목할 만한 예외입니다. 이 함수들은 거의 반드시 IO나 RNG를 변형해야 하므로, 함수 이름 끝에 !를 붙이는 것은 IO 변형이나 RNG 상태 진행 이외의 다른 변형이 있음을 나타냅니다. 예를 들어 <code>rand(x)</code>는 RNG를 변형하지만, <code>rand!(x)</code> 는 RNG와 x를 모두 변형합니다. 마찬가지로, <code>read(io)</code> 는 <code>io</code>를 변형하지만, <code>read!(io, x)</code>는 <code>io</code>와 <code>x</code> 를 모두 변형합니다.</p>
 <p><br></p>
 </section>
-<section id="sec-avoid_strange_type_unios" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="sec-avoid_strange_type_unios"><span class="header-section-number">6</span> 이상한 타입 <code>Unions</code> 은 피한다</h2>
+<section id="sec-styleguide_avoid_strange_type_unios" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="sec-styleguide_avoid_strange_type_unios"><span class="header-section-number">6</span> 이상한 타입 <code>Unions</code> 은 피한다</h2>
 <p><code>Union{Function, AbstractString}</code> 과 같은 타입은 대개 설계가 더 분명해야 한다는 것을 의미합니다.</p>
 <p><br></p>
 </section>
-<section id="sec-avoid_elaborate_container_types" class="level2" data-number="7">
-<h2 data-number="7" class="anchored" data-anchor-id="sec-avoid_elaborate_container_types"><span class="header-section-number">7</span> 복잡한 컨테이너 타입을 피한다</h2>
+<section id="sec-styleguide_avoid_elaborate_container_types" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="sec-styleguide_avoid_elaborate_container_types"><span class="header-section-number">7</span> 복잡한 컨테이너 타입을 피한다</h2>
 <p>다음과 같은 배열을 만드는 것은 보통 도움이 안됩니다.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{Union{Int,AbstractString,Tuple,Array}}</span>(<span class="cn">undef</span>, n)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>이경우 <code>Vector{Any}(undef, n)</code> 이 낫습니다. 하나의 타입에 많은 것들을 때려박는 것보다는 특정 사용에서 <code>a[i]::Int</code> 와 같이 컴파일러에게 알려주는 것이 더 도움이 됩니다.</p>
 <p><br></p>
 </section>
-<section id="sec-prefer_exported_methods_over_direct_field_access" class="level2" data-number="8">
-<h2 data-number="8" class="anchored" data-anchor-id="sec-prefer_exported_methods_over_direct_field_access"><span class="header-section-number">8</span> 직접적으로 필드에 접근하기보다는 export 된 메서드를 사용한다</h2>
+<section id="sec-styleguide_prefer_exported_methods_over_direct_field_access" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="sec-styleguide_prefer_exported_methods_over_direct_field_access"><span class="header-section-number">8</span> 직접적으로 필드에 접근하기보다는 export 된 메서드를 사용한다</h2>
 <p>관례적인 Julia 코드는 일반적으로 모듈에서 export된 메서드를 해당 타입에 대한 인터페이스로 간주해야 합니다. 객체의 필드는 대개 구현의 세부사항으로 취급되며, API로 명시되지 않는 한 사용자 코드에서 직접 접근해서는 안 됩니다. 이는 다음과 같은 여러 이점을 제공합니다.</p>
 <ol type="1">
 <li><p>패키지 개발자는 구현을 변경해도 사용자 코드를 깨뜨리지 않을 수 있습니다.</p></li>
@@ -367,8 +373,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>이 규칙에 대한 반례는 <a href="https://docs.julialang.org/en/v1/base/base/#Core.NamedTuple"><code>NamedTupe</code></a>, <a href="https://docs.julialang.org/en/v1/base/strings/#Base.match"><code>RegexMatch</code></a>, <a href="https://docs.julialang.org/en/v1/base/file/#Base.stat"><code>StatStruct</code></a> 가 있습니다.</p>
 <p><br></p>
 </section>
-<section id="sec-using_naming_convections_with_julia_base" class="level2" data-number="9">
-<h2 data-number="9" class="anchored" data-anchor-id="sec-using_naming_convections_with_julia_base"><span class="header-section-number">9</span> Julia <code>base/</code> 와 일치하도록 이름을 붙인다</h2>
+<section id="sec-styleguide_using_naming_convections_with_julia_base" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="sec-styleguide_using_naming_convections_with_julia_base"><span class="header-section-number">9</span> Julia <code>base/</code> 와 일치하도록 이름을 붙인다</h2>
 <p>Julia 코드에서 이름 지정에 대한 스타일 가이드는 다음과 같습니다:</p>
 <ul>
 <li><p>모듈 및 타입 이름에는 대문자와 카멜 케이스(CamelCase)를 사용합니다. : <code>module SparseArrays</code>, <code>struct UnitRange</code></p></li>
@@ -379,8 +385,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>여러 단어가 필요한 함수 이름은 해당 함수가 하나 이상의 개념을 표현하는지 고려하십시오. 필요하다면 함수 이름을 더 작은 조각으로 나누는 것이 좋습니다.</p>
 <p><br></p>
 </section>
-<section id="sec-write_functions_with_argument_ordering_simmilar_to_julia_base" class="level2" data-number="10">
-<h2 data-number="10" class="anchored" data-anchor-id="sec-write_functions_with_argument_ordering_simmilar_to_julia_base"><span class="header-section-number">10</span> 함수 인자의 순서를 Julia Base 와 비슷하게 한다</h2>
+<section id="sec-styleguide_write_functions_with_argument_ordering_simmilar_to_julia_base" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="sec-styleguide_write_functions_with_argument_ordering_simmilar_to_julia_base"><span class="header-section-number">10</span> 함수 인자의 순서를 Julia Base 와 비슷하게 한다</h2>
 <p>Julia 의 Base 라이브러리는 함수 인수의 순서를 다음과 같은 일반 규칙에 따라 배치합니다. 이는 적용 가능한 경우에 해당하며, 일관된 사용자 경험을 제공합니다:</p>
 <ol type="1">
 <li><p><strong>함수 인자</strong>. 첫 번째 인수로 함수가 올 경우, <code>do</code> 블록을 사용해 다중 라인의 익명 함수를 전달할 수 있습니다.</p></li>
@@ -399,23 +405,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>API를 설계할 때 이 순서를 최대한 준수하면 함수 사용자가 일관된 경험을 할 수 있습니다.</p>
 <p><br></p>
 </section>
-<section id="sec-dont_overuse_try_catch" class="level2" data-number="11">
-<h2 data-number="11" class="anchored" data-anchor-id="sec-dont_overuse_try_catch"><span class="header-section-number">11</span> <code>try-catch</code> 를 남용하지 않는다</h2>
+<section id="sec-styleguide_dont_overuse_try_catch" class="level2" data-number="11">
+<h2 data-number="11" class="anchored" data-anchor-id="sec-styleguide_dont_overuse_try_catch"><span class="header-section-number">11</span> <code>try-catch</code> 를 남용하지 않는다</h2>
 <p><code>try-catch</code> 로 에러를 탐지하는 것보다 피하는 것이 낫습니다.</p>
 <p><br></p>
 </section>
-<section id="sec-dont_parrenthesize_conditions" class="level2" data-number="12">
-<h2 data-number="12" class="anchored" data-anchor-id="sec-dont_parrenthesize_conditions"><span class="header-section-number">12</span> 조건문을 괄호로 싸지 않는다</h2>
+<section id="sec-styleguide_dont_parrenthesize_conditions" class="level2" data-number="12">
+<h2 data-number="12" class="anchored" data-anchor-id="sec-styleguide_dont_parrenthesize_conditions"><span class="header-section-number">12</span> 조건문을 괄호로 싸지 않는다</h2>
 <p>Julia 는 <code>if</code> 나 <code>while</code> 문에서 괄호를 요구하지 않습니다. <code>if (a == b)</code> 대신에 <code>if a == b</code> 를 사용하세요.</p>
 <p><br></p>
 </section>
-<section id="sec-don_overuse_splicing" class="level2" data-number="13">
-<h2 data-number="13" class="anchored" data-anchor-id="sec-don_overuse_splicing"><span class="header-section-number">13</span> <code>...</code> 를 남용하지 않는다</h2>
+<section id="sec-styleguide_don_overuse_splicing" class="level2" data-number="13">
+<h2 data-number="13" class="anchored" data-anchor-id="sec-styleguide_don_overuse_splicing"><span class="header-section-number">13</span> <code>...</code> 를 남용하지 않는다</h2>
 <p>함수 인자 에서 <strong>스플라이싱(splicing)</strong> 을 자주 사용하면 중독성이 있을 수 있습니다. 예를 들어, <code>[a..., b...]</code> 대신에 간단히 <code>[a; b]</code> 를 사용하세요. 또한, <code>collect(a)</code> 는 <code>[a...]</code> 보다 더 나은 방법입니다. 하지만 <code>a</code> 가 이미 이터러블(iterable) 한 객체라면, 굳이 배열로 변환하지 않고 그대로 두는 것이 더 효율적일 때가 많습니다.</p>
 <p><br></p>
 </section>
-<section id="sec-ensure_constructors_return_type" class="level2" data-number="14">
-<h2 data-number="14" class="anchored" data-anchor-id="sec-ensure_constructors_return_type"><span class="header-section-number">14</span> 생성자가 바로 그 타입을 반환하는지 확인한다</h2>
+<section id="sec-styleguide_ensure_constructors_return_type" class="level2" data-number="14">
+<h2 data-number="14" class="anchored" data-anchor-id="sec-styleguide_ensure_constructors_return_type"><span class="header-section-number">14</span> 생성자가 바로 그 타입을 반환하는지 확인한다</h2>
 <p>타입 <code>T</code> 에 대한 <code>T(x)</code> 메서드를 호출할 때 보통 <code>T</code> 타입을 반환할것을 기대합니다. 예상하지 못한 타입을 반환하는 생성자(constructor) 는 혼란과 예측하지 못한 행동을 일으킬 수 있습니다.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="kw">struct</span> Foo{T}</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>           x<span class="op">::</span><span class="dt">T</span></span>
@@ -433,17 +439,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>코드의 명확성과 타입 일관성을 유지하기 위해 항상 생성자가 생성하는 타입을 반환하도록 설계하세요</p>
 <p><br></p>
 </section>
-<section id="sec-dont_use_unnecessary_static_parameters" class="level2" data-number="15">
-<h2 data-number="15" class="anchored" data-anchor-id="sec-dont_use_unnecessary_static_parameters"><span class="header-section-number">15</span> 불필요한 정적 매개변수를 사용하지않는다</h2>
+<section id="sec-styleguide_dont_use_unnecessary_static_parameters" class="level2" data-number="15">
+<h2 data-number="15" class="anchored" data-anchor-id="sec-styleguide_dont_use_unnecessary_static_parameters"><span class="header-section-number">15</span> 불필요한 정적 매개변수를 사용하지않는다</h2>
 <div class="sourceCode" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">foo</span>(x<span class="op">::</span><span class="dt">T</span>) <span class="kw">where</span> {T<span class="op">&lt;:</span><span class="dt">Real</span>} <span class="op">=</span> <span class="op">...</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>와 같은 함수 시그너쳐는 <code>T</code> 가 함수 내부에서 사용되지 않는다면 아래와 같이 변경되어야 합니다.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">foo</span>(x<span class="op">::</span><span class="dt">Real</span>) <span class="op">=</span> <span class="op">...</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>심지어 <code>T</code> 가 사용되더라도 <code>typeof(T)</code> 로 대체될 수 있습니다. 성능 차이는 없습니다. 이것은 일반적인 정적 매개변수 사용에 대한 주의(caution) 은 아니며 단지 필요하지 않을 경우에 대한 주의입니다.</p>
-<p>또한 컨테이너 타입은 함수 내부에 타입 매개변수가 필요할 수 있습니다. <a href="../../src/application_of_julia/performance_tips.html#sec-avoid_field_with_abstract_container">추상 컨테이너를 필드로 갖는 것을 피하라</a> 를 참고하시기 바랍니다.</p>
+<p>또한 컨테이너 타입은 함수 내부에 타입 매개변수가 필요할 수 있습니다. <a href="../../src/application_of_julia/performance_tips.html#sec-styleguide_avoid_field_with_abstract_container">추상 컨테이너를 필드로 갖는 것을 피하라</a> 를 참고하시기 바랍니다.</p>
 <p><br></p>
 </section>
-<section id="sec-avoid_confusion_whether_between_something_is_an_istance_or_type" class="level2" data-number="16">
-<h2 data-number="16" class="anchored" data-anchor-id="sec-avoid_confusion_whether_between_something_is_an_istance_or_type"><span class="header-section-number">16</span> 인스턴스와 타입에 대한 혼동을 피한다</h2>
+<section id="sec-styleguide_avoid_confusion_whether_between_something_is_an_istance_or_type" class="level2" data-number="16">
+<h2 data-number="16" class="anchored" data-anchor-id="sec-styleguide_avoid_confusion_whether_between_something_is_an_istance_or_type"><span class="header-section-number">16</span> 인스턴스와 타입에 대한 혼동을 피한다</h2>
 <p>다음과 같은 정의는 혼란스럽습니다.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">foo</span>(<span class="op">::</span><span class="dt">Type{MyType}</span>) <span class="op">=</span> <span class="op">...</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">foo</span>(<span class="op">::</span><span class="dt">MyType</span>) <span class="op">=</span> <span class="fu">foo</span>(MyType)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -452,14 +458,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>만약 타입이 사실상 열거형(enumeration)이라면, 이를 단일 타입(이상적으로는 immutable struct 혹은 원시 타입(primitive type))으로 정의하고, 열거형 값들을 그 타입의 인스턴스로 만드는 것이 좋습니다. 생성자와 변환 함수는 값이 유효한지 검증할 수 있습니다. 이 방식은 열거형 타입을 추상 타입으로 정의하고, 그 “값들”을 서브타입으로 만드는 방식보다 선호됩니다.</p>
 <p><br></p>
 </section>
-<section id="sec-dont_overuse_macro" class="level2" data-number="17">
-<h2 data-number="17" class="anchored" data-anchor-id="sec-dont_overuse_macro"><span class="header-section-number">17</span> 매크로를 남용하지 않는다</h2>
+<section id="sec-styleguide_dont_overuse_macro" class="level2" data-number="17">
+<h2 data-number="17" class="anchored" data-anchor-id="sec-styleguide_dont_overuse_macro"><span class="header-section-number">17</span> 매크로를 남용하지 않는다</h2>
 <p>매크로가 실제로는 함수로 작성될 수 있을 지 확인하세요.</p>
 <p>특히 매크로 내에서 <code>eval</code> 을 호출하는 것은 매우 위험한 신호입니다. <code>eval</code> 을 사용하면 해당 매크로는 최상위에서만 동작할 수 있게 됩니다. 만약 이런 매크로가 함수로서 쓰여질 수 있다면 런타임 값에 자연스럽게 접근할 수 있게 됩니다.</p>
 <p><br></p>
 </section>
-<section id="sec-don_expose_unsafe_operations_at_the_interface_level" class="level2" data-number="18">
-<h2 data-number="18" class="anchored" data-anchor-id="sec-don_expose_unsafe_operations_at_the_interface_level"><span class="header-section-number">18</span> 인터페이스 레벨에서 안전하지 않은 동작을 노출하지 않는다</h2>
+<section id="sec-styleguide_don_expose_unsafe_operations_at_the_interface_level" class="level2" data-number="18">
+<h2 data-number="18" class="anchored" data-anchor-id="sec-styleguide_don_expose_unsafe_operations_at_the_interface_level"><span class="header-section-number">18</span> 인터페이스 레벨에서 안전하지 않은 동작을 노출하지 않는다</h2>
 <p>내이티브 포인터를 사용하는 타입을 사용한다고 합시다.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">mutable struct</span> NativeType</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    p<span class="op">::</span><span class="dt">Ptr{UInt8}</span></span>
@@ -471,15 +477,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>이러한 함수는 안정성을 보장하기 위해 작업을 확인하거나, 그렇지 않으면 <code>unsafe</code> 라는 이름을 포함하여 호출자에게 경고를 해야 합니다.</p>
 <p><br></p>
 </section>
-<section id="sec-dont_overload_methods_of_base_containers" class="level2" data-number="19">
-<h2 data-number="19" class="anchored" data-anchor-id="sec-dont_overload_methods_of_base_containers"><span class="header-section-number">19</span> 기본 콘테이너 타입의 메서드를 재정의(overload) 하지 않는다</h2>
+<section id="sec-styleguide_dont_overload_methods_of_base_containers" class="level2" data-number="19">
+<h2 data-number="19" class="anchored" data-anchor-id="sec-styleguide_dont_overload_methods_of_base_containers"><span class="header-section-number">19</span> 기본 콘테이너 타입의 메서드를 재정의(overload) 하지 않는다</h2>
 <p>다음과 같은 정의를 봅시다.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(io<span class="op">::</span><span class="dt">IO</span>, v<span class="op">::</span><span class="dt">Vector{MyType}</span>) <span class="op">=</span> <span class="op">...</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>위의 코드는 사용자 정의 타입(<code>MyType</code>) 에 대한 벡터를 표시하는 맞춤식 출력을 제공합니다. 끌릴 수도 있지만 피해야합니다. 문제는 사용자가 <code>Vector()</code> 와 같은 잘 알려진 타입에 대해서는 어떤 특정한 방식으로 작동하기를 기대하며, 과도하게 이를 벗어나는 것은 작업을 힘들게 합니다.</p>
 <p><br></p>
 </section>
-<section id="sec-type_piracy" class="level2" data-number="20">
-<h2 data-number="20" class="anchored" data-anchor-id="sec-type_piracy"><span class="header-section-number">20</span> 타입 해적질을 피하라</h2>
+<section id="sec-styleguide_type_piracy" class="level2" data-number="20">
+<h2 data-number="20" class="anchored" data-anchor-id="sec-styleguide_type_piracy"><span class="header-section-number">20</span> 타입 해적질을 피하라</h2>
 <p>“타입 해적질(type piracy)”은 Base나 다른 패키지의 메서드를 당신이 정의하지 않은 타입에 대해 확장하거나 재정의하는 행위를 말합니다. 극단적인 경우, 메서드 확장이나 재정의가 잘못된 입력을 <code>ccall</code> 에 전달하게 만들어 Julia를 크래시시킬 수도 있습니다. 타입 해적질은 코드의 논리를 복잡하게 만들고, 예측하거나 진단하기 어려운 비호환성을 초래할 수 있습니다.</p>
 <p>예를 들어 당신이 모듈의 심볼에 대한 곱셈을 정의한다고 해 봅시다.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> A</span>
@@ -490,18 +496,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>때로는 관련된 패키지들이 기능을 정의와 분리하기 위해 타입 해적질을 활용하기도 합니다. 특히 패키지가 협업하는 작성자들에 의해 설계되었거나 정의가 재사용 가능한 경우에 그렇습니다. 예를 들어, 하나의 패키지는 색상 작업에 유용한 타입들을 제공할 수 있고, 또 다른 패키지는 이러한 타입에 대해 색상 공간 간 변환을 가능하게 하는 메서드를 정의할 수 있습니다. 또 다른 예로는 일부 C 코드에 대한 간단한 래퍼 역할을 하는 패키지와, 이를 해적하여 더 높은 수준의 Julia 친화적인 API를 구현하는 또 다른 패키지가 있을 수 있습니다.</p>
 <p><br></p>
 </section>
-<section id="sec-be_careful_with_type_equality" class="level2" data-number="21">
-<h2 data-number="21" class="anchored" data-anchor-id="sec-be_careful_with_type_equality"><span class="header-section-number">21</span> 타입이 동등성에 조심할 것</h2>
+<section id="sec-styleguide_be_careful_with_type_equality" class="level2" data-number="21">
+<h2 data-number="21" class="anchored" data-anchor-id="sec-styleguide_be_careful_with_type_equality"><span class="header-section-number">21</span> 타입이 동등성에 조심할 것</h2>
 <p>타입 조건을 시험하기 위해 <code>isa</code> 나 <code>&lt;:</code> 를 많이 사용합니다. 타입이 정확하게 같다는 것을 확인하는 것은 알려진 구체적 타입과 비교하거나 (예를 들어 <code>T == Float64</code> 와 같이) 당신이 무엇을 하고 있는지 정말로 정확하게 알 때에만 의미가 있습니다.</p>
 <p><br></p>
 </section>
-<section id="sec-dont_write_a_trivial_anonymous_function_for_a_named_function" class="level2" data-number="22">
-<h2 data-number="22" class="anchored" data-anchor-id="sec-dont_write_a_trivial_anonymous_function_for_a_named_function"><span class="header-section-number">22</span> 이름이 붙여힌 함수 <code>f</code> 에 대해 <code>x-&gt;f(x)</code> 와 같은 익명함수를 작성하지 말것</h2>
+<section id="sec-styleguide_dont_write_a_trivial_anonymous_function_for_a_named_function" class="level2" data-number="22">
+<h2 data-number="22" class="anchored" data-anchor-id="sec-styleguide_dont_write_a_trivial_anonymous_function_for_a_named_function"><span class="header-section-number">22</span> 이름이 붙여힌 함수 <code>f</code> 에 대해 <code>x-&gt;f(x)</code> 와 같은 익명함수를 작성하지 말것</h2>
 <p>고차 함수는 익명함수와 함께 호출되는 경우가 많기 때문에 이것이 바람직하거나 혹은 최소한 필요하다고 결론내리기 쉽습니다. 그러나 어떤 함수도 익명함수에 포장되지 않고 직접적으로 전달 될 수 있습니다. <code>map(x-&gt;f(x), a)</code> 를 사용하지 말고 <code>map(f, a)</code> 를 사용하세요.</p>
 <p><br></p>
 </section>
-<section id="sec-avoid_using_float_for_numeric_literals_in_generic_code" class="level2" data-number="23">
-<h2 data-number="23" class="anchored" data-anchor-id="sec-avoid_using_float_for_numeric_literals_in_generic_code"><span class="header-section-number">23</span> 가능하다면 generic 코드의 숫자형 리터럴에 부동소수를 피하라</h2>
+<section id="sec-styleguide_avoid_using_float_for_numeric_literals_in_generic_code" class="level2" data-number="23">
+<h2 data-number="23" class="anchored" data-anchor-id="sec-styleguide_avoid_using_float_for_numeric_literals_in_generic_code"><span class="header-section-number">23</span> 가능하다면 generic 코드의 숫자형 리터럴에 부동소수를 피하라</h2>
 <p>수를 다루는 generic code 를 작성한다면, 그리고 많은 수 타입의 인자와 함께 실행되어야 한다면 타입 프로모션에 의해 가장 덜 영향을 받는 수 타입의 리터럴을 사용하는 것이 좋다.</p>
 <p>예를 들어</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="fu">f</span>(x) <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span> x</span>

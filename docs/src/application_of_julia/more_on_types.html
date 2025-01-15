@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../src/application_of_julia/pkg.html" rel="next">
+<link href="../../src/application_of_julia/pkg_env.html" rel="next">
 <link href="../../src/application_of_julia/style_guide.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -188,6 +188,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../src/application_of_julia/pkg_env.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">환경과 패키지 개발</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../src/application_of_julia/pkg.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Pkg.jl</span></a>
   </div>
@@ -226,16 +232,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">목차</h2>
    
   <ul>
-  <li><a href="#sec-operations_on_types" id="toc-sec-operations_on_types" class="nav-link active" data-scroll-target="#sec-operations_on_types"><span class="header-section-number">1</span> 타입에 대한 연산</a></li>
-  <li><a href="#sec-declared_types" id="toc-sec-declared_types" class="nav-link" data-scroll-target="#sec-declared_types"><span class="header-section-number">2</span> 선언된 타입(Declared Types)</a></li>
-  <li><a href="#sec-unionall_type" id="toc-sec-unionall_type" class="nav-link" data-scroll-target="#sec-unionall_type"><span class="header-section-number">3</span> UnionAll 타입</a></li>
-  <li><a href="#sec-tuple_types" id="toc-sec-tuple_types" class="nav-link" data-scroll-target="#sec-tuple_types"><span class="header-section-number">4</span> 튜플 타입</a>
+  <li><a href="#sec-moreontype_operations_on_types" id="toc-sec-moreontype_operations_on_types" class="nav-link active" data-scroll-target="#sec-moreontype_operations_on_types"><span class="header-section-number">1</span> 타입에 대한 연산</a></li>
+  <li><a href="#sec-moreontype_declared_types" id="toc-sec-moreontype_declared_types" class="nav-link" data-scroll-target="#sec-moreontype_declared_types"><span class="header-section-number">2</span> 선언된 타입(Declared Types)</a></li>
+  <li><a href="#sec-moreontype_unionall_type" id="toc-sec-moreontype_unionall_type" class="nav-link" data-scroll-target="#sec-moreontype_unionall_type"><span class="header-section-number">3</span> UnionAll 타입</a></li>
+  <li><a href="#sec-moreontype_tuple_types" id="toc-sec-moreontype_tuple_types" class="nav-link" data-scroll-target="#sec-moreontype_tuple_types"><span class="header-section-number">4</span> 튜플 타입</a>
   <ul class="collapse">
-  <li><a href="#sec-vararg_tuple_type" id="toc-sec-vararg_tuple_type" class="nav-link" data-scroll-target="#sec-vararg_tuple_type">Vararg Tuple Types</a></li>
+  <li><a href="#sec-moreontype_vararg_tuple_type" id="toc-sec-moreontype_vararg_tuple_type" class="nav-link" data-scroll-target="#sec-moreontype_vararg_tuple_type">Vararg Tuple Types</a></li>
   </ul></li>
-  <li><a href="#sec-type_selector" id="toc-sec-type_selector" class="nav-link" data-scroll-target="#sec-type_selector"><span class="header-section-number">5</span> <code>Type{T}</code></a></li>
-  <li><a href="#sec-type-alias" id="toc-sec-type-alias" class="nav-link" data-scroll-target="#sec-type-alias"><span class="header-section-number">6</span> Type Alias</a></li>
-  <li><a href="#sec-value_types" id="toc-sec-value_types" class="nav-link" data-scroll-target="#sec-value_types"><span class="header-section-number">7</span> Value Types</a></li>
+  <li><a href="#sec-moreontype_type_selector" id="toc-sec-moreontype_type_selector" class="nav-link" data-scroll-target="#sec-moreontype_type_selector"><span class="header-section-number">5</span> <code>Type{T}</code></a></li>
+  <li><a href="#sec-moreontype_type-alias" id="toc-sec-moreontype_type-alias" class="nav-link" data-scroll-target="#sec-moreontype_type-alias"><span class="header-section-number">6</span> Type Alias</a></li>
+  <li><a href="#sec-moreontype_value_types" id="toc-sec-moreontype_value_types" class="nav-link" data-scroll-target="#sec-moreontype_value_types"><span class="header-section-number">7</span> Value Types</a></li>
   </ul>
 </nav>
     </div>
@@ -263,17 +269,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>우리는 <a href="../../src/introduction_to_julia/02_variables_basic_types.html">변수와 기본 타입</a>, <a href="../../src/introduction_to_julia/08_type_hierarchy.html">타입의 계층구조와 메서드 디스패치</a>, <a href="../../src/introduction_to_julia/09_composite_types.html">복합 타입</a> 에서 Julia 언어의 타입에 대해 알아보았다. 여기서는 앞서 다루지 않았던 것들에 대해 좀 더 알아보기로 하자.</p>
 <p><br></p>
-<section id="sec-operations_on_types" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="sec-operations_on_types"><span class="header-section-number">1</span> 타입에 대한 연산</h2>
+<section id="sec-moreontype_operations_on_types" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="sec-moreontype_operations_on_types"><span class="header-section-number">1</span> 타입에 대한 연산</h2>
 <p><code>isa(a, t::Type)</code> 은 <code>a</code> 가 <code>t</code> 타입 혹은 <code>t</code> 의 하위타입의 인스턴스라면 <code>true</code>, 아니면 <code>false</code> 를 반환한다.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>In [9]: isa(1.0, AbstractFloat)</span>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>REPL</strong></pre>
+</div>
+<div class="sourceCode" id="cb1" data-filename="REPL"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>In [9]: isa(1.0, AbstractFloat)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Out[9]: true</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p><br></p>
 <p><code>typeof(a)</code> 함수는 <code>a</code> 의 타입을 반환한다.</p>
 <p><br></p>
 </section>
-<section id="sec-declared_types" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="sec-declared_types"><span class="header-section-number">2</span> 선언된 타입(Declared Types)</h2>
+<section id="sec-moreontype_declared_types" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="sec-moreontype_declared_types"><span class="header-section-number">2</span> 선언된 타입(Declared Types)</h2>
 <p>추상 타입, 원시 타입, 복합 타입 은 몇가지 공통점이 존재한다.</p>
 <ul>
 <li>명시적으로 선언되었다.</li>
@@ -290,12 +301,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>DataType 은 추상적 이거나 구체적일 수 있다. 구체적인 DataType 은 정해진 크기, 저장 레이아웃을 가지며, 선택적으로 필드 이름을 가진다. 즉 원시 타입은 크기가 0이 아닌 필드 이름이 없는 DataTyppe 이다. 복합 타입은 필드 이름을 가지거나 비어 있는(크기가 0인) DataType 이다. 시스템의 모든 구체적인 값은 어떤 데이터 타입의 인스턴스입니다.</p>
 <p><br></p>
 </section>
-<section id="sec-unionall_type" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="sec-unionall_type"><span class="header-section-number">3</span> UnionAll 타입</h2>
+<section id="sec-moreontype_unionall_type" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="sec-moreontype_unionall_type"><span class="header-section-number">3</span> UnionAll 타입</h2>
+<p><a href="https://docs.julialang.org/en/v1/devdocs/types/#UnionAll-types">참고자료</a></p>
 <p><br></p>
 </section>
-<section id="sec-tuple_types" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="sec-tuple_types"><span class="header-section-number">4</span> 튜플 타입</h2>
+<section id="sec-moreontype_tuple_types" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="sec-moreontype_tuple_types"><span class="header-section-number">4</span> 튜플 타입</h2>
 <p>튜플은 함수의 자체를 제외한 인수들의 추상화이다. 예를 들어 <code>f(x, y) = x+y</code> 에서 인자로 전달되는 <code>x, y</code> 는 그 순서와 타입이 중요한데 이것을 추상화 한 것이 컨테이너인 튜플이다. 따라서 튜플 타입은 각 매개변수가 하나의 필드 타입인 매개변수화된 불변 타입과 유사하다. 튜플 <code>(x, y)</code> 는 다음과 같은 2개의 필드를 갖는 복합타입과 닮았다.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Tup2{A, B}</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    a<span class="op">::</span><span class="dt">A</span></span>
@@ -304,13 +316,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>그러나 세가지의 차이점이 있는데,</p>
 <ul>
 <li>튜플 타입은 몇개든 매개변수를 가질 수 있다.</li>
-<li>튜플 타입은 타입 매개변수에 대해 공변적(covariant) 하다. <code>Tuple{Int}</code> 는 <code>Tuple{Any}</code> 의 하위타입이며 따라서 <code>Tuple{Any}</code> 는 추상 타입으로 여겨질 수도 있다. 튜플 타입은 타입 매개변수가 구체적일 때만 구체적인 타입이다.</li>
+<li>튜플 타입은 타입 매개변수에 대해 공변적이다(be covariant). <code>Tuple{Int}</code> 는 <code>Tuple{Any}</code> 의 하위타입이며 따라서 <code>Tuple{Any}</code> 는 추상 타입으로 여겨질 수도 있다. 튜플 타입은 타입 매개변수가 구체적일 때만 구체적인 타입이다.</li>
 <li>튜플은 필드 이름이 존재하지 않으며 인덱스로만 접근 할 수 있다.</li>
 </ul>
 <p>우리가 알다시피 튜플은 괄호와 콤마로 <code>(1, "a", [1, 2])</code> 와 같이 선언된다. 이것의 타입은 <code>Tuple{Int64, String, Vector{Int64}}</code> 이다.</p>
 <p><br></p>
-<section id="sec-vararg_tuple_type" class="level3">
-<h3 class="anchored" data-anchor-id="sec-vararg_tuple_type">Vararg Tuple Types</h3>
+<section id="sec-moreontype_vararg_tuple_type" class="level3">
+<h3 class="anchored" data-anchor-id="sec-moreontype_vararg_tuple_type">Vararg Tuple Types</h3>
 <p>예를 들면</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>vartup <span class="op">=</span> <span class="dt">Tuple</span>{<span class="dt">AbstractString</span>, <span class="dt">Vararg</span>{<span class="dt">Int</span>}}</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>에서 <code>vartup</code> 는 첫번째 성분은 <code>AbstractString</code> 타입(혹은 그 하위 타입) 이며 그 다음부터는 모두 정수이며 갯수는 제한되지 않은 타입을 의미한다.</p>
@@ -343,8 +355,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><br></p>
 </section>
 </section>
-<section id="sec-type_selector" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="sec-type_selector"><span class="header-section-number">5</span> <code>Type{T}</code></h2>
+<section id="sec-moreontype_type_selector" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="sec-moreontype_type_selector"><span class="header-section-number">5</span> <code>Type{T}</code></h2>
 <p>타입 <code>T</code> 에 대해 <code>Type{T}</code> 는 매개화된 추상타입으로 유일한 인스턴스는 <code>T</code> 이다. 즉 <code>Type{T}</code> 는 인스턴스가 <code>T</code> 인 싱글턴 타입이다.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>In [1]: isa(Float32, Type{Float32})</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>Out[1]: true</span>
@@ -359,8 +371,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>Out[4]: false</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><br></p>
 </section>
-<section id="sec-type-alias" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="sec-type-alias"><span class="header-section-number">6</span> Type Alias</h2>
+<section id="sec-moreontype_type-alias" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="sec-moreontype_type-alias"><span class="header-section-number">6</span> Type Alias</h2>
 <p>예를 들어 <code>Float32</code> 를 <code>F32</code> 로 사용하고 싶다면</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>F32 <span class="op">=</span> <span class="dt">Float32</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>라고 해주면 된다.</p>
@@ -377,8 +389,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a> 3.0</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><br></p>
 </section>
-<section id="sec-value_types" class="level2" data-number="7">
-<h2 data-number="7" class="anchored" data-anchor-id="sec-value_types"><span class="header-section-number">7</span> Value Types</h2>
+<section id="sec-moreontype_value_types" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="sec-moreontype_value_types"><span class="header-section-number">7</span> Value Types</h2>
 <p>매개변수가 있는 타입에 대해 매개변수로 값을 가질 수 있다. 이경우 값은 “순수 비트” 값(타입, 심볼, 정수, 부동 소수, 튜플 등)을 타입 매개변수로 포함할 수 있다. 가장 흔한 예는 타입 <code>T</code> 의 성분을 갖는 <code>N</code> 차원 배열 <code>Array{T,N}</code> 이며, 이 경우 <code>N</code> 은 정수이다.</p>
 <p>자신만의 타입을 생성하여 값을 매개변수로 받고, 이를 사용해 커스텀 타입의 디스패치를 제어할 수 있다. 이 아이디어를 설명하기 위해, <code>Val{x}</code> 라는 매개변수화된 타입과 그 생성자 <code>Val(x) = Val{x}()</code> 를 알아보자. 이는 보다 복잡한 계층 구조가 필요 없는 경우 이 기법을 활용하는 일반적인 방법으로 사용된다. <code>Val</code> 은 다음과 같이 정의되었다.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> <span class="dt">Val</span>{x}</span>
@@ -821,8 +833,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../src/application_of_julia/pkg.html" class="pagination-link" aria-label="Pkg.jl">
-        <span class="nav-page-text">Pkg.jl</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../src/application_of_julia/pkg_env.html" class="pagination-link" aria-label="환경과 패키지 개발">
+        <span class="nav-page-text">환경과 패키지 개발</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

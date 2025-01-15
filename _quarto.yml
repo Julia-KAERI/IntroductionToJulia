@@ -66,6 +66,7 @@ website:
         - href : src/application_of_julia/00_part2.qmd
         - href : src/application_of_julia/style_guide.qmd
         - href : src/application_of_julia/more_on_types.qmd
+        - href : src/application_of_julia/pkg_env.qmd
         - href : src/application_of_julia/pkg.qmd
         - href : src/application_of_julia/string_literal.qmd
         - href : src/application_of_julia/performance_tips.qmd
@@ -84,7 +85,7 @@ website:
         - href : src/ecosystem_of_julia/random.qmd
         # - href : src/ecosystem_of_julia/leastsquarefit.qmd
 
-        - href : src/ecosystem_of_julia/pkg_dev.qmd
+
         - href : src/ecosystem_of_julia/dataframes.qmd
         - href : src/ecosystem_of_julia/unittest.qmd
         - href : src/ecosystem_of_julia/opencv.qmd
