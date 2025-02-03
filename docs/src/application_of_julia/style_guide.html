@@ -508,7 +508,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sec-styleguide_avoid_using_float_for_numeric_literals_in_generic_code" class="level2" data-number="23">
 <h2 data-number="23" class="anchored" data-anchor-id="sec-styleguide_avoid_using_float_for_numeric_literals_in_generic_code"><span class="header-section-number">23</span> 가능하다면 generic 코드의 숫자형 리터럴에 부동소수를 피하라</h2>
-<p>수를 다루는 generic code 를 작성한다면, 그리고 많은 수 타입의 인자와 함께 실행되어야 한다면 타입 프로모션에 의해 가장 덜 영향을 받는 수 타입의 리터럴을 사용하는 것이 좋다.</p>
+<p>수를 다루는 generic code 를 작성한다면, 그리고 많은 수 타입의 인자와 함께 실행되어야 한다면 타입 프로모션에 의해 가장 덜 영향을 받는 수 타입의 리터럴을 사용하는 것이 좋습니다.</p>
 <p>예를 들어</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="fu">f</span>(x) <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span> x</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>f (generic <span class="kw">function</span> with <span class="fl">1</span> method)</span>
@@ -533,7 +533,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="fu">g</span>(<span class="fl">1</span>)</span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fl">2</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>이다. 차이가 보이는가? 첫번째(<code>f(x)</code>) 에서는 <code>2.0</code> 이라는 부동소수형 리터럴을 사용한 반면에 두번째(<code>g(x)</code>) 에서는 <code>2</code> 라는 <code>Int</code> 형 리터럴을 사용했다. 따라서 <code>f</code> 는 대부분의 인자 타입에 대해 결과가 부동소수이지만 <code>g</code> 의 경우는 인자 타입을 보존한다. 이것은 서로 다른 두 수 타입을 곱할 때 타입 프로모션이 발생하며 타입 프로모션 규칙에 의해 <code>Float64</code> 가 <code>Int64</code> 보다 타입 교란적이다. (<code>A</code> 타입과 <code>B</code> 타입의 연산 결과가 <code>A</code> 타입이 되면 <code>A</code> 를 타입 교란적이라고 한다.) <code>Rational</code> 은 <code>Int64</code> 보다 타입 교란적이지만 <code>Float64</code> 보다는 덜 타입 교란적이므로 정수가 아닌 수를 사용한다면 <code>Rational</code> 을 사용해보라.</p>
+<p>입니다. 차이가 보이세요? 첫번째(<code>f(x)</code>) 에서는 <code>2.0</code> 이라는 부동소수형 리터럴을 사용한 반면에 두번째(<code>g(x)</code>) 에서는 <code>2</code> 라는 <code>Int</code> 형 리터럴을 사용했습니다. 따라서 <code>f</code> 는 대부분의 인자 타입에 대해 결과가 부동소수이지만 <code>g</code> 의 경우는 인자 타입을 보존합니다. 이것은 서로 다른 두 수 타입을 곱할 때 타입 프로모션이 발생하며 타입 프로모션 규칙에 의해 <code>Float64</code> 가 <code>Int64</code> 보다 타입 교란적입니다. (<code>A</code> 타입과 <code>B</code> 타입의 연산 결과가 <code>A</code> 타입이 되면 <code>A</code> 를 타입 교란적이라고 한니다.) <code>Rational</code> 은 <code>Int64</code> 보다 타입 교란적이지만 <code>Float64</code> 보다는 덜 타입 교란적이므로 정수가 아닌 수를 사용한다면 <code>Rational</code> 을 사용하는 것이 좋습니다.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="fu">h</span>(x) <span class="op">=</span> <span class="fl">2</span><span class="op">//</span><span class="fl">1</span> <span class="op">*</span> x</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>h (generic <span class="kw">function</span> with <span class="fl">1</span> method)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>

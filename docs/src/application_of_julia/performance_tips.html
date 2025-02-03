@@ -350,8 +350,8 @@ window.Quarto = {
 </section>
 <section id="sec-avoid_untyped_global_variable" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="sec-avoid_untyped_global_variable"><span class="header-section-number">2</span> 타입이 지정되지 않은 전역변수를 피하라.</h2>
-<p>전역 변수에 타입이 지정되지 않은 경우 해당 변수의 값이 언제든지 변경될 수 있으며, 이것은 타입이 변경 될 수 있다는 의미이다. 이는 컴파일러가 전역 변수를 사용하는 코드를 최적화하는 것을 어렵게 만든다. 이러한 문제는 전역 수준에서 사용되는 타입 별칭, 즉 타입을 값으로 가지는 변수에도 해당됩니다. 변수는 가능한 한 로컬로 선언하거나 함수의 인자로 전달해야 한다.</p>
-<p>전역적인 이름은 대부분 상수로 선언되며, 그렇게 선언하는 것이 성능을 향상시킨다.</p>
+<p>전역 변수에 타입이 지정되지 않은 경우 해당 변수의 값 뿐만 아라 타입도 언제든지 변경 될 수 있다는 의미이다. 이는 컴파일러가 전역 변수를 사용하는 코드를 최적화하는 것을 어렵게 만든다. 이러한 문제는 전역 수준에서 사용되는 타입 별칭, 즉 타입을 값으로 가지는 변수에도 해당된다. 변수는 가능한 한 로컬로 선언하거나 함수의 인자로 전달해야 한다.</p>
+<p>전역적인 이름은 대부분 상수로 선언되며(상수로 선언되는 순간 타입도 결정되므로), 그렇게 선언하는 것이 성능을 향상시킨다.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> DEFAULT_VAL <span class="op">=</span> <span class="fl">0</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>전역변수가 항상 같은 타입이라면, <a href="https://docs.julialang.org/en/v1/manual/variables-and-scoping/#man-typed-globals">그 타입이 지정(annotaed) 되어야 한다</a></p>
 <p>타입이 명시되지 않은 전역변수는, 그것의 사용 시점에 지정한다면 최적화 될 수 있다:</p>
@@ -364,6 +364,7 @@ window.Quarto = {
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> s</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><br></p>
 <p>인자를 함수에 전달하는 것은 더 좋은 스타일이다. 이것은 코드의 재사용성을 증가시키고 입력과 출력이 무엇인지 명확하게 한다.</p>
 <p><br></p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -388,6 +389,19 @@ window.Quarto = {
 </section>
 <section id="sec-time_macro_and_memory_allocation" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="sec-time_macro_and_memory_allocation"><span class="header-section-number">3</span> <code>@time</code> 을 이용하여 성능을 측정하고 메모리 할당에 유의할 것</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+노트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>여기서는 <code>@time</code> 매크로를 설명하지만 고급 벤치마킹을 위해 <a href="https://github.com/JuliaCI/BenchmarkTools.jl">BenchmarkTools.jl</a> 사용을 고려해보라. 무엇보다도 이것은 여러번 함수를 평가하여 그 평균과 중간값을 제시하므로 튀는 현상을 제거할 수 있다.</p>
+</div>
+</div>
 <p><code>@time</code> 매크로는 성능을 측정하는 유용한 도구이다. 앞서 논의했던 전역변수에 대한 보기를 타입 지정(type annotation)을 제거하고 여기서 반복 해 보자.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>julia&gt; x = rand(1000);</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -407,9 +421,9 @@ window.Quarto = {
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  0.000091 seconds (3.49 k allocations: 70.156 KiB)</span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>523.0007221951678</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>첫번째 호출(<code>@time sum_global()</code>) 에서 함수가 컴파일된다. (만약 이 세션에서 <code>@time</code> 을 아직 사용하지 않았다면 시간 측정에 필요한 함수도 같이 컴파일한다.) 첫번째 실행에서의 결과를 진지하게 받아들이지 말기를 바란다. 두번째 실행에서 시간을 보고할 뿐만 아니라 상당한 크기의 메모리가 할당되었음을 확인할 수 있다. 우리는 여기서 단지 64 비트 부동소수 벡터의 모든 성분을 더하는 계산을 하는 것이며, 따라서 메모리를 할당할 필요가 없다.(최소한 <code>@time</code> 이 리포트하는 heap 영역에서는 그렇다.)</p>
-<p><code>@time</code> 이 보고하는 메모리 할당은 특히 heap 할당을 의미하는데, 이는 주로 가변(mutable) 객체나 가변 크기 컨테이너(예: Array, Dict, 문자열, 또는 실행 시간에 타입이 결정되는 “타입 불안정” 객체)를 생성하거나 확장할 때 필요하다. 이러한 메모리 블록의 할당(또는 해제)은 종종 libc 로의 호출(예: C 언어의 <code>malloc</code> 호출)을 필요로 하며, 가비지 컬렉션을 위해 추적해야 합니다. 반면에, 숫자(대형 숫자를 제외), 튜플, 불변(immutable) 구조체와 같은 불변 값은 스택이나 CPU 레지스터 메모리 등 더 저렴한 위치에 저장될 수 있어, 이들에 대한 “할당”의 성능 비용은 보통 문제가 되지 않는다다.</p>
+<p><code>@time</code> 이 보고하는 메모리 할당은 특히 heap 할당을 의미하는데, 이는 주로 가변(mutable) 객체나 가변 크기 컨테이너(예: Array, Dict, 문자열, 또는 실행 시간에 타입이 결정되는 “타입 불안정” 객체)를 생성하거나 확장할 때 필요하다. 이러한 메모리 블록의 할당(또는 해제)은 종종 libc 로의 호출(예: C 언어의 <code>malloc</code> 호출)을 필요로 하며, 가비지 컬렉션을 위해 추적해야 한다. 반면에, 숫자(대형 숫자를 제외), 튜플, 불변(immutable) 구조체와 같은 불변 값은 스택이나 CPU 레지스터 메모리 등 더 저렴한 위치에 저장될 수 있어, 이들에 대한 “할당”의 성능 비용은 보통 문제가 되지 않는다다.</p>
 <p>예상치 못한 메모리 할당은 대부분의 경우 코드에 문제가 있다는 표시이며, 일반적으로 타입-안정성이나 다수의 작은 임시 배열을 생성하는 것에 관련된 문제이다. 결론적으로 할당 자체 뿐만아니라 함수를 위해 작성된 코드도 최적화와는 거리가 멀 가능성이 높다. 이러한 지표를 진지하게 여기고 아래의 조언을 따르라.</p>
-<p>위의 경우, 메모리 할당은 타입이 불안정한 전역 변수 <code>x</code> 의 사용으로 인해 발생하였다. 따라서 <code>x</code> 를 함수의 인수로 전달하면 더 이상 메모리가 할당되지 않는다(아래에 표시된 남은 메모리 할당은 전역 범위에서 <code>@time</code> 매크로를 실행한 결과로 인한 것입니다). 이렇게 하면 첫 번째 호출 이후 성능이 크게 향상된다.</p>
+<p>위의 경우, 메모리 할당은 타입이 불안정한 전역 변수 <code>x</code> 의 사용으로 인해 발생하였다. 따라서 <code>x</code> 를 함수의 인수로 전달하면 더 이상 메모리가 할당되지 않는다(아래에 표시된 남은 메모리 할당은 전역 범위에서 <code>@time</code> 매크로를 실행한 결과로 인한 것이다). 이렇게 하면 첫 번째 호출 이후 성능이 크게 향상된다.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> x <span class="op">=</span> <span class="fu">rand</span>(<span class="fl">1000</span>);</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="kw">function</span> <span class="fu">sum_arg</span>(x)</span>
@@ -436,20 +450,6 @@ window.Quarto = {
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fl">0.000002</span> seconds</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fl">523.0007221951678</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>몇몇 경우에서는 당신의 함수가 그 연산의 일부로서 메모리를 할당할 필요가 있을수 있으며, 이는 앞서의 간단한 상황을 복잡하게 한다. 이 경우에는 문제를 진단하기 위해 아래의 <a href="#tools">tools</a> 가운데 하나를 사용하거나, 알고리즘적인 부분과 할당 부분을 분리하는 함수를 작성하는 것을 고려하라( <a href="#출력의-사전-할당">Pre-allocationg outputs</a> 을 참고하라)</p>
-<p><br></p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-노트
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>고급 벤치마킹을 위해 <a href="https://github.com/JuliaCI/BenchmarkTools.jl">BenchmarkTools.jl</a> 사용을 고려해보라. 무엇보다도 이것은 잡음을 줄이기 위해 여러번 함수를 평가한다.</p>
-</div>
-</div>
 <p><br></p>
 </section>
 <section id="sec-tools" class="level2" data-number="4">
@@ -502,7 +502,7 @@ window.Quarto = {
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>           a</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>       <span class="kw">end</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><br></p>
-<p>위 코드에서 <code>a</code> 는 어떤 타입도 될 수 있다. 이것은 때대로 유용하지만 단점도 존재한다: 컴파일러는 <code>MyAmbiguousType</code> 객체에 대해 고성능 코드를 생성할 수 없다. 컴파일러는 어떻게 코드를 빌드할 지 결정하기위해 값이 아닌 객체의 타입을 사용하기 때문이다. 안타깝지만 <code>MyAmbiguousType</code> 객체에 대해 추정할 수 있는 것이 거의 없다.</p>
+<p>위 코드에서 <code>a</code> 는 어떤 타입도 될 수 있다. 이것은 때대로 유용하지만 단점도 존재한다: 컴파일러는 <code>MyAmbiguousType</code> 객체에 대해 고성능 코드를 생성할 수 없다. 컴파일러는 어떻게 코드를 빌드할 지 결정하기 위해 값이 아닌 객체의 타입을 사용하기 때문이다. 안타깝지만 <code>MyAmbiguousType</code> 객체에 대해 추정할 수 있는 것이 거의 없다.</p>
 <p><br></p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> b <span class="op">=</span> <span class="fu">MyAmbiguousType</span>(<span class="st">"Hello"</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">MyAmbiguousType</span>(<span class="st">"Hello"</span>)</span>
@@ -681,7 +681,7 @@ window.Quarto = {
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> (b <span class="op">+</span> <span class="fl">1.0f0</span>)<span class="op">::</span><span class="dt">Complex{ctype}</span></span>
 <span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">abs</span>(c)</span>
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>c</code> 에 대한 지정은 성능을 해친다. 런타임에 구성되는 타입에 관련된 성능 좋은 코드를 작성하기 위해서는 아래에 논의될 <a href="https://docs.julialang.org/en/v1/manual/performance-tips/#kernel-functions">function-barrier technique</a> 를 사용하고, 구성되는 타입이 커널 함수의 인자에 나타나서, 커널 작동이 컴파일러에 의해 제대로 특정되도록 해야 한다. 예를 들어, 위의 코드에서 <code>b</code> 가 구성되자 마자 다른 함수 <code>k</code> (the kernel) 에 전달 될 수 있다. 예를 들어 함수 <code>k</code> 가 <code>b</code> 를 타입 파라미터 <code>T</code> 에 대해 <code>Complex{T}</code> 로 선언하였다면, <code>k</code> 에서의 할당문(assignment statement) 에서 나타나는 아래와 같은 타입 지정</p>
+<p><code>c</code> 에 대한 지정은 성능을 해친다. 런타임에 구성되는 타입에 관련된 성능 좋은 코드를 작성하기 위해서는 아래에 논의될 <a href="#sec-kernel_barrier">function-barrier technique</a> (<a href="https://docs.julialang.org/en/v1/manual/performance-tips/#kernel-functions">원문</a>) 를 사용하고, 구성되는 타입이 커널 함수의 인자에 나타나서, 커널 작동이 컴파일러에 의해 제대로 특정되도록 해야 한다. 예를 들어, 위의 코드에서 <code>b</code> 가 구성되자 마자 다른 함수 <code>k</code> (the kernel) 에 전달 될 수 있다. 예를 들어 함수 <code>k</code> 가 <code>b</code> 를 타입 파라미터 <code>T</code> 에 대해 <code>Complex{T}</code> 로 선언하였다면, <code>k</code> 에서의 할당문(assignment statement) 에서 나타나는 아래와 같은 타입 지정</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> (b <span class="op">+</span> <span class="fl">1.0f0</span>)<span class="op">::</span><span class="dt">Complex{T}</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>은 성능을 해치지 않는데(도움도 되지 않지만) 이는 컴파일러가 <code>c</code> 의 타입을 <code>k</code>가 컴파일 될 때 결정하기 때문이다.</p>
 <p><br></p>
@@ -689,7 +689,7 @@ window.Quarto = {
 <section id="sec-be_aware_of_when_julia_avoids_specializing" class="level3" data-number="6.4">
 <h3 data-number="6.4" class="anchored" data-anchor-id="sec-be_aware_of_when_julia_avoids_specializing"><span class="header-section-number">6.4</span> 언제 Julia가 specializing(타입 특정) 을 피하는지 숙지하라.</h3>
 <p>경험적으로 Julia는 <code>Type</code>, <code>Function</code> 및 <code>Vararg</code>의 세 가지 특정한 경우에서 인자 타입 매개변수를 자동으로 특정하는것을 피한다. Julia는 인자가 메서드 내부에서 사용될 때 항상 특정하지만, 이 인자가 다른 함수에 전달될 때는 특정하지 않는다. 이렇게 하면 보통 실행시간에는 성능에 영항을 주지 않으며 <a href="https://docs.julialang.org/en/v1/devdocs/functions/#compiler-efficiency-issues">컴파일러의 성능을 향상시킨다.</a> 만약 당신이 런타임에 성능에 영향이 있다는것을 발견한다면, 메서드 선언에서 타입 변수를 추가하여 타입 특정을 유도할 수 있다. 여기에 몇몇 예를 제시하겠다.</p>
-<p>이것은 타입특정을 하지 않는다. (함수 인지 <code>t</code> 는 <code>Type</code> 이다.)</p>
+<p>이것은 타입특정을 하지 않는다. (함수 <code>f_type</code> 의 인자 <code>t</code> 는 <code>Type</code> 이다.)</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">f_type</span>(t)  <span class="co"># or t::Type</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="fu">ones</span>(t, <span class="fl">10</span>)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">sum</span>(<span class="fu">map</span>(sin, x))</span>
@@ -732,7 +732,7 @@ window.Quarto = {
 <p>이 코드는 더 간결하교 효율적으로 고쳐질 수 있다:</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">norm</span>(x<span class="op">::</span><span class="dt">Vector</span>) <span class="op">=</span> <span class="fu">sqrt</span>(<span class="fu">real</span>(<span class="fu">dot</span>(x, x)))</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">norm</span>(A<span class="op">::</span><span class="dt">Matrix</span>) <span class="op">=</span> <span class="fu">maximum</span>(<span class="fu">svdvals</span>(A))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>그러나 mynorm 예제처럼 작성된 코드에서 컴파일러는 불필요한 코드를 상당히 효과적으로 최적화하여 제거할 수 있다는 것에 유의해야 한다.</p>
+<p>그러나 mynorm 예제처럼 작성된 코드에서 컴파일러는 죽은 분기(dead branches)를 제거하는 최적화에 상당히 효율적이라는 것에 유의해야 한다.</p>
 <p><br></p>
 </section>
 <section id="sec-write_type_stable_functions" class="level2" data-number="8">
@@ -797,8 +797,8 @@ window.Quarto = {
 <span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a> <span class="fl">2</span></span>
 <span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a> <span class="fl">2</span></span>
 <span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a> <span class="fl">2</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Julia 컴파일러는 함수 경계에서 인자 타입에 대한 코드를 특정하며, 따라서 원래의 구현에서는 루프를 도는 동안에는 <code>a</code>의 타입을 알지 못한다(왜나면 임의로 선택되었기 때문에). 따라서 내부의 루프가 <code>fill_two!</code> 의 부분으로 <code>a</code> 의 두 타입에 대해 리컴파일 되었으므로, 두번째 버젼이 일반적으로 빠르다.</p>
-<p>두번째 폼이 대부분 더 좋은 스타일이며 코드를 재사용하는데도 좋다.</p>
+<p>Julia 컴파일러는 함수 경계에서 인자 타입에 대한 코드를 특정하며, 따라서 원래의 구현에서는 루프를 도는 동안에는 <code>a</code>의 타입을 알지 못한다(임의로 선택된 타입이기 때문에). 따라서 내부의 루프가 <code>fill_two!</code> 의 부분으로 <code>a</code> 의 두 타입에 대해 리컴파일 되었으므로, 두번째 버젼이 일반적으로 빠르다.</p>
+<p>두번째 형태가 대부분 더 좋은 스타일이며 코드를 재사용하는데도 좋다.</p>
 <p>이 패턴은 Julia Base 에서 상당수 사용된다. 예를 들어 <a href="https://github.com/JuliaLang/julia/blob/40fe264f4ffaa29b749bcf42239a89abdcbba846/base/abstractarray.jl#L1205-L1206">abstractarray.jl</a> 의 <code>vcat</code> 과 <code>hcat</code> 을 보거나, <a href="https://docs.julialang.org/en/v1/base/arrays/#Base.fill!">fill!</a> 함수를 찾아보면 우리의 <code>fill_twos!</code> 함수를 대신해서 쓸 수 있을 것이다.</p>
 <p><code>strange_twos</code> 와 같은 함수는 불확실한 타입의 데이터, 예를 들면 입력 파일로부터 정수, 소수(floats), 문자열 및 기타등을 포함한 데이터를 읽거나 할 경우와 같은 상황에서 발생한다.</p>
 <p><br></p>
@@ -824,7 +824,7 @@ window.Quarto = {
 <span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a> <span class="fl">5.0</span>  <span class="fl">5.0</span>  <span class="fl">5.0</span></span>
 <span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a> <span class="fl">5.0</span>  <span class="fl">5.0</span>  <span class="fl">5.0</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="page-columns page-full"><p>위의 코드는 작동하지만, (<code>@code_warntype array3(5.0, 2)</code> 를 통해 당신이 스스로 확인 할 수 있듯이) 문제는 출력 타입이 추정될수 없다는 것이다: 인자 <code>N</code> 은 정수 타입의 값이며, 타입 추론은 앞으로 이 값이 어떻게 될지 추정하지 않으며 할수도 없다<span class="math inline">\(^\dagger\)</span>. 이것은 이 함수의 출력값을 사용하는 코드가 보수적이어야 하며, <code>A</code> 에 접근 할 때마다 타입을 확인해야 한다는 것을 의미한다; 이러한 코드는 매우 느릴것이다.</p><div class="no-row-height column-margin column-container"><span class="margin-aside"><span class="math inline">\(^\dagger\)</span> 배열의 타입은 그 차원를 포함한다는 것을 알아야 한다. 위의 코드에서 <code>A</code> 의 타입은 <code>Array{Float64, 3}</code> 이다.</span></div></div>
-<p>이러한 문제를 해결하는 가장 좋은 방법은 <a href="https://docs.julialang.org/en/v1/manual/performance-tips/#kernel-functions">function-barrier technique</a> 을 사용하는 것이다. 그러나 몇몇 경우에서는 당신이 타입 불안정성도 같이 제거하기를 원할 수도 있다. 이런 경우는 차원을 매개변수로 전달하는것도 (예를 들자면 <code>Val{T}()</code> 를 이용하여) 한 방법이다: (<a href="https://docs.julialang.org/en/v1/manual/types/#%22Value-types%22">“Value types”</a>를 보라)</p>
+<p>이러한 문제를 해결하는 가장 좋은 방법은 <a href="#sec-kernel_barrier">function-barrier technique</a> (<a href="https://docs.julialang.org/en/v1/manual/performance-tips/#kernel-functions">원문</a>) 을 사용하는 것이다. 그러나 몇몇 경우에서는 당신이 타입 불안정성도 같이 제거하기를 원할 수도 있다. 이런 경우는 차원을 매개변수로 전달하는것도 (예를 들자면 <code>Val{T}()</code> 를 이용하여) 한 방법이다: (<a href="https://docs.julialang.org/en/v1/manual/types/#%22Value-types%22">“Value types”</a>를 보라)</p>
 <div class="sourceCode" id="cb45"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="kw">function</span> <span class="fu">array3</span>(fillval, <span class="op">::</span><span class="dt">Val{N}</span>) <span class="kw">where</span> N</span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>           <span class="fu">fill</span>(fillval, <span class="fu">ntuple</span>(d<span class="op">-&gt;</span><span class="fl">3</span>, <span class="fu">Val</span>(N)))</span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>       <span class="kw">end</span></span>
@@ -862,7 +862,7 @@ window.Quarto = {
 <li>각각의 <code>Car</code> 에 대해 CPU intensive 한 프로세스를 수행해야 하며, 컴파일 타임에 <code>Maker</code> 와 <code>Model</code> 을 알 경우에 훨씬 효율적이 되고, 서로 다른 <code>Make</code> 와 <code>Model</code> 이 그다지 많지 않을 때.</li>
 <li>같은 <code>Car</code> 의 타입으로 이루어진 동종의(homogeneous) 목록으로 작업을 수행하여, (예를 들자면) <code>Array{Car{:Honda, :Accord}, N}</code> 의 배열에 그 목록을 모두 저장 할 수 있을 때.</li>
 </ul>
-<p>후자의 조건이 충종된다면, 이런 동종의 배열을 처리하는 함수는 생산적으로 특정될 수 있다: 이후 Julia 는 각 원소들의 타입을 알기 때문에(콘테이너 안의 모든 객체는 동일한 구체적인 타입이다) 그 함수가 컴파일 될 때 (런타임에서의 타입 확인을 불필요게 하며) 올바른 메쏘드를 찾아 낼 수 있다. 따라서 전체 리스트를 처리하는 효율적인 코드를 만들어낸다.</p>
+<p>후자의 조건이 충족된다면, 이런 동종의 배열을 처리하는 함수는 생산적으로 특정될 수 있다: 이후 Julia 는 각 원소들의 타입을 알기 때문에(콘테이너 안의 모든 객체는 동일한 구체적인 타입이다) 그 함수가 컴파일 될 때 (런타임에서의 타입 확인을 불필요게 하며) 올바른 메쏘드를 찾아 낼 수 있다. 따라서 전체 리스트를 처리하는 효율적인 코드를 만들어낸다.</p>
 <p>이 조건들이 충족되지 못하면 이득을 볼 것이 없을 것이며, 혹은 결과적으로 발생하는 “combinational explosion of types” 는 역효과를 낳을 수도 있다. 만약 <code>items[i+1]</code> 이 <code>item[i]</code> 와 다른 타입이라면 Julia는 런타임에 타입을 조회할 것이고 메쏘드 테이블에서 적절한 메쏘드를 조회할 것이며, 타입 교차(type intersection) 을 통해 일치하는 메쏘드를 찾고, 그것이 이미 JIT 컴파일 되었는지 확인하여 아직 컴파일 되지 않았다면 컴파일하고, 그것을 호출한다. 본질적으로 (Julia 의) 전체 타입 시스템 및 JIT 컴파일 장치가 당신의 코드에서 <code>switch</code> 문 또는 사전 조회(dictionary lookup)와 동등한 것을 기본적으로 실행하도록 요청하는 것이다.</p>
 <p>(<span class="math inline">\(1\)</span>) 타입 디스패치, (<span class="math inline">\(2\)</span>) dictionary lookup, (<span class="math inline">\(3\)</span>) a “switch” statement 를 비교하는 몇몇 런타임 벤치마크가 <a href="https://groups.google.com/forum/#!msg/julia-users/jUMu9A3QKQQ/qjgVWr7vAwAJ">메일링 리스트</a> 에 기록되어 있다.</p>
 <p>런타임보다 컴파일 타임에서의 효과가 더 안좋을 수도 있다: Julia 는 각각의 <code>Car{Maker, Model}</code> 에 대해 특정 함수를 컴파일할 것이다; 만약 이런 타입이 수백 수천개라면 이런 객체를 매개변수로 받아들이는 모든 함수 (당신 스스로 작성한 <code>get_year</code> 류의 함수부터 Julia Base 의 generic <code>push!</code> 함수까지) 에 대해 컴파일한 수백 수천개의 변형을 갖게 될 것이다. 각각의 변형은 컴파일된 코드의 케쉬 사이즈와 메쏘드들에 대한 내부적인 리스트의 길이 등을 증가시킬 것이다. Values-as-Parameters 에 대한 과도한 열광은 대량의 컴퓨팅 자원을 쉽게 낭비할 수 있다.</p>
@@ -1013,7 +1013,7 @@ window.Quarto = {
 <span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>julia&gt; @time x ./= sqrt.(d);</span>
 <span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>  0.002049 seconds (4 allocations: 96 bytes)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>이 코드는 일단 동작하지만, 실제로는 행 <code>x[i, :]</code> 의 각 성분에 대해 <code>sqrt(d[i])</code> 를 다시 계산하게 됩니다. 이는 필요한 것보다 훨씬 많은 제곱근 계산을 수행하게 만든다. 결합된 표현식이 어떤 인덱스를 따라 반복하는지를 정확히 살펴보기 위해서는, <code>Broadcast.combine_axes</code> 를 결합된 표현식의 인자에 호출할 수 있습니다. 이것은 반복 축에 해당하는 범위를 튜플로 반환하며, 이 범위의 길이를 곱한 값이 결합된 연산에 대한 총 호출 횟수가 된다.</p>
-<p>따라서 브로드캐스트 표현식의 일부 구성 요소가 특정 축을 따라 일정할 경우—예를 들어, 이전 예시에서 두 번째 차원의 <code>sqrt</code>—이 구성 요소의 결합을 강제로 해제하여 성능을 개선할 가능성이 있습니다. 즉, 브로드캐스트된 연산의 결과를 미리 할당하고, 일정한 축을 따라 캐시된 값을 재사용하는 것이다. 이를 위한 몇 가지 가능한 방법으로는, 임시 변수를 사용하거나, 점 표현식의 구성 요소를 <code>identity</code> 로 래핑하거나, 동등한 내재적 벡터화된(그러나 결합되지 않은) 함수를 사용하는 것 등이 있습니다.</p>
+<p>따라서 브로드캐스트 표현식의 일부 구성 요소가 특정 축을 따라 일정할 경우—예를 들어, 이전 예시에서 두 번째 차원의 <code>sqrt</code>—이 구성 요소의 결합을 강제로 해제하여 성능을 개선할 가능성이 있습니다. 즉, 브로드캐스트된 연산의 결과를 미리 할당하고, 일정한 축을 따라 캐시된 값을 재사용하는 것이다. 이를 위한 몇 가지 가능한 방법으로는, 임시 변수를 사용하거나, 점 표현식의 구성 요소를 <code>identity</code> 로 래핑하거나, 동등한 내재적 벡터화된(그러나 결합되지 않은) 함수를 사용하는 것 등이 있다.</p>
 <p>예를 들어, 다음과 같이 코드를 수정할 수 있다:</p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>julia&gt; @time let s = sqrt.(d); x ./= s end;</span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  0.000809 seconds (5 allocations: 8.031 KiB)</span>
@@ -1023,7 +1023,7 @@ window.Quarto = {
 <span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>julia&gt; @time x ./= map(sqrt, d);</span>
 <span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>  0.000611 seconds (4 allocations: 8.016 KiB)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="page-columns page-full"><p>이러한 방법 중 어느 것을 사용하더라도, 약 세 배의 속도 향상을 가져올 수 있다<span class="math inline">\(^\ast\)</span>. 물론 이를 위해서는 메모리 할당이 필요합니다. 큰 규모의 브로드캐스트 객체에 대해서는 이러한 속도 향상이 점근적으로 매우 커질 수 있습다. 최적화를 통해 계산 속도를 높이고 성능을 개선할 수 있는 좋은 예라 할 수 있다.</p><div class="no-row-height column-margin column-container"><span class="margin-aside"><span class="math inline">\(^\ast\)</span> 본인의 PC에서는 약 두배 정도의 성능향상을 보였다</span></div></div>
+<div class="page-columns page-full"><p>이러한 방법 중 어느 것을 사용하더라도, 약 세 배의 속도 향상을 가져올 수 있다<span class="math inline">\(^\ast\)</span>. 물론 이를 위해서는 메모리 할당이 필요하다. 큰 규모의 브로드캐스트 객체에 대해서는 이러한 속도 향상이 점근적으로 매우 커질 수 있습다. 최적화를 통해 계산 속도를 높이고 성능을 개선할 수 있는 좋은 예라 할 수 있다.</p><div class="no-row-height column-margin column-container"><span class="margin-aside"><span class="math inline">\(^\ast\)</span> 본인의 PC에서는 약 두배 정도의 성능향상을 보였다</span></div></div>
 <p><br></p>
 </section>
 <section id="sec-using_views_for_slices" class="level2" data-number="18">
